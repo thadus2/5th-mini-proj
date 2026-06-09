@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/localhost:8080/api/v1")
 @RequiredArgsConstructor
 public class BookController {
 
@@ -19,21 +19,21 @@ public class BookController {
 
 // 전체 조회 + 검색
 
-    @GetMapping
+    @GetMapping("/books")
     public ResponseEntity<List<Book>> getBooks(@RequestParam(required = false) String keyword) {
         return ResponseEntity.ok(bookService.getBooks(keyword));
     }
 
 // 단건 조회
 
-    @GetMapping("")
+    @GetMapping("/books/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.findById(id));
     }
 
 // 등록
 
-    @PostMapping
+    @PostMapping("/books")
     public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
         Book saved = bookService.create(book);
 
@@ -42,7 +42,7 @@ public class BookController {
 
 // 수정
 
-    @PatchMapping("")
+    @PatchMapping("/books/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
         Book updated = bookService.update(id, book);
 
@@ -51,7 +51,7 @@ public class BookController {
 
 // 삭제
 
-    @DeleteMapping("")
+    @DeleteMapping("/books/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
 
