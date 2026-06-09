@@ -1,4 +1,48 @@
 package com.aivle.bookapp.domain;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long bookId;
+
+    @Column(nullable = false, length = 200)
+    @NotBlank
+    private String title;
+
+    @Column(nullable = false, length = 200)
+    @NotBlank
+    private String author;
+
+    @Lob
+    @Column(nullable = false, columnDefinition = "TEXT")
+    @NotBlank
+    private String content;
+
+    private String publisher;
+
+    private Integer price;
+
+    private String publishDate;
+
+    private String genre;
+
+    @Column(length = 1000)
+    private String summary;
+
+    @Column(nullable = false)
+    private Integer viewCount = 0;
+
+    private String coverImgUrl;
 }

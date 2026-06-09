@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/books")
+@RequestMapping("/api/v1/books")
 @RequiredArgsConstructor
 public class BookController {
 
@@ -26,7 +26,7 @@ public class BookController {
 
 // 단건 조회
 
-    @GetMapping("")
+    @GetMapping("/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.findById(id));
     }
@@ -42,7 +42,7 @@ public class BookController {
 
 // 수정
 
-    @PatchMapping("")
+    @PatchMapping("/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
         Book updated = bookService.update(id, book);
 
@@ -51,7 +51,7 @@ public class BookController {
 
 // 삭제
 
-    @DeleteMapping("")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
 
