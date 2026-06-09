@@ -1,0 +1,18 @@
+/* Footer.css */
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background-color: #ffffff;
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #eaeaea;
+}
+
+.footer-text {
+  font-size: 14px;
+  color: #333333;
+  margin: 0;
+}

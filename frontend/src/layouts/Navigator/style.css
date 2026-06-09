@@ -1,0 +1,36 @@
+/* Navigator.css */
+.navigator {
+  /* 기존 fixed 스타일을 지우고, 헤더 안에서 자연스럽게 흘러가도록 설정 */
+  display: flex;
+  align-items: center;
+  margin-right: 20px; /* 오른쪽 프로필 버튼과의 간격 확보 */
+}
+
+.nav-menu {
+  display: flex;       /* 세로 정렬에서 가로 정렬로 변경 */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 10px;          /* 메뉴 아이템 간의 간격 */
+}
+
+.nav-item {
+  padding: 8px 14px;  /* 상단바 높이에 맞게 패딩 축소 */
+  border-radius: 20px; /* 알약 형태의 예쁜 버튼 스타일 */
+  cursor: pointer;
+  transition: 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap; /* 글자가 아래로 꺾이는 현상 방지 */
+  color: #4b5563;
+}
+
+.nav-item:hover {
+  background-color: #f3f4f6;
+  color: #1a73e8;
+}
+
+.nav-item.active {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+}

@@ -1,0 +1,19 @@
+.book-create-page {
+  padding: 40px 20px; /* 위아래 여백을 줘서 헤더와 살짝 떨어뜨립니다 */
+  max-width: 1140px;  /* 💡 핵심: 내부의 1100px짜리 Form을 품을 수 있도록 폭을 충분히 확대! */
+  margin: 0 auto;     /* 화면 정중앙 정렬 */
+}
+
+.book-create-page h2 {
+  color: #1f2937;
+  font-size: 1.75rem; /* 제목 크기를 살짝 키워 시원한 느낌 부여 */
+  font-weight: 700;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f1f5f9;
+  padding-bottom: 15px;
+  letter-spacing: -0.5px;
+  
+  /* 💡 만약 BookForm 내부에 있는 "📝 새로운 도서 등록" 타이틀과 중복되어 지저분하다면,
+     이 h2 태그 전체를 지우거나 아래 display: none; 주석을 풀어서 숨기셔도 됩니다! */
+  /* display: none; */
+}

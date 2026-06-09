@@ -1,0 +1,106 @@
+/* 1. 전체를 우측 끝으로 밀고 정렬 맞추기 */
+.book-list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 30px;
+    /* margin-bottom: 25px; */
+    padding: 0 115px;                /* 👈 [수정] 양 옆에 40px만큼 넉넉하게 여유 공간(안쪽 여백) 부여 */
+    box-sizing: border-box;
+}
+
+.book-list-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;        
+    width: 90%;
+}
+
+/* 2. 기본 html 버튼의 딱딱한 테두리 및 배경 없애기 (선택사항이지만 추천!) */
+.book-delete-btn,
+.book-register-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+/* 3. 각각 링크 색상 부여 */
+.book-register-btn {
+    color: #007BFF; /* 파란색 */
+}
+
+.book-delete-btn {
+    color: #DC3545; /* 빨간색 */
+}
+
+/* 4. 가운데 구분선(|) 색상 연하게 조절 */
+.book-actions-button > span {
+    color: #ccc;
+}
+/* 🎯 왼쪽 필터와 오른쪽 버튼을 한 줄로 정렬하는 마법 마스터 컨트롤러 */
+.book-list-controls {
+    display: flex;
+    justify-content: space-between; /* 양쪽 끝으로 찢기 */
+    align-items: center;            /* 상하 수직 중앙 정렬 맞추기 */
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    padding: 0 15px;                /* 좌우 벽면 여백 확보 */
+    box-sizing: border-box;
+}
+
+/* 왼쪽 필터 그룹 */
+.book-list-filters {
+    display: flex;
+    gap: 12px;
+}
+
+/* 드롭다운 메뉴 스타일 */
+.filter-select {
+    padding: 8px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    background-color: #ffffff;
+    color: #4a5568;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.filter-select:hover { border-color: #cbd5e1; }
+.filter-select:focus { border-color: #3b82f6; }
+
+/* 텍스트 버튼 스타일 통일 (아까 맞춘 패밀리 룩 반영) */
+.book-delete-button,
+.book-register-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none; /* Link 태그 언더라인 제거 */
+    transition: color 0.2s ease;
+}
+
+.book-register-button { color: #007BFF; }
+.book-register-button:hover { color: #1557b0; }
+
+.book-delete-button { color: #e53e3e; }
+.book-delete-button:hover { color: #9b2c2c; }
+
+.action-separator {
+    color: #cbd5e0;
+    font-size: 14px;
+    user-select: none;
+}
+
+.Footer {
+    position: relative;
+}

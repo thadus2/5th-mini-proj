@@ -1,0 +1,247 @@
+.book-detail-wrapper {
+  padding: 30px;
+  background-color: #ffffff;
+  max-width: 900px;
+  margin: 0 auto;  
+}
+
+.book-detail-layout {
+  display: flex;
+  gap: 40px; 
+  align-items: flex-start; 
+}
+
+/* 좌측 컬럼 (표지 및 AI 버튼) */
+.book-left-col {
+  flex-shrink: 0; 
+  width: 300px;
+}
+
+.cover-image {
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  display: block;
+  margin-bottom: 15px;
+}
+
+/* 우측 컬럼 (도서 상세 정보) */
+.book-right-col {
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* ==========================================================================
+   2. 상단 액션 버튼 구역 (목록으로 돌아가기, 수정, 삭제)
+   ========================================================================== */
+.book-actions-button {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 버튼들 사이의 간격 균등 조절 */
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+/* ⭐️ 상단 액션 버튼 공통 서식 (알약 모양 패밀리룩 구현) */
+.book-list-button,
+.book-edit-button,
+.book-delete-button {
+  background-color: #f7fafc; /* 은은한 연회색 배경 */
+  border: 1px solid #e2e8f0;  /* 연한 테두리 선 */
+  padding: 5px 14px;         /* 정돈된 알약 패딩 */
+  border-radius: 20px;       /* 완전히 둥근 알약 스타일 마감 */
+  cursor: pointer;
+  font-size: 14px; 
+  font-weight: 600; 
+  color: #4a5568;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 목록으로 돌아가기 버튼 특화 (혼자 왼쪽 끝 배치) */
+.book-list-button {
+  display: block;
+  margin-right: auto;        
+}
+
+/* 목록으로 돌아가기 호버 효과 (차분한 그레이) */
+.book-list-button:hover {
+  background-color: #edf2f7; 
+  border-color: #cbd5e0;     
+  color: #1a202c;            
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.book-list-button:active {
+  transform: translateY(0);
+  background-color: #e2e8f0;
+}
+
+/* ⭐️ 수정 버튼 호버 효과 (세련된 민트/그린 계열) */
+.book-edit-button:hover {
+  background-color: #f0fdf4; /* 연한 초록빛 */
+  border-color: #bbf7d0;     
+  color: #16a34a;            /* 신뢰감을 주는 초록색 텍스트 */
+  box-shadow: 0 2px 5px rgba(22, 163, 74, 0.08);
+  transform: translateY(-1px);
+}
+
+.book-edit-button:active {
+  transform: translateY(0);
+  background-color: #dcfce7;
+}
+
+/* ⭐️ 삭제 버튼 호버 효과 (경고의 강력한 레드 계열) */
+.book-delete-button:hover {
+  background-color: #fff5f5; /* 연한 붉은빛 */
+  border-color: #feb2b2;     
+  color: #e53e3e;            /* 경고 의미의 빨간색 텍스트 */
+  box-shadow: 0 2px 5px rgba(229, 62, 62, 0.08);
+  transform: translateY(-1px);
+}
+
+.book-delete-button:active {
+  transform: translateY(0);
+  background-color: #fed7d7;
+}
+
+/* JSX에 남아있는 기존 세로 구분선(|)은 알약 서식을 위해 숨김 처리합니다 */
+.book-actions-button > span {
+  display: none;
+}
+
+
+/* ==========================================================================
+   3. 도서 메타 정보 (타이틀, 작가, 장르, 좋아요, 조회수)
+   ========================================================================== */
+.book-header {
+  margin-bottom: 15px;
+}
+
+.book-title {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  font-weight: bold;
+  color: #1a202c;
+}
+
+.book-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0;
+  color: #718096;
+  font-size: 15px;
+}
+
+/* 메타 정보 내 자식 요소들(span, button)의 정렬 통일 */
+.book-meta span,
+.book-meta button {
+  display: flex;
+  align-items: center;
+  gap: 6px; 
+}
+
+/* ⭐️ 좋아요 버튼 - 알약(Chip) 스타일 구현 */
+.book-meta button {
+  background-color: #f7fafc; 
+  border: 1px solid #e2e8f0;  
+  padding: 4px 12px;         
+  border-radius: 20px;       
+  cursor: pointer;
+  font-size: 14px;           
+  font-weight: 600; 
+  color: #4a5568;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 좋아요 버튼 마우스 호버 효과 */
+.book-meta button:hover {
+  background-color: #fff5f5; 
+  border-color: #feb2b2;     
+  color: #e53e3e;            
+  box-shadow: 0 2px 5px rgba(229, 62, 62, 0.1); 
+}
+
+.book-meta button:hover .book-stat-icon {
+  transform: scale(1.25);
+}
+
+.book-meta button .book-stat-icon {
+  transition: transform 0.2s ease;
+}
+
+.book-meta button:active {
+  transform: scale(0.93);
+  background-color: #fed7d7; 
+}
+
+.book-stat-icon {
+  width: 12px;
+  height: auto;
+}
+
+
+/* ==========================================================================
+   4. 본문 내용 영역 및 기타 요소들
+   ========================================================================== */
+.divider {
+  border: 0;
+  height: 1px;
+  background-color: #edf2f7;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.book-section h4 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #2d3748;
+}
+
+.book-summary, 
+.book-content {
+  margin: 0;
+  color: #4a5568;
+  line-height: 1.7;
+  font-size: 15px;
+}
+
+
+/* ==========================================================================
+   5. AI 표지 만들기 버튼 커스텀 (좌측 컬럼 하단 - 서식 통일)
+   ========================================================================== */
+.book-left-col button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;                  
+  
+  width: 100%;               
+  background-color: #f7fafc; 
+  border: 1px solid #e2e8f0;  
+  padding: 8px 0;            
+  border-radius: 20px;       
+  
+  cursor: pointer;
+  font-size: 14px;           
+  font-weight: 600; 
+  color: #4a5568;            
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* AI 표지 만들기 마우스 호버 효과 */
+.book-left-col button:hover {
+  background-color: #eef2ff; 
+  border-color: #c7d2fe;     
+  color: #4f46e5;            
+  box-shadow: 0 2px 5px rgba(79, 70, 229, 0.1); 
+  transform: translateY(-1px);
+}
+
+.book-left-col button:active {
+  transform: translateY(0);
+  background-color: #e0e7ff; 
+}
