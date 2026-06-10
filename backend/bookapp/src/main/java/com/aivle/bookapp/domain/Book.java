@@ -51,5 +51,6 @@ public class Book {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
+    @Lob
     private String coverImgUrl;
 }
