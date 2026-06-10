@@ -57,4 +57,9 @@ public class BookController {
 
         return ResponseEntity.noContent().build();
     }
+    @PatchMapping("/{id}/views")
+    public ResponseEntity<Void> increaseViewCount(@PathVariable Long id) {
+        bookService.increaseViewCount(id);
+        return ResponseEntity.ok().build();
+    }
 }
