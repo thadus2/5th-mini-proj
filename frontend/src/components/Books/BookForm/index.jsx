@@ -9,10 +9,10 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
     const [genre, setGenre] = useState(defaultBook?.genre || '');
     const [content, setContent] = useState(defaultBook?.content || '');
     const [summary, setSummary] = useState(defaultBook?.summary || '');
-    const [publish, setPublish] = useState(defaultBook?.publish || '');
-    const [coverimageurl, setCoverImageUrl] = useState(defaultBook?.coverImageUrl || '');
-    const [likes, setLikes] = useState(defaultBook?.likes || 0);
-    const [views, setViews] = useState(defaultBook?.views || 0);
+    const [publisher, setPublisher] = useState(defaultBook?.publisher || '');
+    const [coverImageUrl, setCoverImageUrl] = useState(defaultBook?.coverImgUrl || '');
+    const [likeCount, setLikes] = useState(defaultBook?.likeCount || 0);
+    const [viewCount, setViews] = useState(defaultBook?.viewCount || 0);
 
     const [errors, setErrors] = useState({
         title: false,
@@ -69,12 +69,12 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             genre: genre,
             content: content,
             summary: summary,
-            publish: publish,
-            coverImageUrl: coverimageurl,
-            likes: likes,
-            views: views
+            publisher: publisher,
+            coverImgUrl: coverImageUrl,
+            likeCount: likeCount,
+            viewCount: viewCount
         }
-        
+
         if (!defaultBook) {
             onAdd(newBook);
 
@@ -83,13 +83,13 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             setGenre('');
             setContent('');
             setSummary('');
-            setPublish('');
+            setPublisher('');
             setCoverImageUrl('');
             navigator('/books');
         }
         else {
-            onEdit(defaultBook.id, newBook)
-            navigator(`/books/${defaultBook.id}`);
+            onEdit(defaultBook.bookId, newBook)
+            navigator(`/books/${defaultBook.bookId}`);
         }
     }
 
@@ -101,8 +101,8 @@ return (
         {/* ⭐️ 이미지 업로드 & 미리보기 구역 */}
         <div className="image-upload-section">
           <div className="image-preview-box">
-            {coverimageurl ? (
-              <img src={coverimageurl} alt="커버 미리보기" className="preview-img" />
+            {coverImageUrl ? (
+              <img src={coverImageUrl} alt="커버 미리보기" className="preview-img" />
             ) : (
               <div className="no-image">🖼️ 표지 이미지가 없습니다</div>
             )}
@@ -169,8 +169,8 @@ return (
             <div className="input-group">
             <label>출판사</label>
             <input 
-                value={publish}
-                onChange={(e) => setPublish(e.target.value)}
+                value={publisher}
+                onChange={(e) => setPublisher(e.target.value)}
                 placeholder='출판사 명'/>
             </div>
 
