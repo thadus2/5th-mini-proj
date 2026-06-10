@@ -49,6 +49,18 @@ public class BookController {
         return ResponseEntity.ok(updated);
     }
 
+    @PatchMapping("/{id}/likes")
+    public ResponseEntity<Book> toggleLike(@PathVariable Long id, @RequestParam boolean isLiked) {
+        Book updated = bookService.changeLikeCount(id, isLiked);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PatchMapping("/{id}/views")
+    public ResponseEntity<Book> plusView(@PathVariable Long id) {
+        Book updated = bookService.plusViewCount(id);
+        return ResponseEntity.ok(updated);
+    }
+
 // 삭제
 
     @DeleteMapping("/{id}")

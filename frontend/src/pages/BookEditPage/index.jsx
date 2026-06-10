@@ -5,9 +5,9 @@ import './style.css';
 import BookForm from '../../components/Books/BookForm';
 export default function BookEditPage({ posts, onEdit }) {
     
-    const { id } = useParams();
+    const { bookId } = useParams();
     const navigate = useNavigate();
-    const defaultBook = posts.find(p => p.bookId === Number(id));
+    const defaultBook = posts.find(p => p.bookId == bookId);
 
     return (
         <div className="book-create-page">
