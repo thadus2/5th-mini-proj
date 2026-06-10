@@ -115,6 +115,7 @@ public class BookService {
         Book book = findById(id);
         bookRepository.delete(book);
     }
+
     // 조회수 증가
     @Transactional
     public void increaseViewCount(Long id) {
