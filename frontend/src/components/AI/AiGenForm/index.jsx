@@ -1,10 +1,11 @@
 import React, { useState } from "react"; 
-import { useNavigate, useParams } from "react-router-dom";
-import './style.css'; // 👈 CSS 파일 임포트 추가!
+import { useNavigate, useParams, useLocation } from "react-router-dom";
+import './style.css';
 
 export default function AiGenForm({ posts, onEdit }) {
     const navigate = useNavigate();
     const { bookId } = useParams();
+    const location = useLocation();
 
     const [isGenerating, setIsGenerating] = useState(false);
     const [generateFail, setGenerateFail] = useState(false);
@@ -15,7 +16,11 @@ export default function AiGenForm({ posts, onEdit }) {
     const [selectedQuality, setSelectedQuality] = useState('medium');
     const [userPrompt, setUserPrompt] = useState('');
 
-    const post = posts ? posts.find(p => p.bookId == bookId) : null;
+    const isFromForm = location.state?.fromForm;
+    const isEditMode = location.state?.isEditMode;
+    const tempFormData = location.state?.formData;
+
+    const post = isFromForm ? tempFormData : (posts ? posts.find(p => p.bookId == bookId) : null);
 
     const handleCoverUpdate = async () => {
         try {
@@ -24,13 +29,21 @@ export default function AiGenForm({ posts, onEdit }) {
                 coverImgUrl: coverImgUrl
             };
 
-            const success = await onEdit(post.bookId, updatedData);
-            if (success) {
-                alert('표지가 업데이트되었습니다.');
-                navigate(`/books/${bookId}`);
+            if (isEditMode && bookId !== 'new') {
+                const success = await onEdit(bookId, updatedData);
+                if (success) {
+                    alert('표지가 서버에 업데이트되었습니다.');
+                    navigate(`/books/${bookId}`);
                 } else {
-                    "서버 저장에 실패하였습니다."
-                    }
+                    alert("서버 저장에 실패하였습니다.");
+                }
+            }
+            else {
+                alert('생성된 이미지가 적용되었습니다. 작성 중이던 폼으로 복귀합니다.');
+                navigate(-1, {
+                    state: { returnedFormData: updatedData }
+                });
+            }
 
         } catch(err) {
             console.error(err);
@@ -38,16 +51,17 @@ export default function AiGenForm({ posts, onEdit }) {
         }
     };
 
-    if (!post) {
-        return (
-            <div className="book-detail-wrapper">
-                <button className="book-detail-button" onClick={() => navigate('/books')}>
-                    목록으로 돌아가기
-                </button>
-                <p>도서 정보를 불러올 수 없습니다.</p>
-            </div>
-        );
-    }
+        // post 검증 예외 처리 부분 (수정 모드 && 데이터 없는 경우 처리)
+        if (!post && bookId !== 'new') {
+            return (
+                <div className="book-detail-wrapper">
+                    <button className="book-detail-button" onClick={() => navigate('/books')}>
+                        목록으로 돌아가기
+                    </button>
+                    <p>도서 정보를 불러올 수 없습니다.</p>
+                </div>
+            );
+        }
 
     const compressDataUrl = (dataUrl, maxWidth = 500, quality = 0.6) => {
         return new Promise((resolve, reject) => {
@@ -288,6 +302,32 @@ export default function AiGenForm({ posts, onEdit }) {
                 {isGenerating ? "🤖 이미지 생성 중..." : "✨ 이미지 생성하기"}
             </button>
 
+
+            <button
+                type="button"
+                className="ai-cancel-btn"
+                style={{
+                    width: '100%',
+                    padding: '12px',
+                    marginTop: '8px',
+                    backgroundColor: '#f1f3f5',
+                    color: '#495057',
+                    border: '1px solid #dee2e6',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontWeight: 'bold'
+                }}
+                onClick={() => {
+                    const returnData = isFromForm ? tempFormData : post;
+                    const targetPath = bookId === 'new' ? '/books/new' : `/books/${bookId}/edit`;
+                    navigate(isEditMode ? `/books/${bookId}/edit` : `/create`, {
+                        state: { returnedFormData: returnData }
+                    });
+                }}
+                disabled={isGenerating}
+            >
+                ❌ 생성 취소하고 돌아가기
+            </button>
             <hr className="ai-divider" />
 
             {/* 상태 메시지 */}

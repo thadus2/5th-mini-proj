@@ -1,18 +1,23 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import './style.css';
 import imageCompression from 'browser-image-compression';
 
 export default function BookForm({onAdd, defaultBook, onEdit}) {
-    const [title, setTitle] = useState(defaultBook?.title || '');
-    const [author, setAuthor] = useState(defaultBook?.author || '');
-    const [genre, setGenre] = useState(defaultBook?.genre || '');
-    const [content, setContent] = useState(defaultBook?.content || '');
-    const [summary, setSummary] = useState(defaultBook?.summary || '');
-    const [publisher, setPublisher] = useState(defaultBook?.publisher || '');
-    const [coverImgUrl, setCoverImgUrl] = useState(defaultBook?.coverImgUrl || '');
-    const [likeCount, setLikes] = useState(defaultBook?.likeCount || 0);
-    const [viewCount, setViews] = useState(defaultBook?.viewCount || 0);
+
+    const navigator = useNavigate();
+    const location = useLocation();
+    const savedFormData = location.state?.returnedFormData;
+
+    const [title, setTitle] = useState(savedFormData?.title || defaultBook?.title || '');
+    const [author, setAuthor] = useState(savedFormData?.author || defaultBook?.author || '');
+    const [genre, setGenre] = useState(savedFormData?.genre || defaultBook?.genre || '');
+    const [content, setContent] = useState(savedFormData?.content || defaultBook?.content || '');
+    const [summary, setSummary] = useState(savedFormData?.summary || defaultBook?.summary || '');
+    const [publisher, setPublisher] = useState(savedFormData?.publisher || defaultBook?.publisher || '');
+    const [coverImgUrl, setCoverImgUrl] = useState(savedFormData?.coverImgUrl || defaultBook?.coverImgUrl || '');
+    const [likeCount, setLikes] = useState(savedFormData?.likeCount || defaultBook?.likeCount || 0);
+    const [viewCount, setViews] = useState(savedFormData?.viewCount || defaultBook?.viewCount || 0);
 
     const [errors, setErrors] = useState({
         title: false,
@@ -20,8 +25,31 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
         content: false
     });
 
-    const navigator = useNavigate();
-    
+
+    const handleAiGenClick = () => {
+        const currentFormData = {
+            title,
+            author,
+            genre,
+            content,
+            summary,
+            publisher,
+            coverImgUrl,
+            likeCount,
+            viewCount
+        };
+
+        const idParam = defaultBook?.bookId || 'new';
+
+        navigator(`/books/${idParam}/ai-gen`, {
+            state: {
+                fromForm: true,
+                formData: currentFormData,
+                isEditMode: !!defaultBook
+            }
+        });
+    };
+
     const handleImageChange = async (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -121,6 +149,12 @@ return (
             accept="image/*" 
             onChange={handleImageChange} 
           />
+          <button
+              type="button"
+              className="custom-file-upload ai-gen-btn-style"
+              onClick={handleAiGenClick}
+            >✨ AI 표지 생성하기
+           </button>
         </div>
 
         {/* 입력 폼 구역 */}
