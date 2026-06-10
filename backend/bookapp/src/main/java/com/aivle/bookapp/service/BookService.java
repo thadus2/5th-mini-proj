@@ -60,10 +60,10 @@ public class BookService {
 
     // 페이징 조회
     public Page<Book> getPage(int page, int size, String sortBy) {
-        List<String> allowedSortFields = List.of("id", "title", "author");
+        List<String> allowedSortFields = List.of("bookId", "title", "author", "viewCount", "price");
 
         if (!allowedSortFields.contains(sortBy)) {
-            sortBy = "id";
+            sortBy = "bookId";
         }
 
         Pageable pageable =
@@ -76,17 +76,7 @@ public class BookService {
     @Transactional
     public Book create(Book book) {
 
-        /*
-        중복 체크를 사용하려면 Repository에 아래 메서드 추가
-
-        boolean existsByTitleAndAuthor(String title, String author);
-
-        if(bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
-            throw new DuplicateBookException();
-        }
-        */
-
-        return bookRepository.save(book);
+                return bookRepository.save(book);
     }
 
     // 수정
@@ -110,7 +100,7 @@ public class BookService {
         if (book.getGenre() != null && !book.getGenre().isBlank()) {
             existing.setGenre(book.getGenre());
         }
-
+      
         if (book.getSummary() != null) {
             existing.setSummary(book.getSummary());
         }
@@ -131,35 +121,48 @@ public class BookService {
             existing.setViewCount(book.getViewCount());
         }
 
+        if (book.getPrice() != null) {
+            existing.setPrice(book.getPrice());
+        }
 
-        return existing;
-    }
+        if (book.getRecentPublished() != null) {
+            existing.setRecentPublished(book.getRecentPublished());
+        }
 
-    @Transactional
-    public Book changeLikeCount(Long id, boolean isLiked) {
-        Book existing = findById(id);
-
-        // if 문 없이 그냥 DB에서 꺼내온 원본에 바로 연산!
-        if (isLiked) {
-            existing.setLikeCount(existing.getLikeCount() + 1);
-        } else {
-            existing.setLikeCount(existing.getLikeCount() - 1);
+        if (book.getRecentUpdated() != null) {
+            existing.setRecentUpdated(book.getRecentUpdated());
         }
 
         return existing;
     }
 
     @Transactional
-    public Book plusViewCount(Long id) {
-        Book existing = findById(id);
-        existing.setViewCount(existing.getViewCount() + 1);
-        return existing;
+    public Book changeLikeCount(Long id, boolean isLiked) {
+
+        Book book = findById(id);
+
+        if (isLiked) {
+            book.setLikeCount(book.getLikeCount() + 1);
+        } else if (book.getLikeCount() > 0) {
+            book.setLikeCount(book.getLikeCount() - 1);
+        }
+
+        return book;
     }
+
 
     // 삭제
     @Transactional
     public void deleteBook(Long id) {
         Book book = findById(id);
         bookRepository.delete(book);
+    }
+
+    // 조회수 증가
+    @Transactional
+    public void increaseViewCount(Long id) {
+        Book book = findById(id);
+
+        book.setViewCount(book.getViewCount() + 1);
     }
 }
