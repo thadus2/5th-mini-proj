@@ -105,10 +105,17 @@ public class BookService {
             existing.setPrice(book.getPrice());
         }
 
-        if (book.getPublishDate() != null) {
-            existing.setPublishDate(book.getPublishDate());
+        if (book.getRecentPublished() != null) {
+            existing.setRecentPublished(
+                    book.getRecentPublished()
+            );
         }
 
+        if (book.getRecentUpdated() != null) {
+            existing.setRecentUpdated(
+                    book.getRecentUpdated()
+            );
+        }
         if (book.getGenre() != null) {
             existing.setGenre(book.getGenre());
         }
@@ -126,24 +133,18 @@ public class BookService {
 
     @Transactional
     public Book changeLikeCount(Long id, boolean isLiked) {
-        Book existing = findById(id);
 
-        // if 문 없이 그냥 DB에서 꺼내온 원본에 바로 연산!
+        Book book = findById(id);
+
         if (isLiked) {
-            existing.setLikeCount(existing.getLikeCount() + 1);
-        } else {
-            existing.setLikeCount(existing.getLikeCount() - 1);
+            book.setLikeCount(book.getLikeCount() + 1);
+        } else if (book.getLikeCount() > 0) {
+            book.setLikeCount(book.getLikeCount() - 1);
         }
 
-        return existing;
+        return book;
     }
 
-    @Transactional
-    public Book plusViewCount(Long id) {
-        Book existing = findById(id);
-        existing.setViewCount(existing.getViewCount() + 1);
-        return existing;
-    }
 
     // 삭제
     @Transactional
