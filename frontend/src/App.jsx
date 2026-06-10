@@ -246,8 +246,7 @@ const handleLikesToggle = async (id, isLiked) => {
                                 .sort((a, b) => {
                                     if (sortBy === 'likes') return (b.likeCount || 0) - (a.likeCount || 0);
                                     if (sortBy === 'views') return (b.viewCount || 0) - (a.viewCount || 0);
-                                    // 최신순(latest)은 고유 ID 역순 또는 생성일 기준 (여기서는 ID 문자열 매칭이 아닐 경우 단순 역순 정렬 예시)
-                                    return String(b.id).localeCompare(String(a.id)); 
+                                    return (b.bookId || 0) - (a.bookId || 0);
                                 })
                             } 
                             selectedIds={selectedIds}          
