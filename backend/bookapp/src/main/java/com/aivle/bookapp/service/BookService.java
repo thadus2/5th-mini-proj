@@ -76,17 +76,7 @@ public class BookService {
     @Transactional
     public Book create(Book book) {
 
-        /*
-        중복 체크를 사용하려면 Repository에 아래 메서드 추가
-
-        boolean existsByTitleAndAuthor(String title, String author);
-
-        if(bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
-            throw new DuplicateBookException();
-        }
-        */
-
-        return bookRepository.save(book);
+                return bookRepository.save(book);
     }
 
     // 수정
