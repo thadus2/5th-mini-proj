@@ -15,16 +15,16 @@ export default function AiGenForm({ posts, onEdit }) {
     const [selectedQuality, setSelectedQuality] = useState('medium');
     const [userPrompt, setUserPrompt] = useState('');
 
-    const post = posts ? posts.find(p => String(p.id) === String(id)) : null;
+    const post = posts ? posts.find(p => String(p.bookId) === String(id)) : null;
 
     const handleCoverUpdate = async () => {
         try {
             const updatedData = {
                 ...post,
-                coverImageUrl: imageUrl
+                coverImgUrl: imageUrl
             };
 
-            await onEdit(post.id, updatedData);
+            await onEdit(post.bookId, updatedData);
             alert('표지가 업데이트되었습니다.');
             navigate(`/books/${id}`);
         } catch(err) {

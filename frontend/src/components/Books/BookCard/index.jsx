@@ -32,7 +32,7 @@ export default function BookCard(
                 
                 onChange={(e) => {
                     e.stopPropagation();
-                    onSelectToggle(id);  
+                    onSelectToggle(bookId);  
                 }}
     
                 onClick={(e) => {

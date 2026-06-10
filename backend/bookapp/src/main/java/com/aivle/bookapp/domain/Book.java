@@ -51,5 +51,7 @@ public class Book {
     @Column(nullable = false)
     private Integer likeCount = 0;
 
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
     private String coverImgUrl;
 }
