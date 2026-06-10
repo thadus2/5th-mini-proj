@@ -10,7 +10,7 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
     const [content, setContent] = useState(defaultBook?.content || '');
     const [summary, setSummary] = useState(defaultBook?.summary || '');
     const [publisher, setPublisher] = useState(defaultBook?.publisher || '');
-    const [coverImageUrl, setCoverImageUrl] = useState(defaultBook?.coverImgUrl || '');
+    const [coverImgUrl, setCoverImgUrl] = useState(defaultBook?.coverImgUrl || '');
     const [likeCount, setLikes] = useState(defaultBook?.likeCount || 0);
     const [viewCount, setViews] = useState(defaultBook?.viewCount || 0);
 
@@ -36,7 +36,7 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             const compressedFile = await imageCompression(file, options);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setCoverImageUrl(reader.result); // Base64 인코딩된 이미지 주소 저장
+                setCoverImgUrl(reader.result); // Base64 인코딩된 이미지 주소 저장
             };
             reader.readAsDataURL(compressedFile);
         } catch (error) {
@@ -70,11 +70,11 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             content: content,
             summary: summary,
             publisher: publisher,
-            coverImgUrl: coverImageUrl,
+            coverImgUrl: coverImgUrl,
             likeCount: likeCount,
             viewCount: viewCount
         }
-
+        console.log(newBook);
         if (!defaultBook) {
             onAdd(newBook);
 
@@ -84,7 +84,7 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             setContent('');
             setSummary('');
             setPublisher('');
-            setCoverImageUrl('');
+            setCoverImgUrl('');
             navigator('/books');
         }
         else {
@@ -101,8 +101,8 @@ return (
         {/* ⭐️ 이미지 업로드 & 미리보기 구역 */}
         <div className="image-upload-section">
           <div className="image-preview-box">
-            {coverImageUrl ? (
-              <img src={coverImageUrl} alt="커버 미리보기" className="preview-img" />
+            {coverImgUrl ? (
+              <img src={coverImgUrl} alt="커버 미리보기" className="preview-img" />
             ) : (
               <div className="no-image">🖼️ 표지 이미지가 없습니다</div>
             )}

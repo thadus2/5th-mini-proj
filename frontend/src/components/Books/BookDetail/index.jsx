@@ -9,21 +9,21 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { id } = useParams();
+    const { bookId } = useParams();
 
-    const post = posts.find(p => String(p.id) === String(id))
+    const post = posts.find(p => p.bookId == bookId)
     
     const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
         if (post) {
-        onViewsPlus(post.id);
+        onViewsPlus(post.bookId);
         }
-    }, [id]);
+    }, [bookId]);
 
     const handleLikeClick = () => {
         const nextState = !isLiked;
-        onLikesToggle(post.id, nextState);
+        onLikesToggle(post.bookId, nextState);
         setIsLiked(nextState);
     };
 
@@ -34,7 +34,7 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
         }
   }
   const handleAiGen = () => {
-        navigate(`/books/${id}/ai-gen`);
+        navigate(`/books/${bookId}/ai-gen`);
   }
     
     if (!post) {
@@ -54,11 +54,11 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
                 <button className="book-list-button" onClick={() => navigate('/books')}>
                     목록으로 돌아가기
                 </button>
-                <button className="book-edit-button" onClick={() => navigate(`/books/${id}/edit`)}>
+                <button className="book-edit-button" onClick={() => navigate(`/books/${bookId}/edit`)}>
                     <span>수정</span>
                 </button>
                 <span> | </span>
-                <button className="book-delete-button" onClick={() => handleClickDelete(id)}>
+                <button className="book-delete-button" onClick={() => handleClickDelete(bookId)}>
                     <span>삭제</span>
                 </button>
             </div>
@@ -66,7 +66,7 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
                 <div className="book-left-col">
                     <img
                         className="cover-image"
-                        src={post.coverImageUrl ? post.coverImageUrl : defaultImg}
+                        src={post.coverImgUrl ? post.coverImgUrl : defaultImg}
                         alt={post.title || '커버'}
                     />
                     <button className='book-detail-aigen-btn' onClick={handleAiGen}>AI 표지 만들기</button>
@@ -86,7 +86,7 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
                                     src={FavoriteIcon}
                                     alt="좋아요"                                    
                                 />
-                                {post.likes ?? 0}
+                                {post.likeCount ?? 0}
                             </button>
 
                             <span>
@@ -95,7 +95,7 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
                                     src={ViewIcon}
                                     alt="조회수"
                                 />
-                                {post.views ?? 0}
+                                {post.viewCount ?? 0}
                             </span>
                         </p>
                     </div>

@@ -109,6 +109,27 @@ public class BookService {
         return existing;
     }
 
+    @Transactional
+    public Book changeLikeCount(Long id, boolean isLiked) {
+        Book existing = findById(id);
+
+        // if 문 없이 그냥 DB에서 꺼내온 원본에 바로 연산!
+        if (isLiked) {
+            existing.setLikeCount(existing.getLikeCount() + 1);
+        } else {
+            existing.setLikeCount(existing.getLikeCount() - 1);
+        }
+
+        return existing;
+    }
+
+    @Transactional
+    public Book plusViewCount(Long id) {
+        Book existing = findById(id);
+        existing.setViewCount(existing.getViewCount() + 1);
+        return existing;
+    }
+
     // 삭제
     @Transactional
     public void deleteBook(Long id) {
