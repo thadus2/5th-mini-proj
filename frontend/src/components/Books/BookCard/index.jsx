@@ -4,14 +4,14 @@ import './style.css';
 
 export default function BookCard(
         {
-            id,
+            bookId,
             title,
             author,
             genre,
             summary,
-            likes,
-            views,
-            coverImageUrl,
+            likeCount,
+            viewCount,
+            coverImgUrl,
             onCardClick,
             isChecked,
             onSelectToggle,
@@ -19,7 +19,7 @@ export default function BookCard(
     ) {
     const handleClick = () => {
         if (onCardClick) {
-            onCardClick(id);
+            onCardClick(bookId);
         }
     };
 
@@ -32,7 +32,7 @@ export default function BookCard(
                 
                 onChange={(e) => {
                     e.stopPropagation();
-                    onSelectToggle(id);  
+                    onSelectToggle(bookId);  
                 }}
     
                 onClick={(e) => {
@@ -53,7 +53,7 @@ export default function BookCard(
                 <span className="genre-badge">{genre || '장르 없음'}</span>
 
                 <img
-                    src={coverImageUrl ? coverImageUrl : defaultImg}
+                    src={coverImgUrl ? coverImgUrl : defaultImg}
                     alt={title || '도서 표지'}
                 />
             </div>
@@ -64,8 +64,8 @@ export default function BookCard(
                 <p className="summary">{summary || '요약 정보가 없습니다.'}</p>
 
                 <div className="card-footer">
-                    <span className="stat">❤️ {likes ?? 0}</span>
-                    <span className="stat">👀 {views ?? 0}</span>
+                    <span className="stat">❤️ {likeCount ?? 0}</span>
+                    <span className="stat">👀 {viewCount ?? 0}</span>
                 </div>
             </div>
         </button>

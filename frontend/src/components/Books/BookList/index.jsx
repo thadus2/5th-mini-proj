@@ -17,10 +17,10 @@ export default function BookList({ posts = [], onCardClick, selectedIds = [], on
         <div className="book-list-container">
             {posts.map((book) => (
                 <BookCard
-                    key={book.id}
+                    key={book.bookId}
                     {...book}
-                    onCardClick={() => navigate(`/books/${book.id}`)}
-                    isChecked={selectedIds.includes(book.id)}
+                    onCardClick={() => navigate(`/books/${book.bookId}`)}
+                    isChecked={selectedIds.includes(book.bookId)}
                     onSelectToggle={onSelectToggle}
                 />
             ))}
