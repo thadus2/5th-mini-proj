@@ -21,6 +21,20 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    // 로그인
+    public User signin(String loginId, String password) {
+        // 아이디 검증
+        User user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalStateException("비밀번호 혹은 ID 오류"));
+
+        // 비밀번호 검증 (평문 비교)
+        if (!user.getPassword().equals(password)) {
+            throw new IllegalStateException("비밀번호 혹은 ID 오류");
+        }
+
+        return user;
+    }
+
     // 중복 검사
     private void validateDuplicateUser(User user) {
 
