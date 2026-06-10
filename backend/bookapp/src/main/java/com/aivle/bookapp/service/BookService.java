@@ -60,10 +60,10 @@ public class BookService {
 
     // 페이징 조회
     public Page<Book> getPage(int page, int size, String sortBy) {
-        List<String> allowedSortFields = List.of("id", "title", "author");
+        List<String> allowedSortFields = List.of("bookId", "title", "author", "viewCount", "price");
 
         if (!allowedSortFields.contains(sortBy)) {
-            sortBy = "id";
+            sortBy = "bookId";
         }
 
         Pageable pageable =
@@ -76,16 +76,6 @@ public class BookService {
     @Transactional
     public Book create(Book book) {
 
-        /*
-        중복 체크를 사용하려면 Repository에 아래 메서드 추가
-
-        boolean existsByTitleAndAuthor(String title, String author);
-
-        if(bookRepository.existsByTitleAndAuthor(book.getTitle(), book.getAuthor())) {
-            throw new DuplicateBookException();
-        }
-        */
-
         return bookRepository.save(book);
     }
 
@@ -95,16 +85,41 @@ public class BookService {
 
         Book existing = findById(id);
 
-        if (book.getTitle() != null &&
-                !book.getTitle().isBlank()) {
+        if (book.getTitle() != null && !book.getTitle().isBlank()) {
             existing.setTitle(book.getTitle());
         }
 
-        if (book.getAuthor() != null &&
-                !book.getAuthor().isBlank()) {
+        if (book.getAuthor() != null && !book.getAuthor().isBlank()) {
             existing.setAuthor(book.getAuthor());
         }
 
+        if (book.getContent() != null && !book.getContent().isBlank()) {
+            existing.setContent(book.getContent());
+        }
+
+        if (book.getPublisher() != null) {
+            existing.setPublisher(book.getPublisher());
+        }
+
+        if (book.getPrice() != null) {
+            existing.setPrice(book.getPrice());
+        }
+
+        if (book.getPublishDate() != null) {
+            existing.setPublishDate(book.getPublishDate());
+        }
+
+        if (book.getGenre() != null) {
+            existing.setGenre(book.getGenre());
+        }
+
+        if (book.getSummary() != null) {
+            existing.setSummary(book.getSummary());
+        }
+
+        if (book.getCoverImgUrl() != null) {
+            existing.setCoverImgUrl(book.getCoverImgUrl());
+        }
 
         return existing;
     }
