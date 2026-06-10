@@ -110,7 +110,7 @@ export default function App() {
 
             setPosts(
                 posts.map(book =>
-                    book.bookId === id ? data : book
+                    book.bookId == id ? data : book
                 )
             );
 
@@ -133,7 +133,7 @@ export default function App() {
                 body: JSON.stringify(edited)
             });
             const update = await res.json();
-            setPosts(posts.map(p => p.bookId === id ? update : p));
+            setPosts(posts.map(p => p.bookId == id ? update : p));
         } catch(err) {
             console.error(err);
         }
@@ -156,14 +156,13 @@ export default function App() {
 
 const handleLikesToggle = async (id, isLiked) => {
         try {
-            const book = posts.find(p => p.bookId === id);
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}`, {
+            const book = posts.find(p => p.bookId == id);
+            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/likes?isLiked=${isLiked}`, {
                 method:'PATCH',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({likes: isLiked ? book.likes + 1 : book.likes - 1})
             });
             const update = await res.json();
-            setPosts(posts.map(p => p.bookId === id ? update : p));
+            setPosts(posts.map(p => p.bookId == id ? update : p));
         } catch(err) {
             console.error(err);
         }
@@ -245,9 +244,9 @@ const handleLikesToggle = async (id, isLiked) => {
                                     selectedGenre === '' || post.genre === selectedGenre
                                 )
                                 .sort((a, b) => {
-                                    if (sortBy === 'likes') return (b.likes || 0) - (a.likes || 0);
-                                    if (sortBy === 'views') return (b.views || 0) - (a.views || 0);
-                                    return String(b.bookId).localeCompare(String(a.bookId)); 
+                                    if (sortBy === 'likes') return (b.likeCount || 0) - (a.likeCount || 0);
+                                    if (sortBy === 'views') return (b.viewCount || 0) - (a.viewCount || 0);
+                                    return (b.bookId || 0) - (a.bookId || 0);
                                 })
                             } 
                             selectedIds={selectedIds}          
@@ -255,7 +254,7 @@ const handleLikesToggle = async (id, isLiked) => {
                         />
                     </>
                 } />
-                <Route path="/books/:id" element={
+                <Route path="/books/:bookId" element={
                         <BookDetail 
                             posts={posts}
                             onViewsPlus={handleViewsPlus}
@@ -268,13 +267,13 @@ const handleLikesToggle = async (id, isLiked) => {
                     element={<BookCreatePage onAdd={handleAddBook} 
                 />} />
                 <Route 
-                    path='/books/:id/edit'
+                    path='/books/:bookId/edit'
                     element={<BookEditPage 
                     onEdit={handleEdit} 
                     posts={posts}/>} 
                 />
                 <Route 
-                    path='/books/:id/ai-gen'
+                    path='/books/:bookId/ai-gen'
                     element={<AICoverGenPage
                         posts={posts}
                         onEdit={handleEdit}

@@ -9,9 +9,9 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
     const location = useLocation();
     const navigate = useNavigate();
 
-    const { id } = useParams();
+    const { bookId } = useParams();
 
-    const post = posts.find(p => Number(p.bookId) === Number(id))
+    const post = posts.find(p => p.bookId == bookId)
     
     const [isLiked, setIsLiked] = useState(false);
 
@@ -19,7 +19,7 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
         if (post) {
         onViewsPlus(post.bookId);
         }
-    }, [id]);
+    }, [bookId]);
 
     const handleLikeClick = () => {
         const nextState = !isLiked;
@@ -34,7 +34,7 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
         }
   }
   const handleAiGen = () => {
-        navigate(`/books/${id}/ai-gen`);
+        navigate(`/books/${bookId}/ai-gen`);
   }
     
     if (!post) {
@@ -54,11 +54,11 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
                 <button className="book-list-button" onClick={() => navigate('/books')}>
                     목록으로 돌아가기
                 </button>
-                <button className="book-edit-button" onClick={() => navigate(`/books/${id}/edit`)}>
+                <button className="book-edit-button" onClick={() => navigate(`/books/${bookId}/edit`)}>
                     <span>수정</span>
                 </button>
                 <span> | </span>
-                <button className="book-delete-button" onClick={() => handleClickDelete(id)}>
+                <button className="book-delete-button" onClick={() => handleClickDelete(bookId)}>
                     <span>삭제</span>
                 </button>
             </div>
