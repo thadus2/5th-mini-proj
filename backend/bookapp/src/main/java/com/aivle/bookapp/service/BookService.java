@@ -150,7 +150,6 @@ public class BookService {
         return book;
     }
 
-
     // 삭제
     @Transactional
     public void deleteBook(Long id) {
