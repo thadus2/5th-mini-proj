@@ -45,7 +45,7 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newErrors = {
@@ -88,8 +88,13 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             navigator('/books');
         }
         else {
-            onEdit(defaultBook.bookId, newBook)
-            navigator(`/books/${defaultBook.bookId}`);
+            const success = await onEdit(defaultBook.bookId, newBook);
+            if (success) {
+                alert('내용이 수정되었습니다.');
+                navigator(`/books/${defaultBook.bookId}`);
+                } else {
+                    "서버 저장에 실패하였습니다."
+                    }
         }
     }
 

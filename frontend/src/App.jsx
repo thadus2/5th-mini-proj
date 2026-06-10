@@ -59,12 +59,14 @@ export default function App() {
         try {
             await fetch(`${BASE_URL}${BOOK_API}/${id}`, { method: 'DELETE' });
             // books ➡️ posts 로 수정 완료!
-            setPosts(posts.filter(p => p.bookId !== id));
+            await loadBooks();
             alert('도서 삭제가 완료되었습니다.');
             // 🚨 navigate 제거됨
+            return true;
         } catch(err) {
             console.error(err);
             alert('도서 삭제에 실패했습니다.');
+            return false;
         }
     };
     const handleMultipleDelete = async () => {
@@ -134,10 +136,14 @@ export default function App() {
             });
             const update = await res.json();
             setPosts(posts.map(p => p.bookId == id ? update : p));
+            return true;
         } catch(err) {
             console.error(err);
+            return false;
         }
     };
+
+
     const handleViewsPlus = async (id) => {
         try {
             const book = posts.find(p => p.bookId === id);

@@ -97,8 +97,28 @@ public class BookService {
             existing.setContent(book.getContent());
         }
 
+        if (book.getGenre() != null && !book.getGenre().isBlank()) {
+            existing.setGenre(book.getGenre());
+        }
+      
+        if (book.getSummary() != null) {
+            existing.setSummary(book.getSummary());
+        }
+
         if (book.getPublisher() != null) {
             existing.setPublisher(book.getPublisher());
+        }
+
+        if (book.getCoverImgUrl() != null) {
+            existing.setCoverImgUrl(book.getCoverImgUrl());
+        }
+
+        if (book.getLikeCount() != null) {
+            existing.setLikeCount(book.getLikeCount());
+        }
+
+        if (book.getViewCount() != null) {
+            existing.setViewCount(book.getViewCount());
         }
 
         if (book.getPrice() != null) {
@@ -106,26 +126,11 @@ public class BookService {
         }
 
         if (book.getRecentPublished() != null) {
-            existing.setRecentPublished(
-                    book.getRecentPublished()
-            );
+            existing.setRecentPublished(book.getRecentPublished());
         }
 
         if (book.getRecentUpdated() != null) {
-            existing.setRecentUpdated(
-                    book.getRecentUpdated()
-            );
-        }
-        if (book.getGenre() != null) {
-            existing.setGenre(book.getGenre());
-        }
-
-        if (book.getSummary() != null) {
-            existing.setSummary(book.getSummary());
-        }
-
-        if (book.getCoverImgUrl() != null) {
-            existing.setCoverImgUrl(book.getCoverImgUrl());
+            existing.setRecentUpdated(book.getRecentUpdated());
         }
 
         return existing;
