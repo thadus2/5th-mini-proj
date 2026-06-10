@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,9 +47,11 @@ public class Book {
     private String summary;
 
     @Column(nullable = false)
+    @NotNull
     private Integer viewCount = 0;
 
     @Column(nullable = false)
+    @NotNull
     private Integer likeCount = 0;
 
     @Lob
