@@ -21,7 +21,7 @@ export default function App() {
     const [selectedGenre, setSelectedGenre] = useState(''); // 선택된 장르 상태
     const [sortBy, setSortBy] = useState('latest');
 
-    const BASE_URL = 'http://localhost:3000';
+    const BASE_URL = 'http://localhost:8080/api/v1';
     const BOOK_API = '/books';
 
     useEffect(() => {
@@ -39,6 +39,7 @@ export default function App() {
             setLoading(false);
         }
     };
+
     const handleAddBook = async (newBook) => {
         try {
             const res = await fetch(`${BASE_URL}${BOOK_API}`, {
@@ -58,7 +59,7 @@ export default function App() {
         try {
             await fetch(`${BASE_URL}${BOOK_API}/${id}`, { method: 'DELETE' });
             // books ➡️ posts 로 수정 완료!
-            setPosts(posts.filter(p => p.id !== id));
+            setPosts(posts.filter(p => p.bookId !== id));
             alert('도서 삭제가 완료되었습니다.');
             // 🚨 navigate 제거됨
         } catch(err) {
@@ -71,7 +72,6 @@ export default function App() {
             alert("삭제할 도서를 먼저 선택해 주세요!");
             return;
         }
-
         if (!window.confirm(`선택한 ${selectedIds.length}권의 도서를 정말 삭제하시겠습니까?`)) return;
 
         try {
@@ -111,7 +111,7 @@ export default function App() {
 
             setPosts(
                 posts.map(book =>
-                    book.id === id ? data : book
+                    book.bookId === id ? data : book
                 )
             );
 
@@ -129,13 +129,12 @@ export default function App() {
     const handleEdit = async (id, edited) => {
         try {
             const res = await fetch(`${BASE_URL}${BOOK_API}/${id}`, {
-                method: 'PATCH', // 혹은 백엔드 스펙에 따라 PUT
+                method: 'PATCH',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(edited)
             });
             const update = await res.json();
-            // books ➡️ posts 로 수정 완료!
-            setPosts(posts.map(p => p.id === id ? update : p));
+            setPosts(posts.map(p => p.bookId === id ? update : p));
         } catch(err) {
             console.error(err);
         }
@@ -150,7 +149,7 @@ export default function App() {
                 body: JSON.stringify({views: book.views + 1})
             });
             const update = await res.json();
-            setPosts(posts.map(p => p.id === id ? update : p));
+            setPosts(posts.map(p => p.bookId === id ? update : p));
         } catch(err) {
             console.error(err);
         }
@@ -158,14 +157,14 @@ export default function App() {
 
 const handleLikesToggle = async (id, isLiked) => {
         try {
-            const book = posts.find(p => p.id === id);
+            const book = posts.find(p => p.bookId === id);
             const res = await fetch(`${BASE_URL}${BOOK_API}/${id}`, {
                 method:'PATCH',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({likes: isLiked ? book.likes + 1 : book.likes - 1})
             });
             const update = await res.json();
-            setPosts(posts.map(p => p.id === id ? update : p));
+            setPosts(posts.map(p => p.bookId === id ? update : p));
         } catch(err) {
             console.error(err);
         }
@@ -229,7 +228,7 @@ const handleLikesToggle = async (id, isLiked) => {
                             <div className="book-list-actions">
                                 <button 
                                     className="book-delete-btn"
-                                    onClick={handleMultipleDelete} 
+                                    onClick={handleMultipleDelete}
                                 >
                                     삭제
                                 </button>

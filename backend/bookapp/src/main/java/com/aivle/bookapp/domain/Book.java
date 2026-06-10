@@ -1,5 +1,7 @@
 package com.aivle.bookapp.domain;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.annotation.Nulls;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -16,6 +18,7 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bookId;
+
 
     @Column(nullable = false, length = 200)
     @NotBlank
@@ -34,7 +37,8 @@ public class Book {
 
     private Integer price;
 
-    private String publishDate;
+    private String recentPublished;
+    private String recentUpdated;
 
     private String genre;
 
@@ -43,6 +47,9 @@ public class Book {
 
     @Column(nullable = false)
     private Integer viewCount = 0;
+
+    @Column(nullable = false)
+    private Integer likeCount = 0;
 
     private String coverImgUrl;
 }
