@@ -24,9 +24,14 @@ export default function AiGenForm({ posts, onEdit }) {
                 coverImgUrl: coverImgUrl
             };
 
-            await onEdit(post.bookId, updatedData);
-            alert('표지가 업데이트되었습니다.');
-            navigate(`/books/${bookId}`);
+            const success = await onEdit(post.bookId, updatedData);
+            if (success) {
+                alert('표지가 업데이트되었습니다.');
+                navigate(`/books/${bookId}`);
+                } else {
+                    "서버 저장에 실패하였습니다."
+                    }
+
         } catch(err) {
             console.error(err);
             alert('표지 업데이트에 실패했습니다.');
