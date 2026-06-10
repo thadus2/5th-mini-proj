@@ -81,9 +81,8 @@ export default function App() {
                 )
             );
 
-            // 서버 삭제 성공 후 화면(State)에서도 삭제 처리
             setPosts(posts.filter(book => !selectedIds.includes(book.id)));
-            setSelectedIds([]); // 삭제 후 선택 초기화
+            setSelectedIds([]);
             alert("선택한 도서가 삭제되었습니다.");
         } catch (err) {
             console.error("삭제 실패:", err);
@@ -141,15 +140,15 @@ export default function App() {
     };
     const handleViewsPlus = async (id) => {
         try {
-            // books ➡️ posts 로 수정 완료!
-            const book = posts.find(p => p.id === id);
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}`, {
+            const book = posts.find(p => p.bookId === id);
+            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/views`, {
                 method:'PATCH',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({views: book.views + 1})
+                // headers: {'Content-Type': 'application/json'},
             });
-            const update = await res.json();
-            setPosts(posts.map(p => p.bookId === id ? update : p));
+
+            setPosts(posts.map(p => 
+                p.bookId === id ? { ...p, viewCount: (p.viewCount || 0) + 1}
+                : p));
         } catch(err) {
             console.error(err);
         }
@@ -170,11 +169,11 @@ const handleLikesToggle = async (id, isLiked) => {
         }
     };
     
-    const handleSelectToggle = (id) => {
-        if (selectedIds.includes(id)) {
-            setSelectedIds(selectedIds.filter(selectedId => selectedId !== id));
+    const handleSelectToggle = (bookId) => {
+        if (selectedIds.includes(bookId)) {
+            setSelectedIds(selectedIds.filter(selectedId => selectedId !== bookId));
         } else {
-            setSelectedIds([...selectedIds, id]);
+            setSelectedIds([...selectedIds, bookId]);
         }
     };
 
@@ -198,7 +197,6 @@ const handleLikesToggle = async (id, isLiked) => {
                     <>
                         <div className="book-list-header">
                             <div className="book-list-filters">
-                                {/* 장르 셀렉터 */}
                                 <select 
                                     className="filter-select"
                                     value={selectedGenre}
@@ -214,7 +212,6 @@ const handleLikesToggle = async (id, isLiked) => {
                                     <option value="판타지">판타지</option>
                                 </select>
 
-                                {/* 정렬 셀렉터 */}
                                 <select 
                                     className="filter-select"
                                     value={sortBy}
@@ -240,7 +237,6 @@ const handleLikesToggle = async (id, isLiked) => {
                             </div>
                         </div>
                         <BookList 
-                            // 🎯 [핵심] 검색어 필터 ➡️ 장르 필터 ➡️ 정렬 순으로 원본 데이터를 실시간 가공해서 자식에게 던집니다.
                             posts={posts
                                 .filter(post => 
                                     post.title && post.title.includes(searchKeyword)
@@ -251,8 +247,7 @@ const handleLikesToggle = async (id, isLiked) => {
                                 .sort((a, b) => {
                                     if (sortBy === 'likes') return (b.likes || 0) - (a.likes || 0);
                                     if (sortBy === 'views') return (b.views || 0) - (a.views || 0);
-                                    // 최신순(latest)은 고유 ID 역순 또는 생성일 기준 (여기서는 ID 문자열 매칭이 아닐 경우 단순 역순 정렬 예시)
-                                    return String(b.id).localeCompare(String(a.id)); 
+                                    return String(b.bookId).localeCompare(String(a.bookId)); 
                                 })
                             } 
                             selectedIds={selectedIds}          
