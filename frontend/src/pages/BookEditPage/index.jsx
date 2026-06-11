@@ -11,7 +11,6 @@ export default function BookEditPage({ posts, onEdit }) {
 
     return (
         <div className="book-create-page">
-            <h2>✍️ 도서 수정하기</h2>
             <BookForm onEdit={onEdit} defaultBook={defaultBook}/>
         </div>
     );

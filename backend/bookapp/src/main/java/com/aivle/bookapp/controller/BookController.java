@@ -55,11 +55,6 @@ public class BookController {
         return ResponseEntity.ok(updated);
     }
 
-    @PatchMapping("/{id}/views")
-    public ResponseEntity<Book> plusView(@PathVariable Long id) {
-        Book updated = bookService.plusViewCount(id);
-        return ResponseEntity.ok(updated);
-    }
 
 // 삭제
 
