@@ -252,10 +252,22 @@ export default function App() {
     };
 
     const handleViewsPlus = async (id) => {
+        const viewedKey = `viewed-book-${id}`;
+
+        if (sessionStorage.getItem(viewedKey)) {
+            return;
+        }
+
         try {
-            await fetch(`${BASE_URL}${BOOK_API}/${id}/views`, {
+            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/views`, {
                 method: 'PATCH',
             });
+
+            if (!res.ok) {
+                return;
+            }
+
+            sessionStorage.setItem(viewedKey, 'true');
 
             setPosts(posts.map(p =>
                 p.bookId === id ? { ...p, viewCount: (p.viewCount || 0) + 1 } : p
@@ -265,18 +277,48 @@ export default function App() {
         }
     };
 
-    const handleLikesToggle = async (id, isLiked) => {
+    const handleLikesToggle = async (id) => {
+        const likedKey = `liked-book-${id}`;
+        const alreadyLiked = sessionStorage.getItem(likedKey) === 'true';
+        const nextLiked = !alreadyLiked;
+
         try {
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/likes?isLiked=${isLiked}`, {
+            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/likes?isLiked=${nextLiked}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
             });
 
+            if (!res.ok) {
+                return {
+                    success: false,
+                    isLiked: alreadyLiked
+                };
+            }
+
             const update = await res.json();
 
-            setPosts(posts.map(p => p.bookId == id ? update : p));
+            if (nextLiked) {
+                sessionStorage.setItem(likedKey, 'true');
+            } else {
+                sessionStorage.removeItem(likedKey);
+            }
+
+            setPosts(prevPosts =>
+                prevPosts.map(p => p.bookId == id ? update : p)
+            );
+
+            return {
+                success: true,
+                isLiked: nextLiked,
+                data: update
+            };
         } catch (err) {
             console.error(err);
+
+            return {
+                success: false,
+                isLiked: alreadyLiked
+            };
         }
     };
 

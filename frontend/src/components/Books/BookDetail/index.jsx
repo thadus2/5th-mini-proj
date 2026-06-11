@@ -16,17 +16,24 @@ export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle
     const [isLiked, setIsLiked] = useState(false);
 
     useEffect(() => {
-        if (post) {
+        if (!post) return;
+
+        const likedKey = `liked-book-${post.bookId}`;
+        const savedLiked = sessionStorage.getItem(likedKey) === 'true';
+
+        setIsLiked(savedLiked);
         onViewsPlus(post.bookId);
-        }
     }, [bookId]);
 
-    const handleLikeClick = () => {
-        const nextState = !isLiked;
-        onLikesToggle(post.bookId, nextState);
-        setIsLiked(nextState);
-    };
+    const handleLikeClick = async () => {
+        if (!post) return;
 
+        const result = await onLikesToggle(post.bookId);
+
+        if (result?.success) {
+            setIsLiked(result.isLiked);
+        }
+    };
   const handleClickDelete = async(bookId) => {
     if (window.confirm("정말 이 도서를 삭제하시겠습니까?")) {
           await onDelete(bookId);

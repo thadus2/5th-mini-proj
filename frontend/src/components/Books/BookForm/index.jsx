@@ -16,7 +16,7 @@ export default function BookForm({ onAdd, defaultBook, onEdit }) {
     const [summary, setSummary] = useState(savedFormData?.summary || defaultBook?.summary || '');
     const [publisher, setPublisher] = useState(savedFormData?.publisher || defaultBook?.publisher || '');
     const [coverImgUrl, setCoverImgUrl] = useState(savedFormData?.coverImgUrl || defaultBook?.coverImgUrl || '');
-    const [likeCount, setLikes] = useState(savedFormData?.likeCount || defaultBook?.likeCount || null);
+    const [likeCount, setLikes] = useState(savedFormData?.likeCount || defaultBook?.likeCount || 0);
     const [viewCount, setViews] = useState(savedFormData?.viewCount || defaultBook?.viewCount || 0);
 
     const [toast, setToast] = useState({
