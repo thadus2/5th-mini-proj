@@ -304,7 +304,7 @@ export default function App() {
             }
 
             setPosts(prevPosts =>
-                prevPosts.map(p => p.bookId == id ? update : p)
+                prevPosts.map(p =>p.bookId == id? { ...p, likeCount: update.likeCount }: p)
             );
 
             return {
