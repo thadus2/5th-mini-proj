@@ -130,13 +130,6 @@ public class BookService {
             existing.setCoverImgUrl(book.getCoverImgUrl());
         }
 
-        if (book.getLikeCount() != null) {
-            existing.setLikeCount(book.getLikeCount());
-        }
-
-        if (book.getViewCount() != null) {
-            existing.setViewCount(book.getViewCount());
-        }
 
         if (book.getPrice() != null) {
             existing.setPrice(book.getPrice());
