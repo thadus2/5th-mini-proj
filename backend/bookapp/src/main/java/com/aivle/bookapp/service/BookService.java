@@ -150,7 +150,6 @@ public class BookService {
         return book;
     }
 
-
     // 삭제
     @Transactional
     public void deleteBook(Long id) {
@@ -164,5 +163,13 @@ public class BookService {
         Book book = findById(id);
 
         book.setViewCount(book.getViewCount() + 1);
+    }
+
+    @Transactional
+    public Book updateCoverImage(Long id, String coverImgUrl) {
+        Book book = findById(id);
+        book.setCoverImgUrl(coverImgUrl);
+
+        return book;
     }
 }
