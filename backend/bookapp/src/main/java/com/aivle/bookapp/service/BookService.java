@@ -1,6 +1,7 @@
 package com.aivle.bookapp.service;
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.domain.Favorite;
 import com.aivle.bookapp.domain.User;
 import com.aivle.bookapp.dto.request.BookCreateRequestDto;
 import com.aivle.bookapp.dto.request.BookUpdateRequestDto;
@@ -8,6 +9,7 @@ import com.aivle.bookapp.dto.response.BookCreateResponseDto;
 import com.aivle.bookapp.dto.response.BookDetailResponseDto;
 import com.aivle.bookapp.exception.BookNotFoundException;
 import com.aivle.bookapp.repository.BookRepository;
+import com.aivle.bookapp.repository.FavoriteRepository;
 import com.aivle.bookapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final UserRepository userRepository;
+    private final FavoriteRepository favoriteRepository;
 
     public Book findById(Long id) {
         return bookRepository.findById(id)
@@ -55,8 +59,15 @@ public class BookService {
     }
 
     @Transactional
-    public Book update(Long id, BookUpdateRequestDto dto) {
+    public Book update(Long id, BookUpdateRequestDto dto, Long userId) { // ◀ userId 매개변수 추가!
         Book existing = findById(id);
+
+        if (existing.getUser() == null) {
+            throw new IllegalStateException("작성자 정보가 없습니다.");
+        }
+        if (!existing.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("본인이 작성한 글만 수정할 수 있습니다.");
+        }
 
         if (dto.getTitle() != null && !dto.getTitle().isBlank()) {
             existing.setTitle(dto.getTitle());
@@ -87,19 +98,39 @@ public class BookService {
     }
 
     @Transactional
-    public Book changeLikeCount(Long id, boolean isLiked) {
-        Book book = findById(id);
-        if (isLiked) {
+    public boolean toggleLike(Long bookId, Long userId) {
+        Book book = findById(bookId);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        Optional<Favorite> favoriteOpt = favoriteRepository.findByUserAndBook(user, book);
+
+        if (favoriteOpt.isPresent()) {
+            favoriteRepository.delete(favoriteOpt.get());
+            if (book.getLikeCount() > 0) {
+                book.setLikeCount(book.getLikeCount() - 1);
+            }
+            return false;
+        } else {
+            Favorite favorite = new Favorite(user, book);
+            favoriteRepository.save(favorite);
             book.setLikeCount(book.getLikeCount() + 1);
-        } else if (book.getLikeCount() > 0) {
-            book.setLikeCount(book.getLikeCount() - 1);
+            return true;
         }
-        return book;
     }
 
     @Transactional
-    public void deleteBook(Long id) {
+    public void deleteBook(Long id, Long userId) {
         Book book = findById(id);
+
+        if (book.getUser() == null) {
+            throw new IllegalStateException("작성자 정보 확인에 문제가 생겼습니다.");
+        }
+
+        if (!book.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("본인이 작성한 글만 삭제할 수 있습니다.");
+        }
+
         bookRepository.delete(book);
     }
 

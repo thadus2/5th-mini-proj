@@ -12,6 +12,7 @@ public class BookListResponseDto {
     private String author;
     private String coverImgUrl;
     private String summary;
+    private String publisher;
     private String genre;
     private Integer viewCount;
     private Integer likeCount;
@@ -23,6 +24,7 @@ public class BookListResponseDto {
                 book.getAuthor(),
                 book.getCoverImgUrl(),
                 book.getSummary(),
+                book.getPublisher(),
                 book.getGenre(),
                 book.getViewCount(),
                 book.getLikeCount()
