@@ -9,10 +9,10 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
     const [genre, setGenre] = useState(defaultBook?.genre || '');
     const [content, setContent] = useState(defaultBook?.content || '');
     const [summary, setSummary] = useState(defaultBook?.summary || '');
-    const [publish, setPublish] = useState(defaultBook?.publish || '');
-    const [coverimageurl, setCoverImageUrl] = useState(defaultBook?.coverImageUrl || '');
-    const [likes, setLikes] = useState(defaultBook?.likes || 0);
-    const [views, setViews] = useState(defaultBook?.views || 0);
+    const [publisher, setPublisher] = useState(defaultBook?.publisher || '');
+    const [coverImgUrl, setCoverImgUrl] = useState(defaultBook?.coverImgUrl || '');
+    const [likeCount, setLikes] = useState(defaultBook?.likeCount || 0);
+    const [viewCount, setViews] = useState(defaultBook?.viewCount || 0);
 
     const [errors, setErrors] = useState({
         title: false,
@@ -36,7 +36,7 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             const compressedFile = await imageCompression(file, options);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setCoverImageUrl(reader.result); // Base64 인코딩된 이미지 주소 저장
+                setCoverImgUrl(reader.result); // Base64 인코딩된 이미지 주소 저장
             };
             reader.readAsDataURL(compressedFile);
         } catch (error) {
@@ -45,7 +45,7 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const newErrors = {
@@ -69,12 +69,12 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             genre: genre,
             content: content,
             summary: summary,
-            publish: publish,
-            coverImageUrl: coverimageurl,
-            likes: likes,
-            views: views
+            publisher: publisher,
+            coverImgUrl: coverImgUrl,
+            likeCount: likeCount,
+            viewCount: viewCount
         }
-        
+        console.log(newBook);
         if (!defaultBook) {
             onAdd(newBook);
 
@@ -83,13 +83,18 @@ export default function BookForm({onAdd, defaultBook, onEdit}) {
             setGenre('');
             setContent('');
             setSummary('');
-            setPublish('');
-            setCoverImageUrl('');
+            setPublisher('');
+            setCoverImgUrl('');
             navigator('/books');
         }
         else {
-            onEdit(defaultBook.id, newBook)
-            navigator(`/books/${defaultBook.id}`);
+            const success = await onEdit(defaultBook.bookId, newBook);
+            if (success) {
+                alert('내용이 수정되었습니다.');
+                navigator(`/books/${defaultBook.bookId}`);
+                } else {
+                    "서버 저장에 실패하였습니다."
+                    }
         }
     }
 
@@ -101,8 +106,8 @@ return (
         {/* ⭐️ 이미지 업로드 & 미리보기 구역 */}
         <div className="image-upload-section">
           <div className="image-preview-box">
-            {coverimageurl ? (
-              <img src={coverimageurl} alt="커버 미리보기" className="preview-img" />
+            {coverImgUrl ? (
+              <img src={coverImgUrl} alt="커버 미리보기" className="preview-img" />
             ) : (
               <div className="no-image">🖼️ 표지 이미지가 없습니다</div>
             )}
@@ -169,8 +174,8 @@ return (
             <div className="input-group">
             <label>출판사</label>
             <input 
-                value={publish}
-                onChange={(e) => setPublish(e.target.value)}
+                value={publisher}
+                onChange={(e) => setPublisher(e.target.value)}
                 placeholder='출판사 명'/>
             </div>
 

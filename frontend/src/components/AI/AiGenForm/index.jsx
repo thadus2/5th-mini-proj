@@ -4,29 +4,34 @@ import './style.css'; // 👈 CSS 파일 임포트 추가!
 
 export default function AiGenForm({ posts, onEdit }) {
     const navigate = useNavigate();
-    const { id } = useParams();
+    const { bookId } = useParams();
 
     const [isGenerating, setIsGenerating] = useState(false);
     const [generateFail, setGenerateFail] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
+    const [coverImgUrl, setCoverImgUrl] = useState('');
     const [apiKey, setApiKey] = useState('');
     const [selectedModel, setSelectedModel] = useState('gpt-image-1');
     const [selectedSize, setSelectedSize] = useState('1024x1536');   
     const [selectedQuality, setSelectedQuality] = useState('medium');
     const [userPrompt, setUserPrompt] = useState('');
 
-    const post = posts ? posts.find(p => String(p.id) === String(id)) : null;
+    const post = posts ? posts.find(p => p.bookId == bookId) : null;
 
     const handleCoverUpdate = async () => {
         try {
             const updatedData = {
                 ...post,
-                coverImageUrl: imageUrl
+                coverImgUrl: coverImgUrl
             };
 
-            await onEdit(post.id, updatedData);
-            alert('표지가 업데이트되었습니다.');
-            navigate(`/books/${id}`);
+            const success = await onEdit(post.bookId, updatedData);
+            if (success) {
+                alert('표지가 업데이트되었습니다.');
+                navigate(`/books/${bookId}`);
+                } else {
+                    "서버 저장에 실패하였습니다."
+                    }
+
         } catch(err) {
             console.error(err);
             alert('표지 업데이트에 실패했습니다.');
@@ -43,6 +48,7 @@ export default function AiGenForm({ posts, onEdit }) {
             </div>
         );
     }
+
     const compressDataUrl = (dataUrl, maxWidth = 500, quality = 0.6) => {
         return new Promise((resolve, reject) => {
             const img = new Image();
@@ -72,7 +78,7 @@ export default function AiGenForm({ posts, onEdit }) {
     const handleGeneratePrompt = async () => {
         setIsGenerating(true);
         setGenerateFail(false);
-        setImageUrl('');
+        setCoverImgUrl('');
 
         const prompt = `
             You are a professional concept artist and cinematic book cover designer.
@@ -168,7 +174,7 @@ export default function AiGenForm({ posts, onEdit }) {
             
             const compressedDataUrl = await compressDataUrl(dataUrl, 500, 0.6);
 
-            setImageUrl(compressedDataUrl);
+            setCoverImgUrl(compressedDataUrl);
 
         } catch (err) {
             console.error("이미지 생성 중 최종 에러 발생:", err);
@@ -298,12 +304,12 @@ export default function AiGenForm({ posts, onEdit }) {
             )}
 
             {/* 결과 이미지 영역 */}
-            {imageUrl && (
+            {coverImgUrl && (
                 <div className="ai-result-container">
                     <h3>🖼️ 생성된 이미지</h3>
                     <img
                         className="ai-result-image"
-                        src={imageUrl}
+                        src={coverImgUrl}
                         alt="AI Generated Cover"
                     />
                     <button className="ai-save-btn" onClick={() => handleCoverUpdate()}>
