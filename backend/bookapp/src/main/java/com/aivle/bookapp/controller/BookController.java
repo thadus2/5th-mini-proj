@@ -37,7 +37,6 @@ public class BookController {
 
     @PostMapping("")
     public ResponseEntity<BookCreateResponseDto> createBook(@Valid @RequestBody Book book) {
-        // 서비스가 생성해 준 DTO를 바로 받아서 응답으로 내려줍니다.
         BookCreateResponseDto responseDto = bookService.create(book);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
