@@ -1,6 +1,7 @@
 package com.aivle.bookapp.service;
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.dto.BookCreateResponseDto;
 import com.aivle.bookapp.dto.BookDetailResponseDto;
 import com.aivle.bookapp.exception.BookNotFoundException;
 import com.aivle.bookapp.repository.BookRepository;
@@ -89,9 +90,10 @@ public class BookService {
 
     // 등록
     @Transactional
-    public Book create(Book book) {
+    public BookCreateResponseDto create(Book book) {
+        Book savedBook = bookRepository.save(book);
 
-                return bookRepository.save(book);
+        return BookCreateResponseDto.from(savedBook);
     }
 
     // 수정

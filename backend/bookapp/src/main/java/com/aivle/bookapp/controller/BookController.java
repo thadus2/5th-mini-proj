@@ -1,6 +1,7 @@
 package com.aivle.bookapp.controller;
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.dto.BookCreateResponseDto;
 import com.aivle.bookapp.dto.BookDetailResponseDto;
 import com.aivle.bookapp.dto.BookListResponseDto;
 import com.aivle.bookapp.dto.BookFavoriteResponseDto;
@@ -42,10 +43,10 @@ public class BookController {
 // 등록
 
     @PostMapping("")
-    public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
-        Book saved = bookService.create(book);
+    public ResponseEntity<BookCreateResponseDto> createBook(@Valid @RequestBody Book book) {
+        BookCreateResponseDto responseDto = bookService.create(book);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
 // 수정
@@ -66,7 +67,6 @@ public class BookController {
         );
         return ResponseEntity.ok(responseDto);
     }
-
 
 // 삭제
 
