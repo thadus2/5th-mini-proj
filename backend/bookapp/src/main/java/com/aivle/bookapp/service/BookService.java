@@ -1,12 +1,14 @@
 package com.aivle.bookapp.service;
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.domain.User;
 import com.aivle.bookapp.dto.request.BookCreateRequestDto;
 import com.aivle.bookapp.dto.request.BookUpdateRequestDto;
 import com.aivle.bookapp.dto.response.BookCreateResponseDto;
 import com.aivle.bookapp.dto.response.BookDetailResponseDto;
 import com.aivle.bookapp.exception.BookNotFoundException;
 import com.aivle.bookapp.repository.BookRepository;
+import com.aivle.bookapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,7 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final UserRepository userRepository;
 
     public Book findById(Long id) {
         return bookRepository.findById(id)
@@ -39,8 +42,14 @@ public class BookService {
     }
 
     @Transactional
-    public BookCreateResponseDto create(BookCreateRequestDto dto) {
+    public BookCreateResponseDto create(BookCreateRequestDto dto, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("로그인이 필요합니다."));
+
         Book book = dto.toEntity();
+
+        book.setUser(user);
+
         Book savedBook = bookRepository.save(book);
         return BookCreateResponseDto.from(savedBook);
     }
