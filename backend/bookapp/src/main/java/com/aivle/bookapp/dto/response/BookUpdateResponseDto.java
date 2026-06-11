@@ -1,19 +1,16 @@
-package com.aivle.bookapp.dto;
+package com.aivle.bookapp.dto.response;
 
 import com.aivle.bookapp.domain.Book;
 import lombok.Getter;
 
 @Getter
 public class BookUpdateResponseDto {
-
     private final Long bookId;
     private final String title;
     private final String author;
     private final String content;
     private final String publisher;
     private final Integer price;
-    private final String recentPublished;
-    private final String recentUpdated;
     private final String genre;
     private final String summary;
     private final Integer viewCount;
@@ -27,8 +24,6 @@ public class BookUpdateResponseDto {
         this.content = book.getContent();
         this.publisher = book.getPublisher();
         this.price = book.getPrice();
-        this.recentPublished = book.getRecentPublished();
-        this.recentUpdated = book.getRecentUpdated();
         this.genre = book.getGenre();
         this.summary = book.getSummary();
         this.viewCount = book.getViewCount();

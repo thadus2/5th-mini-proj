@@ -1,4 +1,4 @@
-package com.aivle.bookapp.dto;
+package com.aivle.bookapp.dto.response;
 
 import com.aivle.bookapp.domain.Book;
 import lombok.Builder;
@@ -6,29 +6,26 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class BookDetailResponseDto {
+public class BookCreateResponseDto {
+
     private Long bookId;
     private String title;
     private String author;
-    private String publisher;
     private String genre;
-    private Integer likeCount;
-    private Integer viewCount;
-    private String summary;
+    private String publisher;
     private String content;
+    private String summary;
     private String coverImgUrl;
 
-    public static BookDetailResponseDto from(Book book) {
-        return BookDetailResponseDto.builder()
+    public static BookCreateResponseDto from(Book book) {
+        return BookCreateResponseDto.builder()
                 .bookId(book.getBookId())
                 .title(book.getTitle())
                 .author(book.getAuthor())
-                .publisher(book.getPublisher())
                 .genre(book.getGenre())
-                .likeCount(book.getLikeCount())
-                .viewCount(book.getViewCount())
-                .summary(book.getSummary())
+                .publisher(book.getPublisher())
                 .content(book.getContent())
+                .summary(book.getSummary())
                 .coverImgUrl(book.getCoverImgUrl())
                 .build();
     }
