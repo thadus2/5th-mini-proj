@@ -10,6 +10,7 @@ import BookCreatePage from './pages/BookCreatePage';
 import BookEditPage from './pages/BookEditPage';
 import AICoverGenPage from './pages/AICoverGenPage';
 import MainPage from './pages/MainPage';
+import { BOOK_API } from './apis/api';
 
 export default function App() {
     const [posts, setPosts] = useState([]);
@@ -21,16 +22,16 @@ export default function App() {
     const [selectedGenre, setSelectedGenre] = useState(''); // 선택된 장르 상태
     const [sortBy, setSortBy] = useState('latest');
 
-    const BASE_URL = 'http://localhost:8080/api/v1';
-    const BOOK_API = '/books';
+    // const BASE_URL = 'http://localhost:8080/api/v1';
+    // const BOOK_API = '/books';
 
     useEffect(() => {
-        loadBooks();
+        loadBookInfo();
     }, []);
 
-    const loadBooks = async () => {
+    const loadBookInfo = async () => {
         try {
-            const response = await fetch(`${BASE_URL}${BOOK_API}`);
+            const response = await fetch(`${BOOK_API}`);
             const data = await response.json();
             setPosts(data);
             setLoading(false);
@@ -42,7 +43,7 @@ export default function App() {
 
     const handleAddBook = async (newBook) => {
         try {
-            const res = await fetch(`${BASE_URL}${BOOK_API}`, {
+            const res = await fetch(`${BOOK_API}`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(newBook)
@@ -57,7 +58,7 @@ export default function App() {
 
     const handleDelete = async (id) => {
         try {
-            await fetch(`${BASE_URL}${BOOK_API}/${id}`, { method: 'DELETE' });
+            await fetch(`${BOOK_API}/${id}`, { method: 'DELETE' });
             // books ➡️ posts 로 수정 완료!
             await loadBooks();
             alert('도서 삭제가 완료되었습니다.');
@@ -79,7 +80,7 @@ export default function App() {
         try {
             await Promise.all(
                 selectedIds.map(id => 
-                    fetch(`${BASE_URL}${BOOK_API}/${id}`, { method: 'DELETE' })
+                    fetch(`${BOOK_API}/${id}`, { method: 'DELETE' })
                 )
             );
 
@@ -94,7 +95,7 @@ export default function App() {
     const handleUpdate = async (id, updatedBook) => {
         try {
             const res = await fetch(
-                `${BASE_URL}${BOOK_API}/${id}`,
+                `${BOOK_API}/${id}`,
                 {
                     method: 'PUT',
                     headers: {
@@ -129,7 +130,7 @@ export default function App() {
 
     const handleEdit = async (id, edited) => {
         try {
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}`, {
+            const res = await fetch(`${BOOK_API}/${id}`, {
                 method: 'PATCH',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(edited)
@@ -143,27 +144,26 @@ export default function App() {
         }
     };
 
+    // const handleViewsPlus = async (id) => {
+    //     try {
+    //         const book = posts.find(p => p.bookId === id);
+    //         const res = await fetch(`${BOOK_API}/${id}/views`, {
+    //             method:'PATCH',
+    //             // headers: {'Content-Type': 'application/json'},
+    //         });
 
-    const handleViewsPlus = async (id) => {
-        try {
-            const book = posts.find(p => p.bookId === id);
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/views`, {
-                method:'PATCH',
-                // headers: {'Content-Type': 'application/json'},
-            });
-
-            setPosts(posts.map(p => 
-                p.bookId === id ? { ...p, viewCount: (p.viewCount || 0) + 1}
-                : p));
-        } catch(err) {
-            console.error(err);
-        }
-    };
+    //         setPosts(posts.map(p => 
+    //             p.bookId === id ? { ...p, viewCount: (p.viewCount || 0) + 1}
+    //             : p));
+    //     } catch(err) {
+    //         console.error(err);
+    //     }
+    // };
 
 const handleLikesToggle = async (id, isLiked) => {
         try {
             const book = posts.find(p => p.bookId == id);
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/likes?isLiked=${isLiked}`, {
+            const res = await fetch(`${BOOK_API}/${id}/likes?isLiked=${isLiked}`, {
                 method:'PATCH',
                 headers: {'Content-Type': 'application/json'},
             });
@@ -262,8 +262,6 @@ const handleLikesToggle = async (id, isLiked) => {
                 } />
                 <Route path="/books/:bookId" element={
                         <BookDetail 
-                            posts={posts}
-                            onViewsPlus={handleViewsPlus}
                             onDelete={handleDelete}
                             onLikesToggle={handleLikesToggle}
                         /> 

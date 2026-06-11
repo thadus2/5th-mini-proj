@@ -1,25 +1,62 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import defaultImg from '../../../assets/images/default-background.png';
 import FavoriteIcon from '../../../assets/images/favorite-icon.png';
 import ViewIcon from '../../../assets/images/view-icon.png';
 import './style.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { BOOK_API } from '../../../apis/api';
 
-export default function BookDetail({ posts, onViewsPlus, onDelete, onLikesToggle }) {
+export default function BookDetail({ onDelete, onLikesToggle }) {
     const location = useLocation();
     const navigate = useNavigate();
+    const [post, setPost] = useState();
 
     const { bookId } = useParams();
 
-    const post = posts.find(p => p.bookId == bookId)
-    
+    // const post = posts.find(p => p.bookId == bookId)
+
     const [isLiked, setIsLiked] = useState(false);
 
+    const isViewIncremented = useRef(false);
+
     useEffect(() => {
-        if (post) {
-        onViewsPlus(post.bookId);
+        loadBook();
+    }, []);
+
+    const handleViewsPlus = async (id) => {
+        try {
+            const res = await fetch(`${BOOK_API}/${id}/views`, {
+                method:'PATCH',
+                // headers: {'Content-Type': 'application/json'},
+            });
+            if (res.ok) {
+                setPost(prev => {
+                    if (!prev) return prev;
+                    return {
+                        ...prev,
+                        viewCount: (prev.viewCount || 0) + 1
+                    };
+                });
+            }
+        } catch(err) {
+            console.error(err);
         }
-    }, [bookId]);
+    };
+
+    const loadBook = async () => {
+        try {
+            const response = await fetch(`${BOOK_API}/${bookId}`);
+            const data = await response.json();
+            setPost(data);
+
+            if (!isViewIncremented.current) {
+                isViewIncremented.current = true;
+                await handleViewsPlus(bookId);
+            }
+        } catch (error) {
+            console.error("데이터 로딩 실패:", error);
+        }
+    };
 
     const handleLikeClick = () => {
         const nextState = !isLiked;
