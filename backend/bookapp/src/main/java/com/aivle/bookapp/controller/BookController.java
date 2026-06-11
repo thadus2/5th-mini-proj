@@ -1,6 +1,7 @@
 package com.aivle.bookapp.controller;
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.dto.BookCreateResponseDto;
 import com.aivle.bookapp.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +36,10 @@ public class BookController {
 // 등록
 
     @PostMapping("")
-    public ResponseEntity<Book> createBook(@Valid @RequestBody Book book) {
+    public ResponseEntity<BookCreateResponseDto> createBook(@Valid @RequestBody Book book) {
         Book saved = bookService.create(book);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(BookCreateResponseDto.from(saved));
     }
 
 // 수정
