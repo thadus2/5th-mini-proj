@@ -12,6 +12,8 @@ import MainPage from './pages/MainPage';
 import { BOOK_API } from './apis/api';
 import NotFoundPage from './pages/NotFoundPage';
 import Toast from './components/Books/Toast';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
 
 export default function App() {
     const [posts, setPosts] = useState([]);
@@ -516,6 +518,16 @@ export default function App() {
                                     />
                                 </BookRouteGuard>
                             }
+                        />
+
+                        <Route 
+                            path='/sign-in'
+                            element={<SignInPage />}
+                        />
+
+                        <Route 
+                            path='/sign-up'
+                            element={<SignUpPage />}
                         />
 
                         <Route path="*" element={<NotFoundPage />} />

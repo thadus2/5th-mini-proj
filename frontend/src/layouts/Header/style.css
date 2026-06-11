@@ -1,7 +1,3 @@
-/* =========================================
-   Header - Professional Book Service
-========================================= */
-
 .header {
     position: sticky;
     top: 0;
@@ -67,7 +63,7 @@
 }
 
 .header-login-btn,
-.header-signup-btn {
+.header-logout-btn {
     height: 40px;
     padding: 0 17px;
 
@@ -92,13 +88,15 @@
         color 0.2s ease;
 }
 
-.header-login-btn {
+.header-login-btn,
+.header-logout-btn {
     border: 1px solid rgba(86, 71, 99, 0.14);
     background: rgba(255, 255, 255, 0.72);
     color: #4f4358;
 }
 
-.header-login-btn:hover {
+.header-login-btn:hover,
+.header-logout-btn:hover {
     transform: translateY(-1px);
     background: #ffffff;
     border-color: rgba(86, 71, 99, 0.24);
@@ -117,10 +115,6 @@
     background: #50415d;
     box-shadow: 0 14px 26px rgba(92, 76, 105, 0.26);
 }
-
-/* =========================================
-   Responsive
-========================================= */
 
 @media (max-width: 960px) {
     .header {
