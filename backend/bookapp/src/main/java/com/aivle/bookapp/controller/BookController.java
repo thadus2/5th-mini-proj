@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/books")
@@ -69,5 +70,15 @@ public class BookController {
     public ResponseEntity<Void> increaseViewCount(@PathVariable Long id) {
         bookService.increaseViewCount(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/{id}/cover-img")
+    public ResponseEntity<Book> updateCoverImage(
+            @PathVariable Long id, @RequestBody Map<String, String> request) {
+
+        String pureUrl = request.get("coverImgUrl");
+        Book updatedBook = bookService.updateCoverImage(id, pureUrl);
+
+        return ResponseEntity.ok(updatedBook);
     }
 }

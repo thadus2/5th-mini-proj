@@ -164,4 +164,12 @@ public class BookService {
 
         book.setViewCount(book.getViewCount() + 1);
     }
+
+    @Transactional
+    public Book updateCoverImage(Long id, String coverImgUrl) {
+        Book book = findById(id);
+        book.setCoverImgUrl(coverImgUrl);
+
+        return book;
+    }
 }
