@@ -2,6 +2,7 @@ package com.aivle.bookapp.service;
 
 import com.aivle.bookapp.domain.Book;
 import com.aivle.bookapp.dto.BookCreateResponseDto;
+import com.aivle.bookapp.dto.BookDetailResponseDto;
 import com.aivle.bookapp.exception.BookNotFoundException;
 import com.aivle.bookapp.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +24,19 @@ public class BookService {
     public Book findById(Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new BookNotFoundException(id));
+    }
+
+    // [추가] 상세 조회 API용: DTO 반환
+    public BookDetailResponseDto getBookDetail(Long id) {
+        Book book = findById(id);
+        return BookDetailResponseDto.from(book);
+    }
+
+    // [추가] 전체 목록 조회 API용: DTO 리스트 반환
+    public List<BookDetailResponseDto> getAllBooks() {
+        return bookRepository.findAll().stream()
+                .map(BookDetailResponseDto::from)
+                .collect(Collectors.toList());
     }
 
     // 전체 조회 + 검색
@@ -102,7 +117,7 @@ public class BookService {
         if (book.getGenre() != null && !book.getGenre().isBlank()) {
             existing.setGenre(book.getGenre());
         }
-      
+
         if (book.getSummary() != null) {
             existing.setSummary(book.getSummary());
         }
