@@ -11,7 +11,7 @@ VALUES (
            '화성에서 감자 키우며 살아남기',
            142,
            35,
-           'https://example.com/covers/martian.jpg'
+           'https://upload.wikimedia.org/wikipedia/ko/thumb/0/0f/%EB%A7%88%EC%85%98.jpg/250px-%EB%A7%88%EC%85%98.jpg'
        );
 
 INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
@@ -27,7 +27,7 @@ VALUES (
            '전 세계인을 울린 감동의 성장 소설',
            98,
            24,
-           'https://example.com/covers/orange_tree.jpg'
+           'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9788972976189.jpg'
        );
 
 INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
@@ -43,7 +43,7 @@ VALUES (
            '한국 판타지 소설의 전설적인 명작',
            310,
            85,
-           'https://example.com/covers/dragon_raja.jpg'
+           'https://i.namu.wiki/i/37RTnc5BioH_vlgg3CM9akwfTGM4qCZyz7I_bGRhqYY8V8RJ4beMJ5oFhgtAUsFyfg04Nw0OvhhOM3BNXjfYlA.webp'
        );
 
 INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
@@ -59,7 +59,7 @@ VALUES (
            '호그와트 마법 세계로의 첫걸음',
            520,
            190,
-           'https://example.com/covers/harrypotter.jpg'
+           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791193790403.jpg'
        );
 
 INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
@@ -75,7 +75,7 @@ VALUES (
            '유품정리사가 남긴 삶과 죽음의 기록',
            75,
            18,
-           'https://example.com/covers/left_things.jpg'
+           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788935210381.jpg'
        );
 
 INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
@@ -91,5 +91,5 @@ VALUES (
            '돈과 자산에 대한 패러다임을 바꾸는 책',
            410,
            112,
-           'https://example.com/covers/rich_dad.jpg'
+           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788982732362.jpg'
        );
