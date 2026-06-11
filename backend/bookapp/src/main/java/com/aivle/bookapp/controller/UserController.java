@@ -34,13 +34,12 @@ public class UserController {
     @PostMapping("/sign-in")
     public ResponseEntity<Map<String, Object>> signIn(@RequestBody Map<String, String> request) {
 
-        // 서비스 호출
-        User loginUser = userService.signin(request.get("loginId"), request.get("password"));
+        String accessToken = userService.signin(request.get("loginId"), request.get("password"));
 
-        // 명세서 규격에 맞게 반환할 JSON 데이터를 Map으로 생성
+        // 2. 표준 명세 규격에 맞게 프론트엔드에 전달할 JSON 데이터 구성
         Map<String, Object> response = new HashMap<>();
-        response.put("userId", loginUser.getUserId());
-        response.put("nickname", loginUser.getNickName());
+        response.put("grantType", "Bearer"); // 토큰 타입 명시
+        response.put("accessToken", accessToken); // 발급된 JWT 토큰
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

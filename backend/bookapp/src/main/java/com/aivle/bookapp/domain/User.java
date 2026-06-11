@@ -48,4 +48,8 @@ public class User {
     @Column(nullable = false)
     @NotBlank
     private String address;
+
+    @Lob
+    @Column(columnDefinition = "LONGTEXT")
+    private String userProfileImage;
 }
