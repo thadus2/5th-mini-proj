@@ -1,6 +1,7 @@
 package com.aivle.bookapp.controller;
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.dto.BookUpdateResponseDto;
 import com.aivle.bookapp.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +45,10 @@ public class BookController {
 // 수정
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
+    public ResponseEntity<BookUpdateResponseDto> updateBook(@PathVariable Long id, @RequestBody Book book) {
         Book updated = bookService.update(id, book);
 
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(new BookUpdateResponseDto(updated));
     }
 
     @PatchMapping("/{id}/likes")
