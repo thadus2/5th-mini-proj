@@ -4,8 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -60,6 +63,30 @@ public class GlobalExceptionHandler {
         Map<String, String> body = Map.of(
                 "error", "Bad Request",
                 "message", "필수 입력 값(viewCount/likeCount 등)이 누락되어 데이터 무결성 제약조건을 위반했습니다." );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    //0611수정
+    //argument type 맞지 않을 때
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<Map<String, String>> handleTypeMismatch(MethodArgumentTypeMismatchException e) {
+        Map<String, String> body = Map.of(
+                "error", "Bad Request",
+                "message", "요청 파라미터 타입이 올바르지 않습니다. id는 숫자여야 합니다."
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
+    //0611수정
+    //isLiked 누락
+    @ExceptionHandler(ServletRequestBindingException.class)
+    public ResponseEntity<Map<String, String>> handleServletRequestBinding(ServletRequestBindingException e) {
+        Map<String, String> body = Map.of(
+                "error", "Bad Request",
+                "message", "요청 파라미터가 누락되었거나 올바르지 않습니다."
+        );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
