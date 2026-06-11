@@ -1,28 +1,29 @@
-//Navigator.jsx
-import { useLocation, useNavigate } from "react-router-dom";
-import "./style.css";
+// Navigator.jsx
+import { useLocation, useNavigate } from 'react-router-dom';
+import { BookOpen, Plus } from 'lucide-react';
+import './style.css';
 
 export default function Navigator() {
   const location = useLocation();
-
-  const navigator = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <nav className="navigator">
-
       <ul className="nav-menu">
-
-        <li 
-            className={`nav-item ${location.pathname === '/books' ? 'active' : ''}`}
-            onClick={() => navigator('/books')}
+        <li
+          className={`nav-item ${location.pathname === '/books' ? 'active' : ''}`}
+          onClick={() => navigate('/books')}
         >
-          📚 도서 목록
+          <BookOpen size={15} strokeWidth={2.2} />
+          <span>도서 목록</span>
         </li>
-        <li 
-            className={`nav-item ${location.pathname === '/create' ? 'active' : ''}`}
-            onClick={() => navigator('/create')}
+
+        <li
+          className={`nav-item ${location.pathname === '/create' ? 'active' : ''}`}
+          onClick={() => navigate('/create')}
         >
-          ➕ 도서 등록
+          <Plus size={16} strokeWidth={2.4} />
+          <span>도서 등록</span>
         </li>
       </ul>
     </nav>

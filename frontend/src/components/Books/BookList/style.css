@@ -1,9 +1,66 @@
+/* =========================================
+   BookList - Professional Library Grid
+========================================= */
+
 .book-list-container {
-  display: flex;         /* 자식(카드)들을 가로로 나란히 배치 */
-  flex-wrap: wrap;       /* 화면 공간이 모자라면 자동으로 다음 줄로 넘김 */
-  justify-content: flex-start; /* 카드들을 왼쪽부터 차곡차곡 채움 */
-  max-width: 960px;      /* 280px 카드 3개 + 여백(margin)을 고려한 적절한 전체 폭 */
-  margin: 0 auto 50px;        /* 화면 중앙 정렬 */
-  padding: 20px;
+    width: min(var(--site-max-width), calc(100% - var(--site-padding-desktop)));
+    margin: 0 auto;
+    padding: 8px 0 90px;
+
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 270px));
+    justify-content: center;
+    gap: 36px 32px;
 }
 
+.book-list-container > p {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-height: 280px;
+    margin: 0;
+    padding: 56px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--color-text-muted);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid var(--color-border);
+    border-radius: 26px;
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(14px);
+}
+
+.book-list-container:has(.book-card:only-child) {
+    padding-top: 28px;
+}
+
+@media (max-width: 960px) {
+    .book-list-container {
+        width: calc(100% - var(--site-padding-tablet));
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 30px 24px;
+        padding-bottom: 76px;
+    }
+}
+
+@media (max-width: 640px) {
+    .book-list-container {
+        width: calc(100% - var(--site-padding-mobile));
+        grid-template-columns: 1fr;
+        gap: 22px;
+        padding-bottom: 68px;
+    }
+
+    .book-list-container > p {
+        min-height: 220px;
+        padding: 42px 20px;
+        border-radius: 22px;
+        font-size: 15px;
+    }
+}

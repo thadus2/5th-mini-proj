@@ -1,23 +1,36 @@
-/*Layout.css*/
+html,
+body,
+#root {
+    min-height: 100%;
+    margin: 0;
+}
+
+body {
+    color: #3f3544;
+    background:
+        radial-gradient(circle at 8% 8%, rgba(130, 104, 150, 0.08), transparent 30%),
+        radial-gradient(circle at 92% 88%, rgba(201, 167, 122, 0.11), transparent 34%),
+        linear-gradient(135deg, #faf8f4 0%, #f4f0ea 100%);
+}
 
 .layout-wrapper {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background-color: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at 8% 8%, rgba(130, 104, 150, 0.08), transparent 30%),
+        radial-gradient(circle at 92% 88%, rgba(201, 167, 122, 0.11), transparent 34%),
+        linear-gradient(135deg, #faf8f4 0%, #f4f0ea 100%);
 }
 
 .layout-body {
-  display: flex;
-  flex: 1;
-  padding-top: 60px; 
+    flex: 1;
+    width: 100%;
 }
 
 .layout-content {
-  flex: 1;
-  /* ⭐ 중요: 사이드바가 사라졌으므로 margin-left: 240px; 구문을 제거하거나 0으로 만듭니다. */
-  margin-left: 0; 
-  padding: 30px;
-  box-sizing: border-box;
-  padding-bottom: 60px; 
+    flex: 1;
+    width: 100%;
+    min-height: calc(100vh - 90px);
+    box-sizing: border-box;
 }
