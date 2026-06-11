@@ -9,6 +9,7 @@ import BookCreatePage from './pages/BookCreatePage';
 import BookEditPage from './pages/BookEditPage';
 import AICoverGenPage from './pages/AICoverGenPage';
 import MainPage from './pages/MainPage';
+import { BOOK_API } from './apis/api';
 import NotFoundPage from './pages/NotFoundPage';
 import Toast from './components/Books/Toast';
 
@@ -46,11 +47,8 @@ export default function App() {
         { label: '조회수순', value: 'views' }
     ];
 
-    const BASE_URL = 'http://localhost:8080/api/v1';
-    const BOOK_API = '/books';
-
     useEffect(() => {
-        loadBooks();
+        loadBookList();
     }, []);
 
     const showToast = (message, type = 'success') => {
@@ -104,9 +102,9 @@ export default function App() {
         return baseMessage;
     };
 
-    const loadBooks = async () => {
+    const loadBookList = async () => {
         try {
-            const response = await fetch(`${BASE_URL}${BOOK_API}`);
+            const response = await fetch(`${BOOK_API}`);
             const data = await response.json();
 
             setPosts(data);
@@ -120,7 +118,7 @@ export default function App() {
 
     const handleAddBook = async (newBook) => {
         try {
-            const res = await fetch(`${BASE_URL}${BOOK_API}`, {
+            const res = await fetch(`${BOOK_API}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newBook)
@@ -162,7 +160,7 @@ export default function App() {
 
     const handleDelete = async (id) => {
         try {
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}`, {
+            const res = await fetch(`${BOOK_API}/${id}`, {
                 method: 'DELETE'
             });
 
@@ -171,7 +169,7 @@ export default function App() {
                 return false;
             }
 
-            await loadBooks();
+            await loadBookList();
 
             showToast('도서 삭제가 완료되었습니다.', 'success');
             return true;
@@ -193,8 +191,8 @@ export default function App() {
 
         try {
             await Promise.all(
-                selectedIds.map(id =>
-                    fetch(`${BASE_URL}${BOOK_API}/${id}`, { method: 'DELETE' })
+                selectedIds.map(id => 
+                    fetch(`${BOOK_API}/${id}`, { method: 'DELETE' })
                 )
             );
 
@@ -203,7 +201,7 @@ export default function App() {
 
             showToast('선택한 도서가 삭제되었습니다.', 'success');
 
-            await loadBooks();
+            await loadBookList();
         } catch (err) {
             console.error('삭제 실패:', err);
 
@@ -213,7 +211,7 @@ export default function App() {
 
     const handleEdit = async (id, edited) => {
         try {
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}`, {
+            const res = await fetch(`${BOOK_API}/${id}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(edited)
@@ -251,31 +249,21 @@ export default function App() {
         }
     };
 
-    const handleViewsPlus = async (id) => {
-        const viewedKey = `viewed-book-${id}`;
+    // const handleViewsPlus = async (id) => {
+    //     try {
+    //         const book = posts.find(p => p.bookId === id);
+    //         const res = await fetch(`${BOOK_API}/${id}/views`, {
+    //             method:'PATCH',
+    //             // headers: {'Content-Type': 'application/json'},
+    //         });
 
-        if (sessionStorage.getItem(viewedKey)) {
-            return;
-        }
-
-        try {
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/views`, {
-                method: 'PATCH',
-            });
-
-            if (!res.ok) {
-                return;
-            }
-
-            sessionStorage.setItem(viewedKey, 'true');
-
-            setPosts(posts.map(p =>
-                p.bookId === id ? { ...p, viewCount: (p.viewCount || 0) + 1 } : p
-            ));
-        } catch (err) {
-            console.error(err);
-        }
-    };
+    //         setPosts(posts.map(p => 
+    //             p.bookId === id ? { ...p, viewCount: (p.viewCount || 0) + 1}
+    //             : p));
+    //     } catch(err) {
+    //         console.error(err);
+    //     }
+    // };
 
     const handleLikesToggle = async (id) => {
         const likedKey = `liked-book-${id}`;
@@ -283,7 +271,7 @@ export default function App() {
         const nextLiked = !alreadyLiked;
 
         try {
-            const res = await fetch(`${BASE_URL}${BOOK_API}/${id}/likes?isLiked=${nextLiked}`, {
+            const res = await fetch(`${BOOK_API}/${id}/likes?isLiked=${nextLiked}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
             });
@@ -495,7 +483,6 @@ export default function App() {
                             <BookRouteGuard>
                                 <BookDetail
                                     posts={posts}
-                                    onViewsPlus={handleViewsPlus}
                                     onDelete={handleDelete}
                                     onLikesToggle={handleLikesToggle}
                                 />

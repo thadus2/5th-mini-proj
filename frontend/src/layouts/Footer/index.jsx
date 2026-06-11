@@ -5,7 +5,7 @@ function Footer() {
   return (
     <footer className="footer">
       <p className="footer-text">
-        © 2026 4차 미니 프로젝트 AI 7반 18조. All rights reserved.
+        © 2026 4-5차 미니 프로젝트 AI 7반 18조. All rights reserved.
       </p>
       <p>
 
