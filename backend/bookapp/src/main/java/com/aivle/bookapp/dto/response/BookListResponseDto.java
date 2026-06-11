@@ -1,4 +1,4 @@
-package com.aivle.bookapp.dto;
+package com.aivle.bookapp.dto.response;
 
 import com.aivle.bookapp.domain.Book;
 import lombok.AllArgsConstructor;
