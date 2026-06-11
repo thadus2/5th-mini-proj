@@ -10,11 +10,13 @@ public class BookFavoriteResponseDto {
 
     private Long bookId;
     private Integer likeCount;
+    private Boolean isLiked;
 
-    public static BookFavoriteResponseDto from(Book book) {
+    public static BookFavoriteResponseDto from(Book book, boolean isLiked) {
         return new BookFavoriteResponseDto(
                 book.getBookId(),
-                book.getLikeCount()
+                book.getLikeCount(),
+                isLiked
         );
     }
 }

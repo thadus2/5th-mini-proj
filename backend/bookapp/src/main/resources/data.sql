@@ -1,4 +1,16 @@
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
+-- 1번 유저 (아이디: testuser1)
+INSERT INTO users (login_id, password, name, nick_name, age, email, address)
+VALUES ('testuser1', '$2a$10$gM8A9f0jKFgrk1G/WjvlQul8Rgb5RNnk0W1/hwvs61MRBYd6oMIrm', '홍길동', '길동이', 26, 'test1@aivle.com', '충청북도 진천군');
+
+-- 2번 유저 (아이디: testuser2)
+INSERT INTO users (login_id, password, name, nick_name, age, email, address)
+VALUES ('testuser2', '$2a$10$gM8A9f0jKFgrk1G/WjvlQul8Rgb5RNnk0W1/hwvs61MRBYd6oMIrm', '성춘향', '춘향이', 24, 'test2@aivle.com', '전라북도 남원시');
+
+-- 3번 유저 (아이디: testuser3)
+INSERT INTO users (login_id, password, name, nick_name, age, email, address)
+VALUES ('testuser3', '$2a$10$gM8A9f0jKFgrk1G/WjvlQul8Rgb5RNnk0W1/hwvs61MRBYd6oMIrm', '이몽룡', '몽룡이', 26, 'test3@aivle.com', '서울특별시 종로구');
+
+INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
 VALUES (
            '마션',
            '앤디 위어',
@@ -11,10 +23,11 @@ VALUES (
            '화성에서 감자 키우며 살아남기',
            142,
            35,
-           'https://upload.wikimedia.org/wikipedia/ko/thumb/0/0f/%EB%A7%88%EC%85%98.jpg/250px-%EB%A7%88%EC%85%98.jpg'
+           'https://upload.wikimedia.org/wikipedia/ko/thumb/0/0f/%EB%A7%88%EC%85%98.jpg/250px-%EB%A7%88%EC%85%98.jpg',
+           1 -- ◀ 1번 유저(홍길동)가 작성함
        );
 
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
+INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
 VALUES (
            '나의 라임오렌지나무',
            '조제 마우루 데 바스콘셀루스',
@@ -27,10 +40,11 @@ VALUES (
            '전 세계인을 울린 감동의 성장 소설',
            98,
            24,
-           'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9788972976189.jpg'
+           'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9788972976189.jpg',
+           1 -- ◀ 1번 유저(홍길동)가 작성함
        );
 
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
+INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
 VALUES (
            '드래곤 라자',
            '이영도',
@@ -43,10 +57,11 @@ VALUES (
            '한국 판타지 소설의 전설적인 명작',
            310,
            85,
-           'https://i.namu.wiki/i/37RTnc5BioH_vlgg3CM9akwfTGM4qCZyz7I_bGRhqYY8V8RJ4beMJ5oFhgtAUsFyfg04Nw0OvhhOM3BNXjfYlA.webp'
+           'https://i.namu.wiki/i/37RTnc5BioH_vlgg3CM9akwfTGM4qCZyz7I_bGRhqYY8V8RJ4beMJ5oFhgtAUsFyfg04Nw0OvhhOM3BNXjfYlA.webp',
+           1 -- ◀ 1번 유저(홍길동)가 작성함
        );
 
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
+INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
 VALUES (
            '해리 포터와 마법사의 돌',
            'J.K. 롤링',
@@ -59,10 +74,11 @@ VALUES (
            '호그와트 마법 세계로의 첫걸음',
            520,
            190,
-           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791193790403.jpg'
+           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791193790403.jpg',
+           2 -- ◀ 2번 유저(성춘향)가 작성함
        );
 
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
+INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
 VALUES (
            '떠난 후에 남겨진 것들',
            '김새별',
@@ -75,10 +91,11 @@ VALUES (
            '유품정리사가 남긴 삶과 죽음의 기록',
            75,
            18,
-           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788935210381.jpg'
+           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788935210381.jpg',
+           2 -- ◀ 2번 유저(성춘향)가 작성함
        );
 
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url)
+INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
 VALUES (
            '부자 아빠 가난한 아빠',
            '로버트 기요사키',
@@ -91,5 +108,6 @@ VALUES (
            '돈과 자산에 대한 패러다임을 바꾸는 책',
            410,
            112,
-           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788982732362.jpg'
+           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788982732362.jpg',
+           2 -- ◀ 2번 유저(성춘향)가 작성함
        );

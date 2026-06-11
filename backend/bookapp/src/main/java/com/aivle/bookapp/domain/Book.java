@@ -57,4 +57,10 @@ public class Book {
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String coverImgUrl;
+
+    // FK
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }
