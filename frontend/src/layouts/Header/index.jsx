@@ -1,12 +1,29 @@
 // Header.jsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './style.css';
 import Navigator from '../Navigator';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LogoIcon from '../assets/image/logo.png';
+import { deleteCookie, getCookie } from '../../utils/cookie';
 
-function Header() {
+export default function Header() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  useEffect(() => {
+        const token = getCookie('accessToken');
+        setIsLoggedIn(!!token);
+    }, [location]);
+
+    const handleLogout = () => {
+        deleteCookie('accessToken');
+        setIsLoggedIn(false);
+        alert('로그아웃 되었습니다.');
+        navigate('/sign-in');
+    };
 
   return (
     <header className="header">
@@ -19,17 +36,17 @@ function Header() {
         <Navigator />
 
         <div className="header-right">
-          <button type="button" className="header-login-btn">
-            로그인
-          </button>
-
-          <button type="button" className="header-signup-btn">
-            회원가입
-          </button>
+          {isLoggedIn ? (
+            <button type="button" className="header-logout-btn" onClick={() => navigate('/my-page')}>
+              마이페이지
+            </button>
+          ) : (
+            <button type="button" className="header-login-btn" onClick={() => navigate('/sign-in')}>
+              로그인
+            </button>
+          )}
         </div>
       </div>
     </header>
   );
 }
-
-export default Header;
