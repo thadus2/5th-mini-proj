@@ -3,6 +3,7 @@ package com.aivle.bookapp.controller;
 import com.aivle.bookapp.domain.Book;
 import com.aivle.bookapp.dto.BookDetailResponseDto;
 import com.aivle.bookapp.dto.BookListResponseDto;
+import com.aivle.bookapp.dto.BookFavoriteResponseDto;
 import com.aivle.bookapp.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -57,9 +58,13 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/likes")
-    public ResponseEntity<Book> toggleLike(@PathVariable Long id, @RequestParam boolean isLiked) {
-        Book updated = bookService.changeLikeCount(id, isLiked);
-        return ResponseEntity.ok(updated);
+    public ResponseEntity<BookFavoriteResponseDto> toggleLike(@PathVariable Long id, @RequestParam boolean isLiked) {
+        Book updatedBook = bookService.changeLikeCount(id, isLiked);
+        BookFavoriteResponseDto responseDto = new BookFavoriteResponseDto(
+                updatedBook.getBookId(),
+                updatedBook.getLikeCount()
+        );
+        return ResponseEntity.ok(responseDto);
     }
 
 
