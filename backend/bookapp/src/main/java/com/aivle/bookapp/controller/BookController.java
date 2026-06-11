@@ -1,6 +1,7 @@
 package com.aivle.bookapp.controller;
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.dto.BookDetailResponseDto;
 import com.aivle.bookapp.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +22,15 @@ public class BookController {
 // 전체 조회 + 검색
 
     @GetMapping("")
-    public ResponseEntity<List<Book>> getBooks(@RequestParam(required = false) String keyword) {
-        return ResponseEntity.ok(bookService.getBooks(keyword));
+    public ResponseEntity<List<BookDetailResponseDto>> getAllBooks() {
+        return ResponseEntity.ok(bookService.getAllBooks());
     }
 
 // 단건 조회
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.findById(id));
+    public ResponseEntity<BookDetailResponseDto> getBookDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(bookService.getBookDetail(id));
     }
 
 // 등록
