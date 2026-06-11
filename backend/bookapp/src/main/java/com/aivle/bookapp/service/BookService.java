@@ -1,6 +1,7 @@
 package com.aivle.bookapp.service;
 
 import com.aivle.bookapp.domain.Book;
+import com.aivle.bookapp.dto.BookCreateResponseDto;
 import com.aivle.bookapp.exception.BookNotFoundException;
 import com.aivle.bookapp.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -74,9 +75,12 @@ public class BookService {
 
     // 등록
     @Transactional
-    public Book create(Book book) {
+    public BookCreateResponseDto create(Book book) {
+        // 1. 기존처럼 엔티티를 DB에 저장합니다.
+        Book savedBook = bookRepository.save(book);
 
-                return bookRepository.save(book);
+        // 2. 저장된 엔티티를 DTO로 변환해서 반환합니다. 💡
+        return BookCreateResponseDto.from(savedBook);
     }
 
     // 수정

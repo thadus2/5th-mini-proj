@@ -37,9 +37,10 @@ public class BookController {
 
     @PostMapping("")
     public ResponseEntity<BookCreateResponseDto> createBook(@Valid @RequestBody Book book) {
-        Book saved = bookService.create(book);
+        // 서비스가 생성해 준 DTO를 바로 받아서 응답으로 내려줍니다.
+        BookCreateResponseDto responseDto = bookService.create(book);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(BookCreateResponseDto.from(saved));
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
 // 수정
@@ -56,7 +57,6 @@ public class BookController {
         Book updated = bookService.changeLikeCount(id, isLiked);
         return ResponseEntity.ok(updated);
     }
-
 
 // 삭제
 
