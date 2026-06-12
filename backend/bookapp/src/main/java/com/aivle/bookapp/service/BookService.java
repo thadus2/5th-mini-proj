@@ -12,7 +12,6 @@ import com.aivle.bookapp.repository.BookRepository;
 import com.aivle.bookapp.repository.FavoriteRepository;
 import com.aivle.bookapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +44,10 @@ public class BookService {
         return bookRepository.findByTitleContainingOrAuthorContaining(keyword, keyword);
     }
 
+    public List<Book> getMyBooks(Long userId) {
+        return bookRepository.findByUser_UserIdOrderByBookIdDesc(userId);
+    }
+
     @Transactional
     public BookCreateResponseDto create(BookCreateRequestDto dto, Long userId) {
         User user = userRepository.findById(userId)
@@ -59,12 +62,13 @@ public class BookService {
     }
 
     @Transactional
-    public Book update(Long id, BookUpdateRequestDto dto, Long userId) { // ◀ userId 매개변수 추가!
+    public Book update(Long id, BookUpdateRequestDto dto, Long userId) {
         Book existing = findById(id);
 
         if (existing.getUser() == null) {
             throw new IllegalStateException("작성자 정보가 없습니다.");
         }
+
         if (!existing.getUser().getUserId().equals(userId)) {
             throw new IllegalArgumentException("본인이 작성한 글만 수정할 수 있습니다.");
         }
@@ -72,24 +76,31 @@ public class BookService {
         if (dto.getTitle() != null && !dto.getTitle().isBlank()) {
             existing.setTitle(dto.getTitle());
         }
+
         if (dto.getAuthor() != null && !dto.getAuthor().isBlank()) {
             existing.setAuthor(dto.getAuthor());
         }
+
         if (dto.getContent() != null && !dto.getContent().isBlank()) {
             existing.setContent(dto.getContent());
         }
+
         if (dto.getGenre() != null && !dto.getGenre().isBlank()) {
             existing.setGenre(dto.getGenre());
         }
+
         if (dto.getSummary() != null) {
             existing.setSummary(dto.getSummary());
         }
+
         if (dto.getPublisher() != null) {
             existing.setPublisher(dto.getPublisher());
         }
+
         if (dto.getCoverImgUrl() != null) {
             existing.setCoverImgUrl(dto.getCoverImgUrl());
         }
+
         if (dto.getPrice() != null) {
             existing.setPrice(dto.getPrice());
         }
@@ -100,6 +111,7 @@ public class BookService {
     @Transactional
     public boolean toggleLike(Long bookId, Long userId) {
         Book book = findById(bookId);
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
 
@@ -107,14 +119,17 @@ public class BookService {
 
         if (favoriteOpt.isPresent()) {
             favoriteRepository.delete(favoriteOpt.get());
+
             if (book.getLikeCount() > 0) {
                 book.setLikeCount(book.getLikeCount() - 1);
             }
+
             return false;
         } else {
             Favorite favorite = new Favorite(user, book);
             favoriteRepository.save(favorite);
             book.setLikeCount(book.getLikeCount() + 1);
+
             return true;
         }
     }

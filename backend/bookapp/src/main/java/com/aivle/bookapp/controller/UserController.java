@@ -3,13 +3,12 @@ package com.aivle.bookapp.controller;
 import com.aivle.bookapp.config.jwt.JwtTokenProvider;
 import com.aivle.bookapp.domain.User;
 import com.aivle.bookapp.dto.request.PasswordChangeRequestDto;
-
 import com.aivle.bookapp.dto.request.UserInfoResponseDto;
+import com.aivle.bookapp.dto.request.UserUpdateRequestDto;
 import com.aivle.bookapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -42,31 +41,44 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    // 3. 회원 정보 수정 API (PUT)
-    @PutMapping("/user")
-    public ResponseEntity<User> updateUser(
-            @RequestHeader("Authorization") String tokenHeader,
-            @RequestBody User userRequest) {
-
-        // "Bearer " 접두사를 제거하고 순수 JWT 토큰만 추출하여 userId를 꺼냅니다.
+    // 3. 내 정보 조회
+    @GetMapping("/me")
+    public ResponseEntity<UserInfoResponseDto> getMyInfo(
+            @RequestHeader("Authorization") String tokenHeader
+    ) {
         Long userId = extractUserIdFromHeader(tokenHeader);
 
-        // 서비스의 정보 수정 로직을 호출합니다.
-        User updatedUser = userService.updateUser(userId, userRequest);
+        User user = userService.findById(userId);
 
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(new UserInfoResponseDto(user));
     }
 
-    // 4. 비밀번호 변경 API (PATCH)
+    // 4. 회원 정보 수정
+    @PutMapping("/user")
+    public ResponseEntity<UserInfoResponseDto> updateUser(
+            @RequestHeader("Authorization") String tokenHeader,
+            @RequestBody UserUpdateRequestDto request
+    ) {
+        Long userId = extractUserIdFromHeader(tokenHeader);
+
+        User updatedUser = userService.updateUser(userId, request);
+
+        return ResponseEntity.ok(new UserInfoResponseDto(updatedUser));
+    }
+
+    // 5. 비밀번호 변경
     @PatchMapping("/user/password")
     public ResponseEntity<Map<String, String>> changePassword(
             @RequestHeader("Authorization") String tokenHeader,
-            @RequestBody PasswordChangeRequestDto passwordDto) {
-
+            @RequestBody PasswordChangeRequestDto passwordDto
+    ) {
         Long userId = extractUserIdFromHeader(tokenHeader);
 
-        // 서비스의 비밀번호 변경 로직을 호출합니다. (BCrypt 검증 및 변환이 내부에서 일어남)
-        userService.changePassword(userId, passwordDto.getCurrentPassword(), passwordDto.getNewPassword());
+        userService.changePassword(
+                userId,
+                passwordDto.getCurrentPassword(),
+                passwordDto.getNewPassword()
+        );
 
         Map<String, String> response = new HashMap<>();
         response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
@@ -74,23 +86,13 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    // 헤더의 JWT 토큰에서 userId를 안전하게 파싱하는 공통 메서드
+    // Authorization 헤더의 JWT 토큰에서 userId 추출
     private Long extractUserIdFromHeader(String tokenHeader) {
         if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
-            String token = tokenHeader.substring(7); // "Bearer " 뒷부분 잘라내기
-            return Long.parseLong(jwtTokenProvider.getUserId(token)); // JwtTokenProvider 활용
+            String token = tokenHeader.substring(7);
+            return Long.parseLong(jwtTokenProvider.getUserId(token));
         }
+
         throw new IllegalArgumentException("유효하지 않은 인증 헤더 포맷입니다.");
-    }
-
-    @GetMapping("/me")
-    public ResponseEntity<UserInfoResponseDto> getMyInfo(
-            Authentication authentication) {
-
-        Long userId = Long.valueOf(authentication.getName());
-
-        User user = userService.findById(userId);
-
-        return ResponseEntity.ok(new UserInfoResponseDto(user));
     }
 }
