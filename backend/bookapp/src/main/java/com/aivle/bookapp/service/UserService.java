@@ -116,6 +116,10 @@ public class UserService {
             user.setAddress(request.getAddress());
         }
 
+        if (request.getUserProfileImage() != null && !request.getUserProfileImage().isBlank()) {
+            user.setUserProfileImage(request.getUserProfileImage());
+        }
+
         return user;
     }
 
