@@ -10,7 +10,8 @@
 }
 
 .book-main-card,
-.book-content-card {
+.book-content-card,
+.book-comment-card {
     background: rgba(255, 255, 255, 0.92);
     border: 1px solid rgba(77, 62, 88, 0.09);
     border-radius: 32px;
@@ -23,7 +24,8 @@
     overflow: hidden;
 }
 
-.book-content-card {
+.book-content-card,
+.book-comment-card {
     margin-top: 24px;
     padding: 34px 40px 38px;
 }
