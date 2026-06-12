@@ -463,12 +463,6 @@ export default function App() {
                                     </div>
 
                                     <div className="book-list-actions">
-                                        <button
-                                            className={`book-delete-btn ${selectedIds.length > 0 ? 'has-selected' : ''}`}
-                                            onClick={handleMultipleDelete}
-                                        >
-                                            {selectedIds.length > 0 ? `선택 삭제 ${selectedIds.length}` : '삭제'}
-                                        </button>
 
                                         <Link to="/create" className="book-register-btn">
                                             도서 등록

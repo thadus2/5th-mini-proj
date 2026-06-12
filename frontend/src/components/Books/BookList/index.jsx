@@ -137,8 +137,6 @@ export default function BookList({ posts, selectedIds, onSelectToggle, viewMode 
                                     likeCount={post.likeCount}
                                     viewCount={post.viewCount}
                                     coverImgUrl={post.coverImgUrl}
-                                    isChecked={selectedIds.includes(post.bookId)}
-                                    onSelectToggle={onSelectToggle}
                                     onCardClick={handleCardClick}
                                     onImageView={handleImageView}
                                     enableTilt={false}
