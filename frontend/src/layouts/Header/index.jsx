@@ -37,9 +37,14 @@ export default function Header() {
 
         <div className="header-right">
           {isLoggedIn ? (
-            <button type="button" className="header-logout-btn" onClick={() => navigate('/my-page')}>
-              마이페이지
-            </button>
+            <>
+              <button type="button" className="header-mypage-btn" onClick={() => navigate('/my-page')}>
+                마이페이지
+              </button>
+              <button type="button" className="header-logout-btn" onClick={handleLogout}>
+                로그아웃
+              </button>
+            </>
           ) : (
             <button type="button" className="header-login-btn" onClick={() => navigate('/sign-in')}>
               로그인
