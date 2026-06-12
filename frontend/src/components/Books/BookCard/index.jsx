@@ -13,8 +13,6 @@ export default function BookCard({
     viewCount,
     coverImgUrl,
     onCardClick,
-    isChecked,
-    onSelectToggle,
     onImageView,
     enableTilt = false,
 }) {
@@ -72,7 +70,7 @@ export default function BookCard({
     return (
         <article
             data-book-id={bookId}
-            className={`book-card ${isChecked ? 'selected' : ''} ${enableTilt ? 'tilt-enabled' : ''}`}
+            className={`book-card ${enableTilt ? 'tilt-enabled' : ''}`}
             onClick={handleCardClick}
             onKeyDown={handleCardKeyDown}
             onMouseMove={handleMouseMove}
@@ -80,20 +78,6 @@ export default function BookCard({
             role="button"
             tabIndex={0}
         >
-            <input
-                type="checkbox"
-                className="book-select-checkbox"
-                checked={isChecked}
-                aria-label="도서 선택"
-                onChange={(e) => {
-                    e.stopPropagation();
-                    onSelectToggle(bookId);
-                }}
-                onClick={(e) => {
-                    e.stopPropagation();
-                }}
-            />
-
             <div
                 className="image-wrapper"
                 role="button"

@@ -22,7 +22,6 @@ public class BookController {
 
     private final BookService bookService;
 
-    // 전체 조회 + 검색
     @GetMapping("")
     public ResponseEntity<List<BookListResponseDto>> getBooks(@RequestParam(required = false) String keyword) {
         List<BookListResponseDto> response = bookService.getBooks(keyword).stream()
@@ -46,7 +45,6 @@ public class BookController {
         return ResponseEntity.ok(response);
     }
 
-    // 단건 조회
     @GetMapping("/{id}")
     public ResponseEntity<BookDetailResponseDto> getBookDetail(
             @PathVariable Long id
@@ -54,7 +52,6 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBookDetail(id));
     }
 
-    // 등록
     @PostMapping("")
     public ResponseEntity<BookCreateResponseDto> createBook(
             @Valid @RequestBody BookCreateRequestDto dto,
@@ -67,7 +64,6 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    // 수정
     @PatchMapping("/{id}")
     public ResponseEntity<BookUpdateResponseDto> updateBook(
             @PathVariable Long id,
@@ -81,7 +77,6 @@ public class BookController {
         return ResponseEntity.ok(new BookUpdateResponseDto(updated));
     }
 
-    // 좋아요 토글
     @PostMapping("/{id}/like")
     public ResponseEntity<BookFavoriteResponseDto> toggleLike(
             @PathVariable Long id,
@@ -111,7 +106,6 @@ public class BookController {
         return ResponseEntity.noContent().build();
     }
 
-    // 조회수 증가
     @PatchMapping("/{id}/views")
     public ResponseEntity<Void> increaseViewCount(@PathVariable Long id) {
         bookService.increaseViewCount(id);

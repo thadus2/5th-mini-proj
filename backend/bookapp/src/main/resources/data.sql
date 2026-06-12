@@ -10,104 +10,38 @@ VALUES ('testuser2', '$2a$10$gM8A9f0jKFgrk1G/WjvlQul8Rgb5RNnk0W1/hwvs61MRBYd6oMI
 INSERT INTO users (login_id, password, name, nick_name, age, email, address)
 VALUES ('testuser3', '$2a$10$gM8A9f0jKFgrk1G/WjvlQul8Rgb5RNnk0W1/hwvs61MRBYd6oMIrm', '이몽룡', '몽룡이', 26, 'test3@aivle.com', '서울특별시 종로구');
 
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
-VALUES (
-           '마션',
-           '앤디 위어',
-           '화성 탐사 중 폭풍을 만나 홀로 고립된 우주비행사 마크 와트니가 기발한 과학적 지식과 유머로 살아남는 생존 투쟁기입니다.',
-           'RHK',
-           15000,
-           '2015-07-31',
-           '2026-06-11',
-           'SF/소설',
-           '화성에서 감자 키우며 살아남기',
-           142,
-           35,
-           'https://upload.wikimedia.org/wikipedia/ko/thumb/0/0f/%EB%A7%88%EC%85%98.jpg/250px-%EB%A7%88%EC%85%98.jpg',
-           1 -- ◀ 1번 유저(홍길동)가 작성함
-       );
+-- 1 ~ 10
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('모순된 코딩의 세계', '김개발', '스프링 시큐리티와 리액트를 연동하며 겪는 수많은 예외 처리와 트러블 슈팅의 대장정을 담은 개발자 필독서입니다.', 'AIVLE 출판사', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'IT/과학', '예외 처리에 고통받는 개발자를 위한 안내서', 42, 12, 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('새벽 두 시의 인텔리제이', '이코딩', '모두가 잠든 시간, 조용히 빛나는 모니터 앞에서 에러 로그와 사투를 벌이는 조장님의 고독하고 위대한 코딩 일기.', '새벽네트웍스', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '에세이/시', '잠 못 드는 개발자의 밤을 위로하는 글귀들', 105, 34, 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('디버깅 미스터리 : 사라진 세미콜론', '셜록홈즈', '분명 코드는 완벽했다. 하지만 컴파일러는 에러를 뱉는다. 단 하나의 문자 세미콜론을 찾기 위한 숨막히는 추적극.', '추리미디어', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '미스터리/SF', '당신의 코드를 뒤흔들 치명적인 에러의 서막', 88, 19, 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('풀스택 개발자로 살아남기', '박성훈', '백엔드 스프링 부트부터 프론트엔드 리액트 컴포넌트 설계까지 혼자서 아키텍처를 뚫어내는 실전 노하우.', '테크북스', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'IT/과학', '스프링과 리액트의 완벽한 싱크론 가이드', 210, 89, 'https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('구름 위를 걷는 판타지', '최마법', '하늘에 떠 있는 거대한 가상 세계에서 펼쳐지는 모험과 동료들과의 끈끈한 유대 관계를 그린 대서사시.', '판타지아', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '판타지', '하늘섬에서 시작되는 새로운 모험의 시작', 67, 15, 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('인간 관계의 인문학', '정철학', '현대 사회에서 타인과 소통하고 나 자신을 지키며 살아가는 건강한 심리학적 접근법을 다룹니다.', '사람과사회', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '인문/사회', '복잡한 세상 속에서 나를 잃지 않는 법', 55, 8, 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('강남역 사거리의 미스터리', '김스릴', '비 오는 날 강남역 한복판에서 흔적도 없이 사라진 한 남자를 쫓는 형사와 프로파일러의 심리 스릴러.', '도시문학', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '미스터리/드라마', '도심 속에서 벌어지는 숨 막히는 추적 스릴러', 123, 41, 'https://images.unsplash.com/photo-1505673542670-a5e3ff5b14a3?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('서른, 평범하게 산다는 것', '한시인', '치열했던 이십대를 지나 잔잔한 서른의 길목에서 마주한 일상의 소중함을 따뜻한 감성으로 읊조린 시집.', '감성팩토리', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '에세이/시', '소박한 일상 속에서 발견하는 작은 행복', 34, 5, 'https://images.unsplash.com/photo-1494883759339-0b168159501a?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('JPA 프로그래밍 완전 정복', '김영한', '영속성 컨텍스트의 기본 원리부터 복잡한 연관 관계 매핑, 성능 최적화까지 JPA의 모든 것을 해부한다.', '에이콘', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'IT/과학', '자바 개발자를 위한 가상 세계의 ORM 정석', 450, 198, 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('우주의 끝에서 만나자', '스티븐', '수천 광년 떨어진 미지의 행성에서 인류의 생존을 걸고 탐사를 떠난 우주 비행사들의 SF 감동 스토리.', '미래과학', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '미스터리/SF', '광활한 우주 속에서 펼쳐지는 인류의 사랑', 156, 62, 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=400', 1);
 
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
-VALUES (
-           '나의 라임오렌지나무',
-           '조제 마우루 데 바스콘셀루스',
-           '가난한 가정에서 자라며 상처받은 다섯 살 소년 제제가 비밀 친구인 라임오렌지나무 밍기뉴와 슬픈 우정을 나누며 성장하는 감동적인 이야기입니다.',
-           '동녘',
-           12000,
-           '2010-04-05',
-           '2026-05-20',
-           '문학/소설',
-           '전 세계인을 울린 감동의 성장 소설',
-           98,
-           24,
-           'https://contents.kyobobook.co.kr/sih/fit-in/400x0/pdt/9788972976189.jpg',
-           1 -- ◀ 1번 유저(홍길동)가 작성함
-       );
+-- 11 ~ 20
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('헬스장과 닭가슴살의 상관관계', '근육맨', '체지방을 줄이고 골격근량을 늘리기 위한 가장 과학적이고 엄격한 바디 리컴포지션 가이드 가이드북.', '피지컬라이프', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '기타', '33kg의 골격근량을 향해 달리는 실전 루틴', 99, 50, 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('시간을 멈추는 소년', '이환상', '자신이 숨을 참으면 세상의 시간이 멈추는 능력을 가진 소년의 외롭고도 아름다운 성장 소설입니다.', '문학동네', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '소설/문학', '멈춰버린 세계 속에서 혼자 걷는 소년의 이야기', 84, 27, 'https://images.unsplash.com/photo-1512820790803-83ca734da794?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('AI 시대의 자바스크립트', '구글러', '모던 자바스크립트 스펙부터 인공지능 API를 연동하여 지능형 웹 서비스를 구축하는 프론트엔드 비기닝.', 'IT인사이트', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'IT/과학', '리액트와 AI를 결합하는 스마트한 웹 개발', 112, 45, 'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('사회의 시선, 우리의 시선', '박비판', '불평등과 미디어의 왜곡 속에서 우리가 가져야 할 올바른 비판적 시각과 사회적 연대의 중요성 역설.', '지식의창', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '인문/사회', '더 나은 내일을 위한 날카로운 사회 진단', 48, 11, 'https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('그림자 재판소', '민형사', '법망을 교묘하게 빠져나가는 악인들을 밤마다 사적으로 처단하는 의문의 조직과 그들을 쫓는 정의로운 검사.', '정의미디어', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '미스터리/드라마', '법과 정의의 경계에서 펼쳐지는 다크 히어로물', 178, 66, 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('Resistant Starch 식단 가이드', '최건강', '혈당을 안정시키고 소화 건강을 돕는 저탄수화물 대체 감미료 및 저항성 전분 중심의 청정 식단 비밀.', '웰빙푸드', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '기타', '몸을 맑게 만드는 건강한 탄수화물 섭취법', 73, 22, 'https://images.unsplash.com/photo-1498837167922-ddd27525d352?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('마법 학교의 낙제생', '해리', '마법 세계 최고의 명문 학교에서 마법을 한 줄도 못 써서 구박받던 소년이 고대 유물을 깨우며 벌어지는 성장담.', '마법세계', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '판타지', '꼴찌 소년이 세상을 구하는 대역전 판타지', 142, 53, 'https://images.unsplash.com/photo-1519074069444-1ba4ae16741f?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('바다 향 가득한 식탁', '이식객', '다양한 해산물과 신선한 재료로 식탁을 풍성하게 채우는 이탈리안 스타일 건강 요리 레시피 백과사전.', '요리조리', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '기타', '집에서 즐기는 품격 있는 지중해식 다이닝', 61, 14, 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('노드와 컴포지UI 워크플로우', '안정화', 'Stable Diffusion과 ComfyUI를 활용하여 고품질 인공지능 이미지를 효율적으로 생성하는 파이프라인 가이드.', 'AI아트', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'IT/과학', '디자이너와 개발자를 위한 AI 이미지 최적화', 135, 59, 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('어느 날 갑자기 고양이가 되었다', '냐옹이', '아침에 눈을 뜨니 귀여운 몰티즈 강아지 두 마리와 함께 사는 고양이로 변해버린 평범한 직장인의 대혼란 소설.', '냥멍북스', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '소설/문학', '반려동물의 눈으로 바라본 조금 특별한 일상', 119, 48, 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=400', 2);
 
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
-VALUES (
-           '드래곤 라자',
-           '이영도',
-           '인간과 드래곤, 그리고 다양한 종족들이 공존하는 대륙을 배경으로 소년 후치 네드발이 겪는 장대한 모험과 깊이 있는 철학을 다룬 판타지 소설입니다.',
-           '황금가지',
-           14800,
-           '2008-11-10',
-           '2026-06-01',
-           '판타지',
-           '한국 판타지 소설의 전설적인 명작',
-           310,
-           85,
-           'https://i.namu.wiki/i/37RTnc5BioH_vlgg3CM9akwfTGM4qCZyz7I_bGRhqYY8V8RJ4beMJ5oFhgtAUsFyfg04Nw0OvhhOM3BNXjfYlA.webp',
-           1 -- ◀ 1번 유저(홍길동)가 작성함
-       );
-
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
-VALUES (
-           '해리 포터와 마법사의 돌',
-           'J.K. 롤링',
-           '자신이 마법사임을 알게 된 고아 소년 해리 포터가 호그와트 마법학교에 입학하여 친구들을 만나고 어둠의 마법에 맞서는 판타지 바이블입니다.',
-           '문학수첩',
-           16000,
-           '2019-11-19',
-           '2026-04-15',
-           '판타지',
-           '호그와트 마법 세계로의 첫걸음',
-           520,
-           190,
-           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9791193790403.jpg',
-           2 -- ◀ 2번 유저(성춘향)가 작성함
-       );
-
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
-VALUES (
-           '떠난 후에 남겨진 것들',
-           '김새별',
-           '국내 1세대 유품정리사가 고독사, 사고사 등 다양한 죽음의 현장에서 수습한 유품들을 통해 삶의 소중함 인간적인 정을 이야기하는 에세이입니다.',
-           '청림출판',
-           14000,
-           '2015-07-20',
-           '2026-03-12',
-           '에세이',
-           '유품정리사가 남긴 삶과 죽음의 기록',
-           75,
-           18,
-           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788935210381.jpg',
-           2 -- ◀ 2번 유저(성춘향)가 작성함
-       );
-
-INSERT INTO book (title, author, content, publisher, price, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id)
-VALUES (
-           '부자 아빠 가난한 아빠',
-           '로버트 기요사키',
-           '돈을 위해 일하지 말고 돈이 나를 위해 일하게 만들라는 자산과 부채의 개념을 혁명적으로 일깨워주는 전 세계 제테크 경제 분야의 최고의 지침서입니다.',
-           '민음인',
-           17000,
-           '2018-02-22',
-           '2026-06-10',
-           '경제/재테크',
-           '돈과 자산에 대한 패러다임을 바꾸는 책',
-           410,
-           112,
-           'https://contents.kyobobook.co.kr/sih/fit-in/458x0/pdt/9788982732362.jpg',
-           2 -- ◀ 2번 유저(성춘향)가 작성함
-       );
+-- 21 ~ 30
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('디지털 아틀라스', '최지리', '메타버스와 지리정보시스템(GIS)이 결합하여 만들어낼 미래 지도 커뮤니티 서비스의 청사진을 그리다.', '공간정보', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '인문/사회', '위치 기반 데이터가 바꾸는 새로운 공간의 미래', 52, 9, 'https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('사이버네틱스 2026', '레이', '머지않은 미래, 인간의 뇌와 컴퓨터가 직접 연결되는 세상에서 벌어지는 정체성의 혼란을 다룬 하드 SF.', '미래과학', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '미스터리/SF', '기술의 정점에서 마주한 인간 존엄성의 질문', 91, 31, 'https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('바람이 부는 일요일', '김소월', '창가에 앉아 떨어지는 빗방울을 보며 잔잔하게 흘러가는 클래식 음악과 닮은 서정적인 산문집.', '라벤더북스', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '에세이/시', '지친 하루의 끝에 건네는 따뜻한 위로의 편지', 41, 13, 'https://images.unsplash.com/photo-1457369804613-52c61a468e7d?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('비밀의 도서관 관리인', '북마스터', '자정이 되면 책 속의 주인공들이 살아 움직이는 기묘한 도서관을 지키는 청년의 판타지 동화 같은 이야기.', '상상력', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '판타지', '책장 너머 펼쳐지는 마법 같은 세계로의 초대', 128, 49, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('클린 코더의 정석', '마틴', '코드를 단순히 짜는 것을 넘어, 팀원들과 유기적으로 협업하고 유지보수하기 좋은 클린 아키텍처 설계법.', '인사이트', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'IT/과학', '장인 정신을 가진 개발자가 되기 위한 지침서', 290, 142, 'https://images.unsplash.com/photo-1607799279861-4dd421887fb3?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('복수 무대 : 라스트 액트', '박연출', '자신의 연극 무대를 망치고 가정을 파탄 낸 원수들을 향해 완벽한 시나리오로 복수를 집행하는 연출가의 드라마.', '시네마북', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '미스터리/드라마', '커튼콜이 내려가는 순간, 진짜 복수가 시작된다', 115, 38, 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('마음의 면역력을 키우는 법', '안의사', '불안과 스트레스가 가득한 현대인들이 일상 속에서 멘탈을 관리하고 정서적 안정감을 찾는 실천적 방법.', '힐링라이프', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '인문/사회', '상처받은 마음을 스스로 치유하는 심리 백신', 83, 26, 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?q=80&w=400', 3);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('나의 두 마리 몰티즈에게', '박사랑', '10년이 넘는 시간 동안 내 곁을 지켜주며 무조건적인 사랑을 가르쳐준 노령견들과의 가슴 뭉클한 에세이.', '반려동물', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '에세이/시', '늙어가는 나의 작은 천사들에게 바치는 편지', 165, 94, 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?q=80&w=400', 1);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('가상 자산과 블록체인 노드', '나카모토', '탈중앙화 금융 시스템의 본질과 스마트 컨트랙트가 바꿀 미래 금융 인프라의 기술적 구조 파헤치기.', '블록북스', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), 'IT/과학', '코드 개혁이 가져올 자산 시장의 대전환', 102, 29, 'https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=400', 2);
+INSERT INTO book (title, author, content, publisher, recent_published, recent_updated, genre, summary, view_count, like_count, cover_img_url, user_id) VALUES ('끝나지 않은 서사', '최작가', '대대로 이어져 내려오는 가문의 비밀과 역사의 소용돌이 속에서 피어난 인간들의 질긴 생명력을 다룬 대하소설.', '한국문학', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '소설/문학', '시대를 관통하는 거대한 인간 군상의 드라마', 77, 18, 'https://images.unsplash.com/photo-1474932430478-367db26830c1?q=80&w=400', 3);

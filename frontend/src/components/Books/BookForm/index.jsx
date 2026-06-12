@@ -152,9 +152,6 @@ export default function BookForm({ onAdd, defaultBook, onEdit }) {
         setErrors(newErrors);
 
         if (newErrors.title || newErrors.author || newErrors.content) {
-            if (newErrors.content) {
-                setContent('');
-            }
 
             showToast('필수 입력 항목을 확인해 주세요.', 'warning');
             return;

@@ -7,11 +7,17 @@ import './style.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BOOK_API } from '../../../apis/api';
 import Comment from '../../Comment';
+import { getCookie, parseJwt } from '../../../utils/cookie';
 
-export default function BookDetail({ onDelete, onLikesToggle }) {
+export default function BookDetail({ onLikesToggle }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [post, setPost] = useState();
+
+    const token = getCookie('accessToken');
+    const decodedToken = token ? parseJwt(token) : null;
+    const currentUserId = decodedToken ? decodedToken.sub : null;
+    const isOwner = post && currentUserId && (String(currentUserId) === String(post.userId));
 
     //0612추가
     const getAccessTokenFromCookie = () => {
@@ -37,6 +43,32 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
     const [isLiked, setIsLiked] = useState(false);
 
+    const handleDelete = async (id) => {
+
+        const token = getAccessTokenFromCookie();
+
+        try {
+            const res = await fetch(`${BOOK_API}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!res.ok) {
+                alert('도서 삭제에 실패했습니다.');
+                return false;
+            }
+
+            alert('도서 삭제가 완료되었습니다.');
+            return true;
+        } catch (err) {
+            console.error(err);
+
+            alert('도서 삭제에 실패했습니다.');
+            return false;
+        }
+    };
 
     const isViewIncremented = useRef(false);
 
@@ -46,10 +78,10 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
         const loadBookAndIncrementViews = async () => {
             try {
-                const token = getAccessTokenFromCookie(); // 🌟 로그인 토큰 체크
+                const token = getAccessTokenFromCookie();
                 const headers = {};
                 if (token) {
-                    headers["Authorization"] = `Bearer ${token}`; // 🌟 토큰이 있다면 헤더에 얹어주기
+                    headers["Authorization"] = `Bearer ${token}`;
                 }
                 const response = await fetch(`${BOOK_API}/${bookId}`, { headers });
                 const data = await response.json();
@@ -140,7 +172,7 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
   const handleClickDelete = async(bookId) => {
     if (window.confirm("정말 이 도서를 삭제하시겠습니까?")) {
-          await onDelete(bookId);
+          await handleDelete(bookId);
           navigate('/books');
         }
   }
@@ -168,19 +200,12 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
                     </button>
 
                     <div className="book-actions-right">
-                        <button
-                            className="book-edit-button"
-                            onClick={() => navigate(`/books/${bookId}/edit`)}
-                        >
-                            수정
-                        </button>
-
-                        <button
-                            className="book-delete-button"
-                            onClick={() => handleClickDelete(bookId)}
-                        >
-                            삭제
-                        </button>
+                            {isOwner && (
+                                <>
+                                    <button className="book-edit-button" onClick={() => navigate(`/books/${bookId}/edit`)}>수정</button>
+                                    <button className="book-delete-button" onClick={() => handleClickDelete(bookId)}>삭제</button>
+                                </>
+                            )}
                     </div>
                 </div>
 
@@ -191,10 +216,11 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
                             src={post.coverImgUrl ? post.coverImgUrl : defaultImg}
                             alt={post.title || '커버'}
                         />
-
+                        {isOwner && (
                         <button className="book-detail-aigen-btn" onClick={handleAiGen}>
                             AI 표지 만들기
                         </button>
+                        )}
                     </div>
 
                     <div className="book-right-col">

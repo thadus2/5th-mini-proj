@@ -36,6 +36,16 @@ export default function App() {
         type: 'success'
     });
 
+    const getAccessTokenFromCookie = () => {
+        const cookies = document.cookie.split("; ");
+
+        const accessTokenCookie = cookies.find((cookie) =>
+            cookie.startsWith("accessToken=")
+        );
+
+        return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
+    };
+
     const genreFilterOptions = [
         { label: '전체 장르', value: '' },
         { label: '소설/문학', value: '소설/문학' },
@@ -124,15 +134,17 @@ export default function App() {
     };
 
     const handleAddBook = async (newBook) => {
+        const token = getAccessTokenFromCookie();
+
         try {
             const token = getCookie('accessToken');
 
             const res = await fetch(`${BOOK_API}`, {
                 method: 'POST',
-                headers: {
+                headers: { 
                     'Content-Type': 'application/json',
-                    ...(token ? { Authorization: `Bearer ${token}` } : {})
-                },
+                    'Authorization': `Bearer ${token}`
+                 },
                 body: JSON.stringify(newBook)
             });
 
@@ -170,29 +182,6 @@ export default function App() {
         }
     };
 
-    const handleDelete = async (id) => {
-        try {
-            const res = await fetch(`${BOOK_API}/${id}`, {
-                method: 'DELETE'
-            });
-
-            if (!res.ok) {
-                showToast('도서 삭제에 실패했습니다.', 'error');
-                return false;
-            }
-
-            await loadBookList();
-
-            showToast('도서 삭제가 완료되었습니다.', 'success');
-            return true;
-        } catch (err) {
-            console.error(err);
-
-            showToast('도서 삭제에 실패했습니다.', 'error');
-            return false;
-        }
-    };
-
     const handleMultipleDelete = async () => {
         if (selectedIds.length === 0) {
             showToast('삭제할 도서를 먼저 선택해 주세요.', 'warning');
@@ -222,10 +211,15 @@ export default function App() {
     };
 
     const handleEdit = async (id, edited) => {
+        const token = getAccessTokenFromCookie();
+
         try {
             const res = await fetch(`${BOOK_API}/${id}`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                 },
                 body: JSON.stringify(edited)
             });
 
@@ -479,12 +473,6 @@ export default function App() {
                                     </div>
 
                                     <div className="book-list-actions">
-                                        <button
-                                            className={`book-delete-btn ${selectedIds.length > 0 ? 'has-selected' : ''}`}
-                                            onClick={handleMultipleDelete}
-                                        >
-                                            {selectedIds.length > 0 ? `선택 삭제 ${selectedIds.length}` : '삭제'}
-                                        </button>
 
                                         <Link to="/create" className="book-register-btn">
                                             도서 등록
@@ -505,7 +493,6 @@ export default function App() {
                             <BookRouteGuard>
                                 <BookDetail
                                     posts={posts}
-                                    onDelete={handleDelete}
                                     onLikesToggle={handleLikesToggle}
                                 />
                             </BookRouteGuard>

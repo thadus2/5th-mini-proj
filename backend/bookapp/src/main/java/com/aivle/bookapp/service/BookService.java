@@ -101,10 +101,6 @@ public class BookService {
             existing.setCoverImgUrl(dto.getCoverImgUrl());
         }
 
-        if (dto.getPrice() != null) {
-            existing.setPrice(dto.getPrice());
-        }
-
         return existing;
     }
 
