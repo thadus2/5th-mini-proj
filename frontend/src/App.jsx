@@ -19,6 +19,8 @@ import MyPageEdit from './pages/MyPageEdit';
 import PasswordChangePage from './pages/PasswordChangePage';
 import { getCookie } from './utils/cookie';
 
+const PAGE_SIZE = 12;
+
 export default function App() {
     const [posts, setPosts] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -27,6 +29,7 @@ export default function App() {
     const [selectedGenre, setSelectedGenre] = useState('');
     const [sortBy, setSortBy] = useState('latest');
     const [viewMode, setViewMode] = useState('card');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const [isGenreFilterOpen, setIsGenreFilterOpen] = useState(false);
     const [isSortFilterOpen, setIsSortFilterOpen] = useState(false);
@@ -67,6 +70,10 @@ export default function App() {
     useEffect(() => {
         loadBookList();
     }, []);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchKeyword, selectedGenre, sortBy]);
 
     const showToast = (message, type = 'success') => {
         setToast({ message, type });
@@ -141,10 +148,10 @@ export default function App() {
 
             const res = await fetch(`${BOOK_API}`, {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                 },
+                },
                 body: JSON.stringify(newBook)
             });
 
@@ -216,10 +223,10 @@ export default function App() {
         try {
             const res = await fetch(`${BOOK_API}/${id}`, {
                 method: 'PATCH',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                 },
+                },
                 body: JSON.stringify(edited)
             });
 
@@ -336,6 +343,17 @@ export default function App() {
             if (sortBy === 'views') return (b.viewCount || 0) - (a.viewCount || 0);
             return (b.bookId || 0) - (a.bookId || 0);
         });
+
+    const totalPages = Math.max(1, Math.ceil(filteredPosts.length / PAGE_SIZE));
+    const safeCurrentPage = Math.min(currentPage, totalPages);
+
+    const pageStartIndex = (safeCurrentPage - 1) * PAGE_SIZE;
+    const pageEndIndex = pageStartIndex + PAGE_SIZE;
+
+    const paginatedPosts = filteredPosts.slice(pageStartIndex, pageEndIndex);
+
+    const pageStartNumber = filteredPosts.length === 0 ? 0 : pageStartIndex + 1;
+    const pageEndNumber = Math.min(pageEndIndex, filteredPosts.length);
 
     return (
         <HashRouter>
@@ -470,6 +488,34 @@ export default function App() {
                                                 360 보기
                                             </button>
                                         </div>
+
+                                        <div className="book-page-control">
+                                            <button
+                                                type="button"
+                                                className="book-page-btn"
+                                                disabled={safeCurrentPage === 1}
+                                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                            >
+                                                이전
+                                            </button>
+
+                                            <span className="book-page-info">
+                                                {safeCurrentPage} / {totalPages}
+                                            </span>
+
+                                            <button
+                                                type="button"
+                                                className="book-page-btn"
+                                                disabled={safeCurrentPage === totalPages}
+                                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                            >
+                                                다음
+                                            </button>
+
+                                            <span className="book-page-count">
+                                                {pageStartNumber}-{pageEndNumber} / {filteredPosts.length}
+                                            </span>
+                                        </div>
                                     </div>
 
                                     <div className="book-list-actions">
@@ -481,7 +527,7 @@ export default function App() {
                                 </div>
 
                                 <BookList
-                                    posts={filteredPosts}
+                                    posts={paginatedPosts}
                                     selectedIds={selectedIds}
                                     onSelectToggle={handleSelectToggle}
                                     viewMode={viewMode}

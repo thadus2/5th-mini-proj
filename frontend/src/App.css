@@ -443,6 +443,95 @@
 }
 
 /* =========================================
+   Book Page Control
+========================================= */
+
+.book-page-control {
+    height: 42px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 4px;
+    border-radius: 999px;
+    border: 1px solid rgba(81, 70, 92, 0.12);
+    background: rgba(252, 250, 248, 0.96);
+
+    box-shadow:
+        0 8px 18px rgba(61, 50, 70, 0.035),
+        inset 0 1px 0 rgba(255, 255, 255, 0.84);
+}
+
+.book-page-btn {
+    height: 34px;
+    padding: 0 13px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: #65576d;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 750;
+    letter-spacing: -0.025em;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.book-page-btn:hover:not(:disabled) {
+    background: rgba(92, 76, 105, 0.1);
+    color: #4a3c55;
+}
+
+.book-page-btn:disabled {
+    color: #b8aebb;
+    cursor: not-allowed;
+}
+
+.book-page-info {
+    min-width: 50px;
+    height: 34px;
+    padding: 0 10px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+    background: #5c4c69;
+    color: #ffffff;
+
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.book-page-count {
+    height: 34px;
+    padding: 0 10px;
+
+    display: inline-flex;
+    align-items: center;
+
+    color: #8a7d91;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+}
+
+/* =========================================
    Book List Action Buttons
 ========================================= */
 
@@ -539,6 +628,13 @@
     .book-list-header {
         width: calc(100% - var(--site-padding-tablet));
     }
+
+    .book-page-control {
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 42px;
+        border-radius: 22px;
+    }
 }
 
 @media (max-width: 640px) {
@@ -614,6 +710,16 @@
 
     .book-view-mode-btn {
         flex: 1;
+    }
+
+    .book-page-control {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .book-page-count {
+        width: 100%;
+        justify-content: center;
     }
 
     .book-list-actions {
