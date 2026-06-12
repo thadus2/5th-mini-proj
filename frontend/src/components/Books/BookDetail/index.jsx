@@ -216,10 +216,11 @@ export default function BookDetail({ onLikesToggle }) {
                             src={post.coverImgUrl ? post.coverImgUrl : defaultImg}
                             alt={post.title || '커버'}
                         />
-
+                        {isOwner && (
                         <button className="book-detail-aigen-btn" onClick={handleAiGen}>
                             AI 표지 만들기
                         </button>
+                        )}
                     </div>
 
                     <div className="book-right-col">
