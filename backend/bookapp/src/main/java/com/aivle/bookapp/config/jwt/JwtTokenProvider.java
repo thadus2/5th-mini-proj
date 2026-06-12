@@ -24,7 +24,6 @@ public class JwtTokenProvider {
 
     private SecretKey key;
 
-
     @PostConstruct
     protected void init() {
         byte[] keyBytes = Base64.getDecoder().decode(secretKey);
