@@ -34,7 +34,9 @@ public class BookController {
 
     // 단건 조회
     @GetMapping("/{id}")
-    public ResponseEntity<BookDetailResponseDto> getBookDetail(@PathVariable Long id) {
+    public ResponseEntity<BookDetailResponseDto> getBookDetail(
+            @PathVariable Long id
+    ) {
         return ResponseEntity.ok(bookService.getBookDetail(id));
     }
 
@@ -61,12 +63,11 @@ public class BookController {
     }
 
     // 좋아요 토글
-    @PostMapping("/{id}/likes")
+    @PostMapping("/{id}/like")
     public ResponseEntity<BookFavoriteResponseDto> toggleLike(
             @PathVariable Long id,
             @AuthenticationPrincipal String userId) {
         Long currentUserId = Long.parseLong(userId);
-
         boolean isLiked = bookService.toggleLike(id, currentUserId);
 
         Book book = bookService.findById(id);

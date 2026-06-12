@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import defaultImg from '../../../assets/images/default-background.png';
 import FavoriteIcon from '../../../assets/images/favorite-icon.png';
 import ViewIcon from '../../../assets/images/view-icon.png';
+import FavoritedIcon from '../../../assets/images/toggled-favorite-icon.png';
 import './style.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BOOK_API } from '../../../apis/api';
@@ -12,11 +13,30 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
     const navigate = useNavigate();
     const [post, setPost] = useState();
 
+    //0612추가
+    const getAccessTokenFromCookie = () => {
+        const cookies = document.cookie.split("; ");
+
+        const accessTokenCookie = cookies.find((cookie) =>
+            cookie.startsWith("accessToken=")
+        );
+
+        return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
+    };
+
+    const [isLogin, setIsLogin] = useState(false);
+    useEffect(() => {
+        const token = getAccessTokenFromCookie();
+        setIsLogin(!!token);
+    }, []);
+    //0612추가여기까지
+
     const { bookId } = useParams();
 
     // const post = posts.find(p => p.bookId == bookId)
 
     const [isLiked, setIsLiked] = useState(false);
+
 
     const isViewIncremented = useRef(false);
 
@@ -26,7 +46,12 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
         const loadBookAndIncrementViews = async () => {
             try {
-                const response = await fetch(`${BOOK_API}/${bookId}`);
+                const token = getAccessTokenFromCookie(); // 🌟 로그인 토큰 체크
+                const headers = {};
+                if (token) {
+                    headers["Authorization"] = `Bearer ${token}`; // 🌟 토큰이 있다면 헤더에 얹어주기
+                }
+                const response = await fetch(`${BOOK_API}/${bookId}`, { headers });
                 const data = await response.json();
 
                 if (!isMounted) return;
@@ -34,7 +59,7 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
                 if (!isViewIncremented.current) {
                     isViewIncremented.current = true;
-                    
+
                     const res = await fetch(`${BOOK_API}/${bookId}/views`, {
                         method: 'PATCH',
                     });
@@ -79,12 +104,40 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
     const handleLikeClick = async () => {
         if (!post) return;
 
-        const result = await onLikesToggle(post.bookId);
+        const token = getAccessTokenFromCookie();
 
-        if (result?.success) {
-            setIsLiked(result.isLiked);
+        if (!token) {
+            alert("로그인 후 좋아요를 누를 수 있습니다.");
+            setIsLogin(false);
+            return;
+        }
+
+        try {
+            const response = await fetch(`${BOOK_API}/${post.bookId}/like`, {
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                alert("좋아요 처리에 실패했습니다.");
+                return;
+            }
+
+            const data = await response.json();
+
+            setPost((prev) => ({
+                ...prev,
+                likeCount: data.likeCount,
+                isLiked: data.isLiked,
+            }));
+        } catch (error) {
+            console.error("좋아요 처리 실패:", error);
+            alert("좋아요 처리 중 오류가 발생했습니다.");
         }
     };
+
   const handleClickDelete = async(bookId) => {
     if (window.confirm("정말 이 도서를 삭제하시겠습니까?")) {
           await onDelete(bookId);
@@ -155,14 +208,28 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
                             </div>
 
                             <div className="book-stat-row">
-                                <button className="book-stat-button like-button" onClick={handleLikeClick}>
-                                    <img
-                                        className="book-stat-icon"
-                                        src={FavoriteIcon}
-                                        alt="좋아요"
-                                    />
-                                    {post.likeCount ?? 0}
-                                </button>
+                                {isLogin ? (                                    
+                                    <button
+                                        className={`book-stat-button like-button`}
+                                        onClick={handleLikeClick}
+                                    >
+                                        <img
+                                            className="book-stat-icon"
+                                            src={post.isLiked ? FavoritedIcon : FavoriteIcon}
+                                            alt="좋아요"
+                                        />
+                                        {post.likeCount ?? 0}
+                                    </button>
+                                ) : (
+                                    <div className="book-stat-chip">
+                                        <img
+                                            className="book-stat-icon"
+                                            src={FavoriteIcon}
+                                            alt="좋아요 개수"
+                                        />
+                                        {post.likeCount ?? 0}
+                                    </div>
+                                )}
 
                                 <span className="book-stat-chip">
                                     <img
