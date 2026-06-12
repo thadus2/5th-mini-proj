@@ -15,6 +15,9 @@ import Toast from './components/Books/Toast';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import MyPage from './pages/MyPage';
+import MyPageEdit from './pages/MyPageEdit';
+import PasswordChangePage from './pages/PasswordChangePage';
+import { getCookie } from './utils/cookie';
 
 export default function App() {
     const [posts, setPosts] = useState([]);
@@ -134,6 +137,8 @@ export default function App() {
         const token = getAccessTokenFromCookie();
 
         try {
+            const token = getCookie('accessToken');
+
             const res = await fetch(`${BOOK_API}`, {
                 method: 'POST',
                 headers: { 
@@ -342,7 +347,12 @@ export default function App() {
                 <main className="app-main">
                     <Routes>
                         <Route path="/" element={<MainPage />} />
-                        <Route path="/my-page" element={<MyPage />} />
+
+                        <Route path="/my-page" element={<MyPage posts={posts} />} />
+
+                        <Route path="/my-page/edit" element={<MyPageEdit />} />
+
+                        <Route path="/my-page/password" element={<PasswordChangePage />} />
 
                         <Route path="/books" element={
                             <div className="book-list-page">
@@ -502,6 +512,16 @@ export default function App() {
                                         posts={posts}
                                     />
                                 </BookRouteGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/books/new/ai-gen"
+                            element={
+                                <AICoverGenPage
+                                    posts={posts}
+                                    onEdit={handleEdit}
+                                />
                             }
                         />
 
