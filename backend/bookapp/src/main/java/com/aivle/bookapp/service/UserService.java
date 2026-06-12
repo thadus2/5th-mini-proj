@@ -61,6 +61,65 @@ public class UserService {
     // 회원 조회
     public User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
-                        new IllegalArgumentException("존재하지 않는 회원입니다."));
+                new IllegalArgumentException("존재하지 않는 회원입니다."));
     }
+
+    // 회원 정보 수정
+    @Transactional
+    public User updateUser(Long userId, User request) {
+        User user = findById(userId);
+
+        if (request.getName() != null && !request.getName().isBlank()) {
+            user.setName(request.getName());
+        }
+
+        if (request.getNickName() != null &&
+                !request.getNickName().equals(user.getNickName())) {
+
+            if (userRepository.existsByNickName(request.getNickName())) {
+                throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+            }
+
+            user.setNickName(request.getNickName());
+        }
+
+        if (request.getEmail() != null &&
+                !request.getEmail().equals(user.getEmail())) {
+
+            if (userRepository.existsByEmail(request.getEmail())) {
+                throw new IllegalArgumentException("이미 사용 중인 이메일입니다.");
+            }
+
+            user.setEmail(request.getEmail());
+        }
+
+        if (request.getAge() != null) {
+            user.setAge(request.getAge());
+        }
+
+        if (request.getPhoneNumber() != null) {
+            user.setPhoneNumber(request.getPhoneNumber());
+        }
+
+        if (request.getAddress() != null &&
+                !request.getAddress().isBlank()) {
+            user.setAddress(request.getAddress());
+        }
+
+        return user;
+    }
+
+    // 비밀번호 변경
+    @Transactional
+    public void changePassword(Long userId, String currentPassword, String newPassword) {
+        User user = findById(userId);
+
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new IllegalArgumentException(
+                    "현재 비밀번호가 일치하지 않습니다.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+    }
+
 }
