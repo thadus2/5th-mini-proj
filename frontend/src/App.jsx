@@ -188,7 +188,54 @@ export default function App() {
             };
         }
     };
+    const handleMultipleDelete = async () => {
+        if (selectedIds.length === 0) {
+            showToast('삭제할 도서를 먼저 선택해 주세요.', 'warning');
+            return;
+        }
 
+        if (!window.confirm(`선택한 ${selectedIds.length}권의 도서를 정말 삭제하시겠습니까?`)) return;
+
+        const token = getAccessTokenFromCookie();
+
+        try {
+            const results = await Promise.all(
+                selectedIds.map(async (id) => {
+                    const res = await fetch(`${BOOK_API}/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+
+                    if (!res.ok) {
+                        let data = null;
+
+                        try {
+                            data = await res.json();
+                        } catch (error) {
+                            data = null;
+                        }
+
+                        throw new Error(getServerErrorMessage(data, res.status));
+                    }
+
+                    return id;
+                })
+            );
+
+            setPosts(posts.filter(book => !selectedIds.includes(book.bookId)));
+            setSelectedIds([]);
+
+            showToast('선택한 도서가 삭제되었습니다.', 'success');
+
+            await loadBookList();
+        } catch (err) {
+            console.error('삭제 실패:', err);
+            showToast(err.message || '일부 도서 삭제에 실패했습니다.', 'error');
+        }
+    };
+/*
     const handleMultipleDelete = async () => {
         if (selectedIds.length === 0) {
             showToast('삭제할 도서를 먼저 선택해 주세요.', 'warning');
@@ -215,8 +262,52 @@ export default function App() {
 
             showToast('일부 도서 삭제에 실패했습니다.', 'error');
         }
-    };
+    };*/
+/*
+    const handleEdit = async (id, edited) => {
+        const token = getAccessTokenFromCookie();
 
+        try {
+            const res = await fetch(`${BOOK_API}/${id}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(edited)
+            });
+
+            let data = null;
+
+            try {
+                data = await res.json();
+            } catch (error) {
+                data = null;
+            }
+
+            if (!res.ok) {
+                return {
+                    success: false,
+                    status: res.status,
+                    message: getServerErrorMessage(data, res.status)
+                };
+            }
+
+            setPosts(posts.map(p => p.bookId == id ? data : p));
+
+            return {
+                success: true,
+                data
+            };
+        } catch (err) {
+            console.error(err);
+
+            return {
+                success: false,
+                message: '서버와 연결할 수 없습니다.'
+            };
+        }
+    };*/
     const handleEdit = async (id, edited) => {
         const token = getAccessTokenFromCookie();
 
@@ -261,7 +352,6 @@ export default function App() {
             };
         }
     };
-
     const handleLikesToggle = async (id) => {
         const likedKey = `liked-book-${id}`;
         const alreadyLiked = sessionStorage.getItem(likedKey) === 'true';

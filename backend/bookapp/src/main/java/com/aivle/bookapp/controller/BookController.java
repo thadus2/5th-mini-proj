@@ -4,6 +4,7 @@ import com.aivle.bookapp.domain.Book;
 import com.aivle.bookapp.dto.request.BookCreateRequestDto;
 import com.aivle.bookapp.dto.request.BookUpdateRequestDto;
 import com.aivle.bookapp.dto.response.*;
+import com.aivle.bookapp.exception.LoginRequiredException;
 import com.aivle.bookapp.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -80,10 +81,8 @@ public class BookController {
     @PostMapping("/{id}/like")
     public ResponseEntity<BookFavoriteResponseDto> toggleLike(
             @PathVariable Long id,
-            @AuthenticationPrincipal String userId
-    ) {
-        Long currentUserId = Long.parseLong(userId);
-
+            @AuthenticationPrincipal String userId) {
+        Long currentUserId = getCurrentUserId(userId);
         boolean isLiked = bookService.toggleLike(id, currentUserId);
 
         Book book = bookService.findById(id);
@@ -122,5 +121,13 @@ public class BookController {
         bookService.updateCoverImage(id, pureUrl);
 
         return ResponseEntity.ok().build();
+    }
+
+    private Long getCurrentUserId(String userId) {
+        if (userId == null || userId.isBlank()) {
+            throw new LoginRequiredException("로그인이 필요합니다.");
+        }
+
+        return Long.parseLong(userId);
     }
 }
