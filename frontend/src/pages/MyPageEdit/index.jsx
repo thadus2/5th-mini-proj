@@ -15,7 +15,8 @@ export default function MyPageEdit() {
         age: '',
         email: '',
         phoneNumber: '',
-        address: ''
+        address: '',
+        userProfileImage: ''
     });
 
     const [toast, setToast] = useState({
@@ -33,20 +34,14 @@ export default function MyPageEdit() {
 
     const getAuthHeader = () => {
         const token = getCookie('accessToken');
-
         if (!token) return null;
-
-        return {
-            Authorization: `Bearer ${token}`
-        };
+        return { Authorization: `Bearer ${token}` };
     };
 
     const getErrorMessage = async (response, fallbackMessage) => {
         try {
             const text = await response.text();
-
             if (!text) return fallbackMessage;
-
             try {
                 const json = JSON.parse(text);
                 return json.message || json.error || fallbackMessage;
@@ -64,33 +59,22 @@ export default function MyPageEdit() {
 
     const loadMyInfo = async () => {
         const authHeader = getAuthHeader();
-
         if (!authHeader) {
             showToast('로그인이 필요한 페이지입니다.', 'warning');
-
-            setTimeout(() => {
-                navigate('/sign-in');
-            }, 700);
-
+            setTimeout(() => { navigate('/sign-in'); }, 700);
             return;
         }
 
         try {
             const response = await fetch(USER_ME_API, {
                 method: 'GET',
-                headers: {
-                    ...authHeader
-                }
+                headers: { ...authHeader }
             });
 
             if (response.status === 401 || response.status === 403) {
                 deleteCookie('accessToken');
                 showToast('로그인 정보가 만료되었습니다. 다시 로그인해 주세요.', 'error');
-
-                setTimeout(() => {
-                    navigate('/sign-in');
-                }, 700);
-
+                setTimeout(() => { navigate('/sign-in'); }, 700);
                 return;
             }
 
@@ -108,7 +92,8 @@ export default function MyPageEdit() {
                 age: data.age || '',
                 email: data.email || '',
                 phoneNumber: data.phoneNumber || '',
-                address: data.address || ''
+                address: data.address || '',
+                userProfileImage: data.userProfileImage || ''
             }));
         } catch (error) {
             console.error('회원 정보 조회 실패:', error);
@@ -116,13 +101,23 @@ export default function MyPageEdit() {
         }
     };
 
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setForm(prev => ({
+                ...prev,
+                userProfileImage: reader.result
+            }));
+        };
+        reader.readAsDataURL(file);
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        setForm(prev => ({
-            ...prev,
-            [name]: value
-        }));
+        setForm(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
@@ -134,7 +129,6 @@ export default function MyPageEdit() {
         }
 
         const authHeader = getAuthHeader();
-
         if (!authHeader) {
             showToast('로그인이 필요한 기능입니다.', 'warning');
             navigate('/sign-in');
@@ -155,7 +149,8 @@ export default function MyPageEdit() {
                     age: form.age === '' ? null : Number(form.age),
                     email: form.email,
                     phoneNumber: form.phoneNumber,
-                    address: form.address
+                    address: form.address,
+                    userProfileImage: form.userProfileImage
                 })
             });
 
@@ -166,10 +161,7 @@ export default function MyPageEdit() {
             }
 
             showToast('회원 정보가 수정되었습니다.', 'success');
-
-            setTimeout(() => {
-                navigate('/my-page');
-            }, 700);
+            setTimeout(() => { navigate('/my-page'); }, 700);
         } catch (error) {
             console.error('회원 정보 수정 실패:', error);
             showToast('서버와 통신 중 오류가 발생했습니다.', 'error');
@@ -199,6 +191,28 @@ export default function MyPageEdit() {
 
                 <section className="mypage-books-section">
                     <form className="mypage-edit-form" onSubmit={handleSubmit}>
+                        
+                        <div className="mypage-input-group full" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '24px' }}>
+                            <label style={{ alignSelf: 'flex-start' }}>프로필 사진 수정</label>
+                            <div className="profile-image" style={{ overflow: 'hidden', backgroundColor: '#4b3f53' }}>
+                                {form.userProfileImage ? (
+                                    <img src={form.userProfileImage} alt="미리보기" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                ) : (
+                                    <span style={{ fontSize: '13px', fontWeight: '700' }}>{form.nickName ? form.nickName.slice(0, 1).toUpperCase() : 'U'}</span>
+                                )}
+                            </div>
+                            <input 
+                                type="file" 
+                                accept="image/*" 
+                                id="profile-upload"
+                                onChange={handleImageChange}
+                                style={{ display: 'none' }} 
+                            />
+                            <label htmlFor="profile-upload" className="mypage-logout-btn" style={{ cursor: 'pointer', fontSize: '12px', padding: '8px 16px', height: 'auto' }}>
+                                사진 변경하기
+                            </label>
+                        </div>
+
                         <div className="mypage-input-group full">
                             <label>현재 비밀번호 확인 *</label>
                             <input

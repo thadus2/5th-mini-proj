@@ -15,6 +15,7 @@ public class UserInfoResponseDto {
     private final String email;
     private final String phoneNumber;
     private final String address;
+    private final String userProfileImage;
 
     public UserInfoResponseDto(User user) {
         this.userId = user.getUserId();
@@ -25,5 +26,6 @@ public class UserInfoResponseDto {
         this.email = user.getEmail();
         this.phoneNumber = user.getPhoneNumber();
         this.address = user.getAddress();
+        this.userProfileImage = user.getUserProfileImage();
     }
 }
