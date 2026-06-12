@@ -34,7 +34,9 @@ public class BookController {
 
     // 단건 조회
     @GetMapping("/{id}")
-    public ResponseEntity<BookDetailResponseDto> getBookDetail(@PathVariable Long id) {
+    public ResponseEntity<BookDetailResponseDto> getBookDetail(
+            @PathVariable Long id
+    ) {
         return ResponseEntity.ok(bookService.getBookDetail(id));
     }
 
