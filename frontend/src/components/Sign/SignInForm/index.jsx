@@ -3,19 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import './style.css';
 import { SIGNIN_API } from '../../../apis/api';
 import Toast from '../../Books/Toast';
-
+import { setCookie } from '../../../utils/cookie';
 
 export default function SignInForm() {
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
-
-    const setTokenCookie = (name, value, maxAgeMs) => {
-        const expires = new Date();
-        expires.setTime(expires.getTime() + maxAgeMs);
-        document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires.toUTCString()}; path=/; SameSite=Strict`;
-    };
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -40,10 +34,11 @@ export default function SignInForm() {
             if (response.ok) {
                 const data = await response.json();
 
-                if (data.accessToken) {
-                    setTokenCookie('accessToken', data.accessToken, MAX_AGE_MS);
-                }
-
+                setCookie(
+                    'accessToken',
+                    data.accessToken || `${data.userId}-${data.nickname}`,  // 백엔드 accessToken 미제공 시 로그인 상태 확인용 임시 토큰
+                    MAX_AGE_MS
+                );
                 alert('로그인에 성공하였습니다. 환영합니다! 🎉');
 
                 navigate('/');
