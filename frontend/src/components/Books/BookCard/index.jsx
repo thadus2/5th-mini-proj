@@ -15,7 +15,11 @@ export default function BookCard({
     onCardClick,
     isChecked,
     onSelectToggle,
+    onImageView,
+    enableTilt = false,
 }) {
+    const imageSrc = coverImgUrl ? coverImgUrl : defaultImg;
+
     const handleCardClick = () => {
         if (onCardClick) {
             onCardClick(bookId);
@@ -29,11 +33,50 @@ export default function BookCard({
         }
     };
 
+    const handleMouseMove = (e) => {
+        if (!enableTilt) return;
+
+        const card = e.currentTarget;
+        const rect = card.getBoundingClientRect();
+
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+
+        const rotateX = ((centerY - y) / centerY) * 6;
+        const rotateY = ((x - centerX) / centerX) * 6;
+
+        card.style.setProperty('--card-rotate-x', `${rotateX}deg`);
+        card.style.setProperty('--card-rotate-y', `${rotateY}deg`);
+    };
+
+    const handleMouseLeave = (e) => {
+        if (!enableTilt) return;
+
+        const card = e.currentTarget;
+
+        card.style.setProperty('--card-rotate-x', '0deg');
+        card.style.setProperty('--card-rotate-y', '0deg');
+    };
+
+    const handleImageClick = (e) => {
+        e.stopPropagation();
+
+        if (onImageView) {
+            onImageView(imageSrc, title || '도서 표지');
+        }
+    };
+
     return (
         <article
-            className={`book-card ${isChecked ? 'selected' : ''}`}
+            data-book-id={bookId}
+            className={`book-card ${isChecked ? 'selected' : ''} ${enableTilt ? 'tilt-enabled' : ''}`}
             onClick={handleCardClick}
             onKeyDown={handleCardKeyDown}
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
             role="button"
             tabIndex={0}
         >
@@ -51,13 +94,28 @@ export default function BookCard({
                 }}
             />
 
-            <div className="image-wrapper">
+            <div
+                className="image-wrapper"
+                role="button"
+                tabIndex={0}
+                onClick={handleImageClick}
+                onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleImageClick(e);
+                    }
+                }}
+            >
                 <span className="genre-badge">{genre || '장르 없음'}</span>
 
                 <img
-                    src={coverImgUrl ? coverImgUrl : defaultImg}
+                    src={imageSrc}
                     alt={title || '도서 표지'}
                 />
+
+                <div className="book-image-view-overlay">
+                    <span className="book-image-view-btn">보기</span>
+                </div>
             </div>
 
             <div className="content-box">
