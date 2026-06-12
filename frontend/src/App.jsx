@@ -14,6 +14,7 @@ import NotFoundPage from './pages/NotFoundPage';
 import Toast from './components/Books/Toast';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
+import MyPage from './pages/MyPage';
 
 export default function App() {
     const [posts, setPosts] = useState([]);
@@ -22,6 +23,7 @@ export default function App() {
     const [selectedIds, setSelectedIds] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState('');
     const [sortBy, setSortBy] = useState('latest');
+    const [viewMode, setViewMode] = useState('card');
 
     const [isGenreFilterOpen, setIsGenreFilterOpen] = useState(false);
     const [isSortFilterOpen, setIsSortFilterOpen] = useState(false);
@@ -193,7 +195,7 @@ export default function App() {
 
         try {
             await Promise.all(
-                selectedIds.map(id => 
+                selectedIds.map(id =>
                     fetch(`${BOOK_API}/${id}`, { method: 'DELETE' })
                 )
             );
@@ -251,22 +253,6 @@ export default function App() {
         }
     };
 
-    // const handleViewsPlus = async (id) => {
-    //     try {
-    //         const book = posts.find(p => p.bookId === id);
-    //         const res = await fetch(`${BOOK_API}/${id}/views`, {
-    //             method:'PATCH',
-    //             // headers: {'Content-Type': 'application/json'},
-    //         });
-
-    //         setPosts(posts.map(p => 
-    //             p.bookId === id ? { ...p, viewCount: (p.viewCount || 0) + 1}
-    //             : p));
-    //     } catch(err) {
-    //         console.error(err);
-    //     }
-    // };
-
     const handleLikesToggle = async (id) => {
         const likedKey = `liked-book-${id}`;
         const alreadyLiked = sessionStorage.getItem(likedKey) === 'true';
@@ -294,7 +280,7 @@ export default function App() {
             }
 
             setPosts(prevPosts =>
-                prevPosts.map(p =>p.bookId == id? { ...p, likeCount: update.likeCount }: p)
+                prevPosts.map(p => p.bookId == id ? { ...p, likeCount: update.likeCount } : p)
             );
 
             return {
@@ -336,6 +322,19 @@ export default function App() {
         return <p>로딩중 입니다...</p>;
     }
 
+    const filteredPosts = posts
+        .filter(post =>
+            post.title && post.title.includes(searchKeyword)
+        )
+        .filter(post =>
+            selectedGenre === '' || post.genre === selectedGenre
+        )
+        .sort((a, b) => {
+            if (sortBy === 'likes') return (b.likeCount || 0) - (a.likeCount || 0);
+            if (sortBy === 'views') return (b.viewCount || 0) - (a.viewCount || 0);
+            return (b.bookId || 0) - (a.bookId || 0);
+        });
+
     return (
         <HashRouter>
             <Toast message={toast.message} type={toast.type} />
@@ -346,6 +345,7 @@ export default function App() {
                 <main className="app-main">
                     <Routes>
                         <Route path="/" element={<MainPage />} />
+                        <Route path="/my-page" element={<MyPage />} />
 
                         <Route path="/books" element={
                             <div className="book-list-page">
@@ -445,6 +445,24 @@ export default function App() {
                                                 onChange={(e) => setSearchKeyword(e.target.value)}
                                             />
                                         </form>
+
+                                        <div className="book-view-mode-group">
+                                            <button
+                                                type="button"
+                                                className={`book-view-mode-btn ${viewMode === 'card' ? 'active' : ''}`}
+                                                onClick={() => setViewMode('card')}
+                                            >
+                                                카드 보기
+                                            </button>
+
+                                            <button
+                                                type="button"
+                                                className={`book-view-mode-btn ${viewMode === 'circle' ? 'active' : ''}`}
+                                                onClick={() => setViewMode('circle')}
+                                            >
+                                                360 보기
+                                            </button>
+                                        </div>
                                     </div>
 
                                     <div className="book-list-actions">
@@ -462,21 +480,10 @@ export default function App() {
                                 </div>
 
                                 <BookList
-                                    posts={posts
-                                        .filter(post =>
-                                            post.title && post.title.includes(searchKeyword)
-                                        )
-                                        .filter(post =>
-                                            selectedGenre === '' || post.genre === selectedGenre
-                                        )
-                                        .sort((a, b) => {
-                                            if (sortBy === 'likes') return (b.likeCount || 0) - (a.likeCount || 0);
-                                            if (sortBy === 'views') return (b.viewCount || 0) - (a.viewCount || 0);
-                                            return (b.bookId || 0) - (a.bookId || 0);
-                                        })
-                                    }
+                                    posts={filteredPosts}
                                     selectedIds={selectedIds}
                                     onSelectToggle={handleSelectToggle}
+                                    viewMode={viewMode}
                                 />
                             </div>
                         } />
@@ -520,15 +527,8 @@ export default function App() {
                             }
                         />
 
-                        <Route 
-                            path='/sign-in'
-                            element={<SignInPage />}
-                        />
-
-                        <Route 
-                            path='/sign-up'
-                            element={<SignUpPage />}
-                        />
+                        <Route path="/sign-in" element={<SignInPage />} />
+                        <Route path="/sign-up" element={<SignUpPage />} />
 
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>

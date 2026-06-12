@@ -1,0 +1,517 @@
+/* =========================================
+   MyPage
+========================================= */
+
+.mypage-container {
+    width: 100%;
+    min-height: calc(100vh - 118px);
+    padding: 34px 0 84px;
+
+    background: transparent;
+    color: var(--color-text);
+}
+
+/* =========================================
+   Hero
+========================================= */
+
+.mypage-hero {
+    width: min(var(--site-max-width), calc(100% - var(--site-padding-desktop)));
+    margin: 0 auto 24px;
+    padding: 34px 38px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 28px;
+
+    background:
+        radial-gradient(circle at 12% 20%, rgba(107, 82, 128, 0.1), transparent 34%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 255, 255, 0.78));
+    border: 1px solid var(--color-border);
+    border-radius: 30px;
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(16px);
+}
+
+.mypage-eyebrow {
+    margin: 0 0 10px;
+
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.mypage-hero h2 {
+    margin: 0 0 10px;
+
+    color: var(--color-text-strong);
+    font-size: clamp(30px, 3.4vw, 46px);
+    line-height: 1.12;
+    font-weight: 900;
+    letter-spacing: -0.06em;
+}
+
+.mypage-hero p:last-child {
+    margin: 0;
+
+    color: var(--color-text-muted);
+    font-size: 15px;
+    line-height: 1.7;
+    font-weight: 550;
+    letter-spacing: -0.025em;
+}
+
+.mypage-logout-btn {
+    height: 42px;
+    padding: 0 20px;
+
+    flex-shrink: 0;
+
+    border-radius: 999px;
+    border: 1px solid rgba(167, 84, 97, 0.18);
+    background: rgba(255, 247, 249, 0.95);
+    color: #a15364;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.mypage-logout-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 240, 243, 1);
+    border-color: rgba(167, 84, 97, 0.24);
+    color: #953f54;
+    box-shadow: 0 10px 20px rgba(167, 84, 97, 0.08);
+}
+
+/* =========================================
+   Main Grid
+========================================= */
+
+.mypage-grid {
+    width: min(var(--site-max-width), calc(100% - var(--site-padding-desktop)));
+    margin: 0 auto 28px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    gap: 24px;
+}
+
+/* =========================================
+   Profile Card
+========================================= */
+
+.mypage-profile-card {
+    padding: 34px 36px;
+
+    display: grid;
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 26px 24px;
+    align-items: center;
+
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(77, 62, 88, 0.1);
+    box-shadow:
+        0 24px 54px rgba(61, 50, 70, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(16px);
+}
+
+.profile-avatar {
+    width: 86px;
+    height: 86px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 28px;
+    background:
+        radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.36), transparent 34%),
+        linear-gradient(135deg, #6a5876, #4f405b);
+    color: #ffffff;
+
+    font-size: 34px;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+
+    box-shadow: 0 16px 32px rgba(83, 61, 101, 0.24);
+}
+
+.profile-main {
+    min-width: 0;
+}
+
+.profile-label {
+    margin: 0 0 8px;
+
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.profile-main h3 {
+    margin: 0 0 8px;
+
+    color: var(--color-text-strong);
+    font-size: 30px;
+    line-height: 1.15;
+    font-weight: 900;
+    letter-spacing: -0.055em;
+}
+
+.profile-main p:last-child {
+    margin: 0;
+
+    color: var(--color-text-muted);
+    font-size: 14px;
+    font-weight: 550;
+    line-height: 1.7;
+    letter-spacing: -0.025em;
+}
+
+.profile-info-list {
+    grid-column: 1 / -1;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+}
+
+.profile-info-item {
+    padding: 16px 18px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    border-radius: 18px;
+    background: rgba(252, 250, 248, 0.78);
+    border: 1px solid rgba(78, 65, 89, 0.08);
+}
+
+.profile-info-item span {
+    color: #8a7f91;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+}
+
+.profile-info-item strong {
+    color: #433847;
+    font-size: 14px;
+    font-weight: 750;
+    line-height: 1.45;
+    letter-spacing: -0.025em;
+    word-break: break-all;
+}
+
+/* =========================================
+   Summary Cards
+========================================= */
+
+.mypage-summary-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.summary-card {
+    min-height: 132px;
+    padding: 24px 26px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border-radius: 26px;
+    background:
+        radial-gradient(circle at 88% 16%, rgba(190, 151, 103, 0.14), transparent 34%),
+        rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(77, 62, 88, 0.1);
+    box-shadow:
+        0 18px 42px rgba(61, 50, 70, 0.07),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86);
+    backdrop-filter: blur(16px);
+}
+
+.summary-card span {
+    margin-bottom: 8px;
+
+    color: var(--color-text-muted);
+    font-size: 13px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+}
+
+.summary-card strong {
+    margin-bottom: 8px;
+
+    color: var(--color-primary);
+    font-size: 34px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+}
+
+.summary-card p {
+    margin: 0;
+
+    color: #817487;
+    font-size: 13px;
+    font-weight: 550;
+    letter-spacing: -0.02em;
+}
+
+/* =========================================
+   My Books
+========================================= */
+
+.mypage-books-section {
+    width: min(var(--site-max-width), calc(100% - var(--site-padding-desktop)));
+    margin: 0 auto;
+    padding: 30px 32px 34px;
+
+    border-radius: 30px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(77, 62, 88, 0.1);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(16px);
+}
+
+.mypage-section-title {
+    margin-bottom: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.mypage-section-title h3 {
+    margin: 0;
+
+    color: var(--color-text-strong);
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 900;
+    letter-spacing: -0.055em;
+}
+
+.mypage-section-title > span {
+    min-width: 54px;
+    height: 38px;
+    padding: 0 14px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+    background: rgba(103, 82, 122, 0.11);
+    color: #5c4c69;
+
+    font-size: 13px;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+}
+
+.mypage-book-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.mypage-book-card {
+    padding: 20px 22px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+
+    border-radius: 20px;
+    background: rgba(252, 250, 248, 0.84);
+    border: 1px solid rgba(78, 65, 89, 0.08);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.mypage-book-card:hover {
+    transform: translateY(-2px);
+    background: #ffffff;
+    box-shadow: 0 14px 26px rgba(61, 50, 70, 0.08);
+}
+
+.book-genre {
+    margin: 0 0 8px;
+
+    color: var(--color-primary);
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: -0.02em;
+}
+
+.mypage-book-card h4 {
+    margin: 0 0 6px;
+
+    color: #3f3348;
+    font-size: 18px;
+    line-height: 1.35;
+    font-weight: 850;
+    letter-spacing: -0.04em;
+}
+
+.book-author {
+    margin: 0;
+
+    color: #817487;
+    font-size: 13px;
+    font-weight: 550;
+    letter-spacing: -0.02em;
+}
+
+.book-stats {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.book-stats span {
+    height: 34px;
+    padding: 0 12px;
+
+    display: inline-flex;
+    align-items: center;
+
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(78, 65, 89, 0.08);
+
+    color: #5d5264;
+    font-size: 12px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+}
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 960px) {
+    .mypage-container {
+        padding: 28px 0 76px;
+    }
+
+    .mypage-hero,
+    .mypage-grid,
+    .mypage-books-section {
+        width: calc(100% - var(--site-padding-tablet));
+    }
+
+    .mypage-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mypage-summary-area {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .mypage-container {
+        padding: 20px 0 68px;
+    }
+
+    .mypage-hero,
+    .mypage-grid,
+    .mypage-books-section {
+        width: calc(100% - var(--site-padding-mobile));
+    }
+
+    .mypage-hero {
+        padding: 28px 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        border-radius: 24px;
+    }
+
+    .mypage-logout-btn {
+        width: 100%;
+    }
+
+    .mypage-profile-card {
+        padding: 28px 22px;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        border-radius: 24px;
+    }
+
+    .profile-avatar {
+        width: 76px;
+        height: 76px;
+        border-radius: 24px;
+        font-size: 30px;
+    }
+
+    .profile-main h3 {
+        font-size: 26px;
+    }
+
+    .profile-info-list {
+        grid-template-columns: 1fr;
+    }
+
+    .mypage-summary-area {
+        grid-template-columns: 1fr;
+    }
+
+    .summary-card {
+        min-height: auto;
+        padding: 22px;
+        border-radius: 22px;
+    }
+
+    .mypage-books-section {
+        padding: 26px 20px 28px;
+        border-radius: 24px;
+    }
+
+    .mypage-section-title {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .mypage-book-card {
+        align-items: flex-start;
+        flex-direction: column;
+        border-radius: 18px;
+    }
+
+    .book-stats {
+        flex-wrap: wrap;
+    }
+}
