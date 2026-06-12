@@ -20,6 +20,10 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true
+jwt:
+  secret: c3ByaW5nLWJvb3Qtand0LXNlY3JldC1rZXktZXhhbXBsZS1jdXN0b20ta2V5LXNpemUtbWluaW11bQ==
+  access-token-expiration: 3600000

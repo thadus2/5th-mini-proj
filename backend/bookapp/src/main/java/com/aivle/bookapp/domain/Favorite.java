@@ -28,7 +28,12 @@ public class Favorite {
     @JoinColumn(name = "book_id", nullable = false)
     private Book book;
 
-    @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
+
+    public Favorite(User user, Book book) {
+        this.user = user;
+        this.book = book;
+        this.createdAt = LocalDateTime.now();
+    }
 }

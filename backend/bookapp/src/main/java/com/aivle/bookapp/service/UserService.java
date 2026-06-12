@@ -1,8 +1,10 @@
 package com.aivle.bookapp.service;
 
+import com.aivle.bookapp.config.jwt.JwtTokenProvider;
 import com.aivle.bookapp.domain.User;
 import com.aivle.bookapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,27 +14,32 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 회원가입
     @Transactional
     public User signup(User user) {
         validateDuplicateUser(user);
 
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+
         return userRepository.save(user);
     }
 
     // 로그인
-    public User signin(String loginId, String password) {
+    public String signin(String loginId, String password) {
         // 아이디 검증
         User user = userRepository.findByLoginId(loginId)
                 .orElseThrow(() -> new IllegalStateException("비밀번호 혹은 ID 오류"));
 
-        // 비밀번호 검증 (평문 비교)
-        if (!user.getPassword().equals(password)) {
+        // 비밀번호 검증
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new IllegalStateException("비밀번호 혹은 ID 오류");
         }
 
-        return user;
+        return jwtTokenProvider.createToken(user.getUserId(), user.getLoginId());
     }
 
     // 중복 검사

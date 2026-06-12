@@ -7,12 +7,11 @@ function BookCreatePage({ onAdd }) {
   const navigate = useNavigate();
 
   const handleFormSubmit = async (newBook) => {
-    await onAdd(newBook);
+    return await onAdd(newBook);
   };
 
   return (
     <div className="book-create-page">
-      <h2>✍️ 새 도서 등록하기</h2>
       <BookForm onAdd={handleFormSubmit} />
     </div>
   );

@@ -2,50 +2,52 @@ import React from 'react';
 import defaultImg from '../../../assets/images/default-background.png';
 import './style.css';
 
-export default function BookCard(
-        {
-            bookId,
-            title,
-            author,
-            genre,
-            summary,
-            likeCount,
-            viewCount,
-            coverImgUrl,
-            onCardClick,
-            isChecked,
-            onSelectToggle,
-        }
-    ) {
-    const handleClick = () => {
+export default function BookCard({
+    bookId,
+    title,
+    author,
+    publisher,
+    genre,
+    summary,
+    likeCount,
+    viewCount,
+    coverImgUrl,
+    onCardClick,
+    isChecked,
+    onSelectToggle,
+}) {
+    const handleCardClick = () => {
         if (onCardClick) {
             onCardClick(bookId);
         }
     };
 
+    const handleCardKeyDown = (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            handleCardClick();
+        }
+    };
+
     return (
-        <button className="book-card" onClick={handleClick}>
-            <input 
-                type="checkbox" 
+        <article
+            className={`book-card ${isChecked ? 'selected' : ''}`}
+            onClick={handleCardClick}
+            onKeyDown={handleCardKeyDown}
+            role="button"
+            tabIndex={0}
+        >
+            <input
+                type="checkbox"
                 className="book-select-checkbox"
                 checked={isChecked}
-                
+                aria-label="도서 선택"
                 onChange={(e) => {
                     e.stopPropagation();
-                    onSelectToggle(bookId);  
+                    onSelectToggle(bookId);
                 }}
-    
                 onClick={(e) => {
-                    e.stopPropagation(); 
-                }}
-                style={{
-                    position: 'absolute',
-                    top: '15px',
-                    right: '15px',
-                    zIndex: 10,
-                    width: '20px',
-                    height: '20px',
-                    cursor: 'pointer'
+                    e.stopPropagation();
                 }}
             />
 
@@ -60,14 +62,20 @@ export default function BookCard(
 
             <div className="content-box">
                 <h3 className="title">{title || '제목 없음'}</h3>
-                <p className="author">{author || '작가 없음'}</p>
+
+                <div className="book-submeta">
+                    <span className="author">{author || '작가 없음'}</span>
+                    <span className="submeta-dot" />
+                    <span className="publisher">{publisher || '출판사 정보 없음'}</span>
+                </div>
+
                 <p className="summary">{summary || '요약 정보가 없습니다.'}</p>
 
                 <div className="card-footer">
-                    <span className="stat">❤️ {likeCount ?? 0}</span>
-                    <span className="stat">👀 {viewCount ?? 0}</span>
+                    <span className="stat like-stat">좋아요 {likeCount ?? 0}</span>
+                    <span className="stat view-stat">조회 {viewCount ?? 0}</span>
                 </div>
             </div>
-        </button>
+        </article>
     );
 }
