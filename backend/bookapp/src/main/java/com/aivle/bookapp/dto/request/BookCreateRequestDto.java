@@ -30,7 +30,6 @@ public class BookCreateRequestDto {
         book.setAuthor(this.author);
         book.setContent(this.content);
         book.setPublisher(this.publisher);
-        book.setPrice(this.price);
         book.setGenre(this.genre);
         book.setSummary(this.summary);
         book.setCoverImgUrl(this.coverImgUrl);

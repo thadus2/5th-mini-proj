@@ -36,8 +36,6 @@ public class Book {
 
     private String publisher;
 
-    private Integer price;
-
     private String recentPublished;
     private String recentUpdated;
 
