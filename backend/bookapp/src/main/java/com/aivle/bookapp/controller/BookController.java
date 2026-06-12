@@ -61,12 +61,11 @@ public class BookController {
     }
 
     // 좋아요 토글
-    @PostMapping("/{id}/likes")
+    @PostMapping("/{id}/like")
     public ResponseEntity<BookFavoriteResponseDto> toggleLike(
             @PathVariable Long id,
             @AuthenticationPrincipal String userId) {
         Long currentUserId = Long.parseLong(userId);
-
         boolean isLiked = bookService.toggleLike(id, currentUserId);
 
         Book book = bookService.findById(id);

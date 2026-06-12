@@ -99,6 +99,9 @@ public class BookService {
 
     @Transactional
     public boolean toggleLike(Long bookId, Long userId) {
+        if (userId == null) {
+            throw new IllegalStateException("로그인이 필요합니다.");
+        }
         Book book = findById(bookId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
