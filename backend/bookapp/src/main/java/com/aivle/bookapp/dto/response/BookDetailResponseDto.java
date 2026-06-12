@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 public class BookDetailResponseDto {
     private Long bookId;
+    private Long userId;
     private String title;
     private String author;
     private String publisher;
@@ -21,6 +22,7 @@ public class BookDetailResponseDto {
     public static BookDetailResponseDto from(Book book) {
         return BookDetailResponseDto.builder()
                 .bookId(book.getBookId())
+                .userId(book.getUser() != null ? book.getUser().getUserId() : null)
                 .title(book.getTitle())
                 .author(book.getAuthor())
                 .publisher(book.getPublisher())

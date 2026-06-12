@@ -5,22 +5,25 @@ import ViewIcon from '../../../assets/images/view-icon.png';
 import './style.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BOOK_API } from '../../../apis/api';
+import { getCookie, parseJwt } from '../../../utils/cookie';
 
 export default function BookDetail({ onDelete, onLikesToggle }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [post, setPost] = useState();
-
     const { bookId } = useParams();
-
-    // const post = posts.find(p => p.bookId == bookId)
-
     const [isLiked, setIsLiked] = useState(false);
-
     const isViewIncremented = useRef(false);
 
-    useEffect(() => {
+    // 1. 현재 로그인한 사용자 ID 추출
+    const token = getCookie('accessToken');
+    const decodedToken = token ? parseJwt(token) : null;
+    const currentUserId = decodedToken ? decodedToken.sub : null;
 
+    // 2. 작성자 본인 여부 확인 (userId가 문자열인지 숫자인지 모르므로 String으로 비교)
+    const isOwner = post && currentUserId && (currentUserId === String(post.userId));
+
+    useEffect(() => {
         let isMounted = true;
 
         const loadBookAndIncrementViews = async () => {
@@ -33,7 +36,7 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
                 if (!isViewIncremented.current) {
                     isViewIncremented.current = true;
-                    
+
                     const res = await fetch(`${BOOK_API}/${bookId}/views`, {
                         method: 'PATCH',
                     });
@@ -60,39 +63,24 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
         };
     }, [bookId]);
 
-    const loadBook = async () => {
-        try {
-            const response = await fetch(`${BOOK_API}/${bookId}`);
-            const data = await response.json();
-            setPost(data);
-
-            if (!isViewIncremented.current) {
-                isViewIncremented.current = true;
-                await handleViewsPlus(bookId);
-            }
-        } catch (error) {
-            console.error("데이터 로딩 실패:", error);
-        }
-    };
-
     const handleLikeClick = async () => {
         if (!post) return;
-
         const result = await onLikesToggle(post.bookId);
-
         if (result?.success) {
             setIsLiked(result.isLiked);
         }
     };
-  const handleClickDelete = async(bookId) => {
-    if (window.confirm("정말 이 도서를 삭제하시겠습니까?")) {
-          await onDelete(bookId);
-          navigate('/books');
+
+    const handleClickDelete = async(bookId) => {
+        if (window.confirm("정말 이 도서를 삭제하시겠습니까?")) {
+            await onDelete(bookId);
+            navigate('/books');
         }
-  }
-  const handleAiGen = () => {
+    };
+
+    const handleAiGen = () => {
         navigate(`/books/${bookId}/ai-gen`);
-  }
+    };
 
     if (!post) {
         return (
@@ -113,21 +101,24 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
                         목록으로 돌아가기
                     </button>
 
-                    <div className="book-actions-right">
-                        <button
-                            className="book-edit-button"
-                            onClick={() => navigate(`/books/${bookId}/edit`)}
-                        >
-                            수정
-                        </button>
+                    {/* 여기서 isOwner 여부에 따라 버튼 그룹을 조건부 렌더링합니다 */}
+                    {isOwner && (
+                        <div className="book-actions-right">
+                            <button
+                                className="book-edit-button"
+                                onClick={() => navigate(`/books/${bookId}/edit`)}
+                            >
+                                수정
+                            </button>
 
-                        <button
-                            className="book-delete-button"
-                            onClick={() => handleClickDelete(bookId)}
-                        >
-                            삭제
-                        </button>
-                    </div>
+                            <button
+                                className="book-delete-button"
+                                onClick={() => handleClickDelete(bookId)}
+                            >
+                                삭제
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 <div className="book-detail-layout">
@@ -178,7 +169,6 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
                             <div className="section-title-row">
                                 <h4>요약</h4>
                             </div>
-
                             <p className="book-summary">
                                 {post.summary || '요약 정보가 없습니다.'}
                             </p>
@@ -191,7 +181,6 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
                 <div className="section-title-row">
                     <h4>본문 내용</h4>
                 </div>
-
                 <p className="book-content">
                     {post.content || '본문 내용이 없습니다.'}
                 </p>
