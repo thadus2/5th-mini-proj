@@ -206,10 +206,15 @@ export default function App() {
     };
 
     const handleEdit = async (id, edited) => {
+        const token = getAccessTokenFromCookie();
+
         try {
             const res = await fetch(`${BOOK_API}/${id}`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                 },
                 body: JSON.stringify(edited)
             });
 
