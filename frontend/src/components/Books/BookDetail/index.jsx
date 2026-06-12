@@ -8,7 +8,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BOOK_API } from '../../../apis/api';
 import Comment from '../../Comment';
 
-export default function BookDetail({ onDelete, onLikesToggle }) {
+export default function BookDetail({ onLikesToggle }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [post, setPost] = useState();
@@ -37,6 +37,32 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
     const [isLiked, setIsLiked] = useState(false);
 
+    const handleDelete = async (id) => {
+
+        const token = getAccessTokenFromCookie();
+
+        try {
+            const res = await fetch(`${BOOK_API}/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!res.ok) {
+                alert('도서 삭제에 실패했습니다.');
+                return false;
+            }
+
+            alert('도서 삭제가 완료되었습니다.');
+            return true;
+        } catch (err) {
+            console.error(err);
+
+            alert('도서 삭제에 실패했습니다.');
+            return false;
+        }
+    };
 
     const isViewIncremented = useRef(false);
 
@@ -46,10 +72,10 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
         const loadBookAndIncrementViews = async () => {
             try {
-                const token = getAccessTokenFromCookie(); // 🌟 로그인 토큰 체크
+                const token = getAccessTokenFromCookie();
                 const headers = {};
                 if (token) {
-                    headers["Authorization"] = `Bearer ${token}`; // 🌟 토큰이 있다면 헤더에 얹어주기
+                    headers["Authorization"] = `Bearer ${token}`;
                 }
                 const response = await fetch(`${BOOK_API}/${bookId}`, { headers });
                 const data = await response.json();
@@ -140,7 +166,7 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
 
   const handleClickDelete = async(bookId) => {
     if (window.confirm("정말 이 도서를 삭제하시겠습니까?")) {
-          await onDelete(bookId);
+          await handleDelete(bookId);
           navigate('/books');
         }
   }

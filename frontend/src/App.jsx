@@ -33,6 +33,16 @@ export default function App() {
         type: 'success'
     });
 
+    const getAccessTokenFromCookie = () => {
+        const cookies = document.cookie.split("; ");
+
+        const accessTokenCookie = cookies.find((cookie) =>
+            cookie.startsWith("accessToken=")
+        );
+
+        return accessTokenCookie ? accessTokenCookie.split("=")[1] : null;
+    };
+
     const genreFilterOptions = [
         { label: '전체 장르', value: '' },
         { label: '소설/문학', value: '소설/문학' },
@@ -121,10 +131,15 @@ export default function App() {
     };
 
     const handleAddBook = async (newBook) => {
+        const token = getAccessTokenFromCookie();
+
         try {
             const res = await fetch(`${BOOK_API}`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                 },
                 body: JSON.stringify(newBook)
             });
 
@@ -159,29 +174,6 @@ export default function App() {
                 success: false,
                 message: '서버와 연결할 수 없습니다.'
             };
-        }
-    };
-
-    const handleDelete = async (id) => {
-        try {
-            const res = await fetch(`${BOOK_API}/${id}`, {
-                method: 'DELETE'
-            });
-
-            if (!res.ok) {
-                showToast('도서 삭제에 실패했습니다.', 'error');
-                return false;
-            }
-
-            await loadBookList();
-
-            showToast('도서 삭제가 완료되었습니다.', 'success');
-            return true;
-        } catch (err) {
-            console.error(err);
-
-            showToast('도서 삭제에 실패했습니다.', 'error');
-            return false;
         }
     };
 
@@ -492,7 +484,6 @@ export default function App() {
                             <BookRouteGuard>
                                 <BookDetail
                                     posts={posts}
-                                    onDelete={handleDelete}
                                     onLikesToggle={handleLikesToggle}
                                 />
                             </BookRouteGuard>
