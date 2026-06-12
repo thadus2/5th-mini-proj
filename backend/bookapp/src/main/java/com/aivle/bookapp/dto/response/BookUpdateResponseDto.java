@@ -10,7 +10,6 @@ public class BookUpdateResponseDto {
     private final String author;
     private final String content;
     private final String publisher;
-    private final Integer price;
     private final String genre;
     private final String summary;
     private final Integer viewCount;
@@ -23,7 +22,6 @@ public class BookUpdateResponseDto {
         this.author = book.getAuthor();
         this.content = book.getContent();
         this.publisher = book.getPublisher();
-        this.price = book.getPrice();
         this.genre = book.getGenre();
         this.summary = book.getSummary();
         this.viewCount = book.getViewCount();

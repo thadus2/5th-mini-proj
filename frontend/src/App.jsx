@@ -15,6 +15,11 @@ import Toast from './components/Books/Toast';
 import SignInPage from './pages/SignInPage';
 import SignUpPage from './pages/SignUpPage';
 import MyPage from './pages/MyPage';
+import MyPageEdit from './pages/MyPageEdit';
+import PasswordChangePage from './pages/PasswordChangePage';
+import { getCookie } from './utils/cookie';
+
+const PAGE_SIZE = 12;
 
 export default function App() {
     const [posts, setPosts] = useState([]);
@@ -24,6 +29,7 @@ export default function App() {
     const [selectedGenre, setSelectedGenre] = useState('');
     const [sortBy, setSortBy] = useState('latest');
     const [viewMode, setViewMode] = useState('card');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const [isGenreFilterOpen, setIsGenreFilterOpen] = useState(false);
     const [isSortFilterOpen, setIsSortFilterOpen] = useState(false);
@@ -64,6 +70,10 @@ export default function App() {
     useEffect(() => {
         loadBookList();
     }, []);
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchKeyword, selectedGenre, sortBy]);
 
     const showToast = (message, type = 'success') => {
         setToast({ message, type });
@@ -134,12 +144,14 @@ export default function App() {
         const token = getAccessTokenFromCookie();
 
         try {
+            const token = getCookie('accessToken');
+
             const res = await fetch(`${BOOK_API}`, {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                 },
+                },
                 body: JSON.stringify(newBook)
             });
 
@@ -253,10 +265,15 @@ export default function App() {
     };*/
 /*
     const handleEdit = async (id, edited) => {
+        const token = getAccessTokenFromCookie();
+
         try {
             const res = await fetch(`${BOOK_API}/${id}`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(edited)
             });
 
@@ -417,6 +434,17 @@ export default function App() {
             return (b.bookId || 0) - (a.bookId || 0);
         });
 
+    const totalPages = Math.max(1, Math.ceil(filteredPosts.length / PAGE_SIZE));
+    const safeCurrentPage = Math.min(currentPage, totalPages);
+
+    const pageStartIndex = (safeCurrentPage - 1) * PAGE_SIZE;
+    const pageEndIndex = pageStartIndex + PAGE_SIZE;
+
+    const paginatedPosts = filteredPosts.slice(pageStartIndex, pageEndIndex);
+
+    const pageStartNumber = filteredPosts.length === 0 ? 0 : pageStartIndex + 1;
+    const pageEndNumber = Math.min(pageEndIndex, filteredPosts.length);
+
     return (
         <HashRouter>
             <Toast message={toast.message} type={toast.type} />
@@ -427,7 +455,12 @@ export default function App() {
                 <main className="app-main">
                     <Routes>
                         <Route path="/" element={<MainPage />} />
-                        <Route path="/my-page" element={<MyPage />} />
+
+                        <Route path="/my-page" element={<MyPage posts={posts} />} />
+
+                        <Route path="/my-page/edit" element={<MyPageEdit />} />
+
+                        <Route path="/my-page/password" element={<PasswordChangePage />} />
 
                         <Route path="/books" element={
                             <div className="book-list-page">
@@ -545,15 +578,37 @@ export default function App() {
                                                 360 보기
                                             </button>
                                         </div>
+
+                                        <div className="book-page-control">
+                                            <button
+                                                type="button"
+                                                className="book-page-btn"
+                                                disabled={safeCurrentPage === 1}
+                                                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                            >
+                                                이전
+                                            </button>
+
+                                            <span className="book-page-info">
+                                                {safeCurrentPage} / {totalPages}
+                                            </span>
+
+                                            <button
+                                                type="button"
+                                                className="book-page-btn"
+                                                disabled={safeCurrentPage === totalPages}
+                                                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                            >
+                                                다음
+                                            </button>
+
+                                            <span className="book-page-count">
+                                                {pageStartNumber}-{pageEndNumber} / {filteredPosts.length}
+                                            </span>
+                                        </div>
                                     </div>
 
                                     <div className="book-list-actions">
-                                        <button
-                                            className={`book-delete-btn ${selectedIds.length > 0 ? 'has-selected' : ''}`}
-                                            onClick={handleMultipleDelete}
-                                        >
-                                            {selectedIds.length > 0 ? `선택 삭제 ${selectedIds.length}` : '삭제'}
-                                        </button>
 
                                         <Link to="/create" className="book-register-btn">
                                             도서 등록
@@ -562,7 +617,7 @@ export default function App() {
                                 </div>
 
                                 <BookList
-                                    posts={filteredPosts}
+                                    posts={paginatedPosts}
                                     selectedIds={selectedIds}
                                     onSelectToggle={handleSelectToggle}
                                     viewMode={viewMode}
@@ -593,6 +648,16 @@ export default function App() {
                                         posts={posts}
                                     />
                                 </BookRouteGuard>
+                            }
+                        />
+
+                        <Route
+                            path="/books/new/ai-gen"
+                            element={
+                                <AICoverGenPage
+                                    posts={posts}
+                                    onEdit={handleEdit}
+                                />
                             }
                         />
 
