@@ -7,11 +7,17 @@ import './style.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BOOK_API } from '../../../apis/api';
 import Comment from '../../Comment';
+import { getCookie, parseJwt } from '../../../utils/cookie';
 
 export default function BookDetail({ onLikesToggle }) {
     const location = useLocation();
     const navigate = useNavigate();
     const [post, setPost] = useState();
+
+    const token = getCookie('accessToken');
+    const decodedToken = token ? parseJwt(token) : null;
+    const currentUserId = decodedToken ? decodedToken.sub : null;
+    const isOwner = post && currentUserId && (String(currentUserId) === String(post.userId));
 
     //0612추가
     const getAccessTokenFromCookie = () => {
@@ -194,19 +200,12 @@ export default function BookDetail({ onLikesToggle }) {
                     </button>
 
                     <div className="book-actions-right">
-                        <button
-                            className="book-edit-button"
-                            onClick={() => navigate(`/books/${bookId}/edit`)}
-                        >
-                            수정
-                        </button>
-
-                        <button
-                            className="book-delete-button"
-                            onClick={() => handleClickDelete(bookId)}
-                        >
-                            삭제
-                        </button>
+                            {isOwner && (
+                                <>
+                                    <button className="book-edit-button" onClick={() => navigate(`/books/${bookId}/edit`)}>수정</button>
+                                    <button className="book-delete-button" onClick={() => handleClickDelete(bookId)}>삭제</button>
+                                </>
+                            )}
                     </div>
                 </div>
 
