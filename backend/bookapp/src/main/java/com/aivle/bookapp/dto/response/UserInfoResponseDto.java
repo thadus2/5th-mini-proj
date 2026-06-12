@@ -1,4 +1,4 @@
-package com.aivle.bookapp.dto.request;
+package com.aivle.bookapp.dto.response;
 
 import com.aivle.bookapp.domain.User;
 import lombok.Getter;

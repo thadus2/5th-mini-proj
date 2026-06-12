@@ -4,7 +4,7 @@ import com.aivle.bookapp.config.jwt.JwtTokenProvider;
 import com.aivle.bookapp.domain.User;
 import com.aivle.bookapp.dto.request.PasswordChangeRequestDto;
 
-import com.aivle.bookapp.dto.request.UserInfoResponseDto;
+import com.aivle.bookapp.dto.response.UserInfoResponseDto;
 import com.aivle.bookapp.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
