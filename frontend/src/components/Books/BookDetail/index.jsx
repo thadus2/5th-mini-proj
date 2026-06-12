@@ -5,6 +5,7 @@ import ViewIcon from '../../../assets/images/view-icon.png';
 import './style.css';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { BOOK_API } from '../../../apis/api';
+import Comment from '../../Comment';
 
 export default function BookDetail({ onDelete, onLikesToggle }) {
     const location = useLocation();
@@ -196,6 +197,8 @@ export default function BookDetail({ onDelete, onLikesToggle }) {
                     {post.content || '본문 내용이 없습니다.'}
                 </p>
             </div>
+
+            <Comment />
         </div>
     );
 }

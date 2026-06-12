@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,10 +50,13 @@ public class CommentService {
 
     @Transactional
     public void deleteComment(Long commentId, String loginId) {
+        Long userId = Long.valueOf(loginId);
+
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 댓글입니다."));
 
-        if (!comment.getUser().getLoginId().equals(loginId)) {
+        System.out.println("comment id: " + comment.getUser().getUserId() + "loginId: " + loginId);
+        if (!Objects.equals(comment.getUser().getUserId(), userId)) {
             throw new IllegalStateException("본인이 작성한 댓글만 삭제할 수 있습니다.");
         }
 
