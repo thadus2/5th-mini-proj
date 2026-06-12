@@ -1,53 +1,69 @@
 // Header.jsx
-import React, { useState } from 'react';
-import { Search, CircleUserRound } from 'lucide-react';
-import './style.css'; 
+import React, { useEffect, useState } from 'react';
+import './style.css';
 import Navigator from '../Navigator';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import LogoIcon from '../assets/image/logo.png';
+import { deleteCookie, getCookie } from '../../utils/cookie';
 
-function Header({ onSearchKeyword }) {
-  const [currentKeyword, setCurrentKeyword] = useState('');
+export default function Header() {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const location = useLocation();
 
-  const handleSearchKeyword = (e) => {
-    e.preventDefault();
-    onSearchKeyword(currentKeyword);
-  }
-  return (
-    <header className="header">
+    useEffect(() => {
+        const token = getCookie('accessToken');
+        setIsLoggedIn(!!token);
+    }, [location]);
 
-      <div className="header-left" onClick={() => navigate('/')}>
-        <img className='header-logo' src={LogoIcon} />
-        <h1>AI Books</h1>
-      </div>
+    const handleLogout = () => {
+        deleteCookie('accessToken');
+        setIsLoggedIn(false);
+        alert('로그아웃 되었습니다.');
+        navigate('/sign-in');
+    };
 
-      <Navigator />
+    return (
+        <header className="header">
+            <div className="header-inner">
+                <div className="header-left" onClick={() => navigate('/')}>
+                    <img className="header-logo" src={LogoIcon} alt="AI Books Logo" />
+                    <h1>AI Books</h1>
+                </div>
 
-      <div className="header-right">
+                <Navigator />
 
-        <div className="search-box">
-          <span>🔍</span>
+                <div className="header-right">
+                    {isLoggedIn ? (
+                        <>
+                            <button
+                                type="button"
+                                className="header-mypage-btn"
+                                onClick={() => navigate('/my-page')}
+                            >
+                                마이페이지
+                            </button>
 
-          <form onSubmit={handleSearchKeyword}> 
-            <input 
-              type='text'
-              placeholder='검색'
-              value={currentKeyword}
-              onChange={(e) => setCurrentKeyword(e.target.value)}
-            />
-          </form>
-        </div>
-
-        <button className="profile-button">
-          👤
-        </button>
-
-      </div>
-
-    </header>
-  );
+                            <button
+                                type="button"
+                                className="header-logout-btn"
+                                onClick={handleLogout}
+                            >
+                                로그아웃
+                            </button>
+                        </>
+                    ) : (
+                        <button
+                            type="button"
+                            className="header-login-btn"
+                            onClick={() => navigate('/sign-in')}
+                        >
+                            로그인
+                        </button>
+                    )}
+                </div>
+            </div>
+        </header>
+    );
 }
-
-export default Header

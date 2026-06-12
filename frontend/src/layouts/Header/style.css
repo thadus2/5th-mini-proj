@@ -1,119 +1,174 @@
+/* =========================================
+   Header
+========================================= */
 
 .header {
-  width: 100%;
-  height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    width: 100%;
+    height: 72px;
 
-  padding: 0 30px;
+    background: rgba(255, 255, 255, 0.78);
+    border-bottom: 1px solid rgba(77, 62, 88, 0.08);
 
-  background-color: #ffffff;
-
-  border-bottom: 1px solid #e5e5e5;
-
-  box-sizing: border-box;
-
-  position: sticky;
-  top: 0;
-  z-index: 100;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 8px 24px rgba(61, 50, 70, 0.045);
 }
 
-/* 왼쪽 로고 영역 */
+.header-inner {
+    width: min(var(--site-max-width), calc(100% - var(--site-padding-desktop)));
+    height: 100%;
+    margin: 0 auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+}
+
 .header-left {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 
-  min-width: 220px;
+    flex-shrink: 0;
 
-  cursor: pointer;
+    cursor: pointer;
+}
+
+.header-logo {
+    width: 34px;
+    height: 34px;
+
+    display: block;
+    object-fit: contain;
 }
 
 .header-left h1 {
-  font-size: 22px;
-  font-weight: 700;
+    margin: 0;
 
-  color: #222222;
-
-  margin: 0;
+    color: var(--color-text-strong);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.055em;
 }
 
-/* 가운데 Navigator 영역 */
-.header nav {
-  flex: 1;
+/* =========================================
+   Header Right Buttons
+========================================= */
 
-  display: flex;
-  justify-content: center;
-}
-.header-logo {
-  width : 48px;
-  height: auto;
-  margin-top: 6px;
-}
-
-/* 오른쪽 영역 */
 .header-right {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
 
-  gap: 16px;
+    flex-shrink: 0;
 }
 
-/* 검색창 */
-.search-box {
-  width: 240px;
-  height: 40px;
+.header-login-btn,
+.header-mypage-btn,
+.header-logout-btn {
+    height: 40px;
+    padding: 0 16px;
 
-  display: flex;
-  align-items: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-  padding: 0 14px;
+    border-radius: 999px;
+    border: 1px solid transparent;
 
-  background-color: #f5f5f5;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 750;
+    letter-spacing: -0.02em;
 
-  border-radius: 20px;
+    cursor: pointer;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
-.search-box span {
-  margin-right: 10px;
-
-  font-size: 14px;
+.header-login-btn,
+.header-mypage-btn {
+    background: #5c4c69;
+    color: #ffffff;
+    box-shadow: 0 10px 20px rgba(79, 64, 89, 0.18);
 }
 
-/* 검색 input */
-.search-box input {
-  flex: 1;
-
-  border: none;
-  outline: none;
-
-  background: transparent;
-
-  font-size: 14px;
+.header-login-btn:hover,
+.header-mypage-btn:hover {
+    transform: translateY(-1px);
+    background: #50415d;
+    color: #ffffff;
+    box-shadow: 0 14px 26px rgba(79, 64, 89, 0.26);
 }
 
-/* 프로필 버튼 */
-.profile-button {
-  width: 42px;
-  height: 42px;
-
-  border: none;
-
-  border-radius: 50%;
-
-  background-color: #f5f5f5;
-
-  cursor: pointer;
-
-  font-size: 20px;
-
-  transition: 0.2s;
+.header-logout-btn {
+    color: #a15364;
+    border-color: rgba(167, 84, 97, 0.18);
+    background: rgba(255, 247, 249, 0.95);
 }
 
-/* hover 효과 */
-.profile-button:hover {
-  background-color: #e5e7eb;
+.header-logout-btn:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 240, 243, 1);
+    border-color: rgba(167, 84, 97, 0.24);
+    color: #953f54;
+    box-shadow: 0 10px 20px rgba(167, 84, 97, 0.08);
+}
 
-  transform: scale(1.05);
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 960px) {
+    .header-inner {
+        width: calc(100% - var(--site-padding-tablet));
+        gap: 18px;
+    }
+
+    .header-left h1 {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 640px) {
+    .header {
+        height: auto;
+        min-height: 72px;
+    }
+
+    .header-inner {
+        width: calc(100% - var(--site-padding-mobile));
+        padding: 14px 0;
+
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    .header-left {
+        order: 1;
+    }
+
+    .header-right {
+        order: 2;
+        margin-left: auto;
+        gap: 8px;
+    }
+
+    .header-login-btn,
+    .header-mypage-btn,
+    .header-logout-btn {
+        height: 38px;
+        padding: 0 13px;
+        font-size: 12px;
+    }
 }

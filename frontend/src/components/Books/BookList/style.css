@@ -1,9 +1,273 @@
+/* =========================================
+   BookList - Card View
+========================================= */
+
 .book-list-container {
-  display: flex;         /* 자식(카드)들을 가로로 나란히 배치 */
-  flex-wrap: wrap;       /* 화면 공간이 모자라면 자동으로 다음 줄로 넘김 */
-  justify-content: flex-start; /* 카드들을 왼쪽부터 차곡차곡 채움 */
-  max-width: 960px;      /* 280px 카드 3개 + 여백(margin)을 고려한 적절한 전체 폭 */
-  margin: 0 auto 50px;        /* 화면 중앙 정렬 */
-  padding: 20px;
+    width: min(var(--site-max-width), calc(100% - var(--site-padding-desktop)));
+    margin: 0 auto;
+
+    position: relative;
+    z-index: 1;
+
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 28px;
 }
 
+/* =========================================
+   BookList - 360 Circle View
+========================================= */
+
+.book-circle-scene {
+    width: min(var(--site-max-width), calc(100% - var(--site-padding-desktop)));
+    height: 720px;
+    margin: 0 auto 80px;
+    padding-top: 36px;
+
+    position: relative;
+    overflow: hidden;
+
+    perspective: 1500px;
+    perspective-origin: 50% 42%;
+
+    cursor: default;
+    user-select: none;
+    touch-action: pan-y;
+}
+
+.book-circle-scene:active {
+    cursor: grabbing;
+}
+
+.book-circle-ring {
+    width: 100%;
+    height: 100%;
+
+    position: relative;
+    transform-style: preserve-3d;
+
+    transition: transform 0.12s ease-out;
+}
+
+.book-circle-item {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+
+    width: 300px;
+    min-height: 460px;
+    margin-left: -150px;
+
+    transform-style: preserve-3d;
+    transform-origin: center center;
+
+    backface-visibility: visible;
+
+    transition:
+        filter 0.2s ease,
+        opacity 0.2s ease;
+}
+
+.book-circle-item .book-card {
+    width: 100%;
+    height: 100%;
+    min-height: 460px;
+}
+
+.book-circle-item .content-box {
+    cursor: grab;
+}
+
+.book-circle-item .content-box:active {
+    cursor: grabbing;
+}
+
+/* =========================================
+   Image Preview Modal
+========================================= */
+
+.book-image-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+
+    padding: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(33, 27, 39, 0.58);
+    backdrop-filter: blur(12px);
+
+    cursor: pointer;
+}
+
+.book-image-modal-content {
+    position: relative;
+
+    width: min(560px, 92vw);
+    max-height: 88vh;
+
+    padding: 16px;
+
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.42);
+
+    box-shadow:
+        0 28px 70px rgba(28, 20, 34, 0.34),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86);
+
+    cursor: default;
+}
+
+.book-image-modal-content img {
+    width: 100%;
+    max-height: calc(88vh - 32px);
+
+    display: block;
+    object-fit: contain;
+
+    border-radius: 20px;
+    background: #f5f0e8;
+}
+
+.book-image-modal-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    z-index: 3;
+
+    height: 36px;
+    padding: 0 14px;
+
+    border: none;
+    border-radius: 999px;
+    background: #5c4c69;
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+
+    box-shadow: 0 12px 24px rgba(40, 30, 48, 0.22);
+    cursor: pointer;
+
+    transition:
+        transform 0.18s ease,
+        background-color 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.book-image-modal-close:hover {
+    transform: translateY(-1px);
+    background: #50415d;
+    box-shadow: 0 16px 30px rgba(40, 30, 48, 0.3);
+}
+
+/* =========================================
+   Empty
+========================================= */
+
+.book-list-empty {
+    width: min(var(--site-max-width), calc(100% - var(--site-padding-desktop)));
+    min-height: 260px;
+    margin: 0 auto;
+    padding: 60px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.86);
+    border: 1px solid rgba(77, 62, 88, 0.1);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(16px);
+
+    color: var(--color-text-muted);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 1100px) {
+    .book-list-container {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 960px) {
+    .book-list-container,
+    .book-circle-scene,
+    .book-list-empty {
+        width: calc(100% - var(--site-padding-tablet));
+    }
+
+    .book-circle-scene {
+        height: 660px;
+        margin-bottom: 72px;
+        perspective: 1300px;
+    }
+
+    .book-circle-item {
+        width: 270px;
+        margin-left: -135px;
+    }
+
+    .book-circle-item .book-card {
+        min-height: 430px;
+    }
+}
+
+@media (max-width: 640px) {
+    .book-list-container,
+    .book-circle-scene,
+    .book-list-empty {
+        width: calc(100% - var(--site-padding-mobile));
+    }
+
+    .book-list-container {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .book-circle-scene {
+        height: 600px;
+        margin-bottom: 64px;
+        perspective: 1100px;
+    }
+
+    .book-circle-item {
+        width: 240px;
+        margin-left: -120px;
+    }
+
+    .book-circle-item .book-card {
+        min-height: 410px;
+    }
+
+    .book-list-empty {
+        border-radius: 22px;
+    }
+
+    .book-image-modal {
+        padding: 18px;
+    }
+
+    .book-image-modal-content {
+        width: 94vw;
+        padding: 12px;
+        border-radius: 22px;
+    }
+
+    .book-image-modal-content img {
+        border-radius: 16px;
+    }
+}

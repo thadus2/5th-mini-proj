@@ -36,8 +36,6 @@ public class Book {
 
     private String publisher;
 
-    private Integer price;
-
     private String recentPublished;
     private String recentUpdated;
 
@@ -57,4 +55,10 @@ public class Book {
     @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String coverImgUrl;
+
+    // FK
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

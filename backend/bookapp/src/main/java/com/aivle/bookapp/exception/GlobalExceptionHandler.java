@@ -74,4 +74,57 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
+    @ExceptionHandler(LoginRequiredException.class)
+    public ResponseEntity<Map<String, String>> handleLoginRequired(LoginRequiredException e) {
+        Map<String, String> body = Map.of(
+                "error", "Unauthorized",
+                "message", e.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
+
+    @ExceptionHandler(UnauthorizedBookAccessException.class)
+    public ResponseEntity<Map<String, String>> handleUnauthorizedBookAccess(
+            UnauthorizedBookAccessException e
+    ) {
+        Map<String, String> body = Map.of(
+                "error", "Forbidden",
+                "message", e.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
+    @ExceptionHandler(NumberFormatException.class)
+    public ResponseEntity<Map<String, String>> handleNumberFormat(NumberFormatException e) {
+        Map<String, String> body = Map.of(
+                "error", "Unauthorized",
+                "message", "로그인 정보가 올바르지 않습니다."
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalArgument(IllegalArgumentException e) {
+        String message = e.getMessage();
+
+        if (message != null && message.contains("본인이 작성한 글만")) {
+            Map<String, String> body = Map.of(
+                    "error", "Forbidden",
+                    "message", message
+            );
+
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+        }
+
+        Map<String, String> body = Map.of(
+                "error", "Bad Request",
+                "message", message != null ? message : "잘못된 요청입니다."
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
 }

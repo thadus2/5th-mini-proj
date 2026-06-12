@@ -1,247 +1,379 @@
+/* =========================================
+   Book Detail
+========================================= */
+
 .book-detail-wrapper {
-  padding: 30px;
-  background-color: #ffffff;
-  max-width: 900px;
-  margin: 0 auto;  
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 34px 0 84px;
+    box-sizing: border-box;
 }
 
-.book-detail-layout {
-  display: flex;
-  gap: 40px; 
-  align-items: flex-start; 
+.book-main-card,
+.book-content-card,
+.book-comment-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(77, 62, 88, 0.09);
+    border-radius: 32px;
+    box-shadow:
+        0 24px 54px rgba(61, 50, 70, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.86);
 }
 
-/* 좌측 컬럼 (표지 및 AI 버튼) */
-.book-left-col {
-  flex-shrink: 0; 
-  width: 300px;
+.book-main-card {
+    overflow: hidden;
 }
 
-.cover-image {
-  width: 100%;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-  display: block;
-  margin-bottom: 15px;
+.book-content-card,
+.book-comment-card {
+    margin-top: 24px;
+    padding: 34px 40px 38px;
 }
 
-/* 우측 컬럼 (도서 상세 정보) */
-.book-right-col {
-  flex-grow: 1; 
-  display: flex;
-  flex-direction: column;
-}
-
-
-/* ==========================================================================
-   2. 상단 액션 버튼 구역 (목록으로 돌아가기, 수정, 삭제)
-   ========================================================================== */
+/* 상단 액션 바 */
 .book-actions-button {
-  display: flex;
-  align-items: center;
-  gap: 10px; /* 버튼들 사이의 간격 균등 조절 */
-  width: 100%;
-  margin-bottom: 25px;
+    padding: 18px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+
+    background: rgba(249, 247, 250, 0.92);
+    border-bottom: 1px solid rgba(77, 62, 88, 0.08);
 }
 
-/* ⭐️ 상단 액션 버튼 공통 서식 (알약 모양 패밀리룩 구현) */
+.book-actions-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 .book-list-button,
 .book-edit-button,
 .book-delete-button {
-  background-color: #f7fafc; /* 은은한 연회색 배경 */
-  border: 1px solid #e2e8f0;  /* 연한 테두리 선 */
-  padding: 5px 14px;         /* 정돈된 알약 패딩 */
-  border-radius: 20px;       /* 완전히 둥근 알약 스타일 마감 */
-  cursor: pointer;
-  font-size: 14px; 
-  font-weight: 600; 
-  color: #4a5568;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    height: 42px;
+    padding: 0 18px;
+    border-radius: 999px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
-/* 목록으로 돌아가기 버튼 특화 (혼자 왼쪽 끝 배치) */
 .book-list-button {
-  display: block;
-  margin-right: auto;        
+    border: 1px solid rgba(86, 71, 99, 0.14);
+    background: #ffffff;
+    color: #4f4358;
 }
 
-/* 목록으로 돌아가기 호버 효과 (차분한 그레이) */
 .book-list-button:hover {
-  background-color: #edf2f7; 
-  border-color: #cbd5e0;     
-  color: #1a202c;            
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transform: translateY(-1px);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(61, 50, 70, 0.08);
 }
 
-.book-list-button:active {
-  transform: translateY(0);
-  background-color: #e2e8f0;
+.book-edit-button {
+    border: 1px solid transparent;
+    background: #5c4c69;
+    color: #ffffff;
+    box-shadow: 0 10px 22px rgba(92, 76, 105, 0.2);
 }
 
-/* ⭐️ 수정 버튼 호버 효과 (세련된 민트/그린 계열) */
 .book-edit-button:hover {
-  background-color: #f0fdf4; /* 연한 초록빛 */
-  border-color: #bbf7d0;     
-  color: #16a34a;            /* 신뢰감을 주는 초록색 텍스트 */
-  box-shadow: 0 2px 5px rgba(22, 163, 74, 0.08);
-  transform: translateY(-1px);
+    transform: translateY(-1px);
+    background: #52425f;
 }
 
-.book-edit-button:active {
-  transform: translateY(0);
-  background-color: #dcfce7;
+.book-delete-button {
+    border: 1px solid rgba(172, 92, 107, 0.2);
+    background: rgba(255, 245, 247, 0.96);
+    color: #a15263;
 }
 
-/* ⭐️ 삭제 버튼 호버 효과 (경고의 강력한 레드 계열) */
 .book-delete-button:hover {
-  background-color: #fff5f5; /* 연한 붉은빛 */
-  border-color: #feb2b2;     
-  color: #e53e3e;            /* 경고 의미의 빨간색 텍스트 */
-  box-shadow: 0 2px 5px rgba(229, 62, 62, 0.08);
-  transform: translateY(-1px);
+    transform: translateY(-1px);
+    background: rgba(255, 239, 243, 1);
+    box-shadow: 0 10px 18px rgba(172, 92, 107, 0.08);
 }
 
-.book-delete-button:active {
-  transform: translateY(0);
-  background-color: #fed7d7;
+/* 메인 레이아웃 */
+.book-detail-layout {
+    display: grid;
+    grid-template-columns: 330px minmax(0, 1fr);
+    gap: 54px;
+    padding: 34px 38px 40px;
 }
 
-/* JSX에 남아있는 기존 세로 구분선(|)은 알약 서식을 위해 숨김 처리합니다 */
-.book-actions-button > span {
-  display: none;
+.book-left-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+.cover-image {
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 3 / 4.3;
+    object-fit: cover;
+    border-radius: 26px;
+    border: 1px solid rgba(74, 62, 85, 0.08);
+    box-shadow:
+        0 22px 42px rgba(61, 50, 70, 0.13),
+        inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
 
-/* ==========================================================================
-   3. 도서 메타 정보 (타이틀, 작가, 장르, 좋아요, 조회수)
-   ========================================================================== */
+.book-detail-aigen-btn {
+    margin-top: 18px;
+    min-width: 166px;
+    height: 42px;
+    border: 1px solid rgba(86, 71, 99, 0.14);
+    border-radius: 999px;
+    background: #ffffff;
+    color: #564763;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(61, 50, 70, 0.06);
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.book-detail-aigen-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 14px 24px rgba(61, 50, 70, 0.1);
+}
+
+/* 우측 내용 */
+.book-right-col {
+    min-width: 0;
+}
+
 .book-header {
-  margin-bottom: 15px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(77, 62, 88, 0.08);
 }
 
 .book-title {
-  margin: 0 0 10px 0;
-  font-size: 28px;
-  font-weight: bold;
-  color: #1a202c;
+    margin: 0 0 20px;
+    color: #2e2534;
+    font-size: clamp(32px, 4vw, 58px);
+    font-weight: 900;
+    line-height: 1.08;
+    letter-spacing: -0.06em;
+    word-break: keep-all;
 }
 
-.book-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin: 0;
-  color: #718096;
-  font-size: 15px;
+.book-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 22px;
+    margin-bottom: 16px;
 }
 
-/* 메타 정보 내 자식 요소들(span, button)의 정렬 통일 */
-.book-meta span,
-.book-meta button {
-  display: flex;
-  align-items: center;
-  gap: 6px; 
+.book-meta-row span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b6073;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
 }
 
-/* ⭐️ 좋아요 버튼 - 알약(Chip) 스타일 구현 */
-.book-meta button {
-  background-color: #f7fafc; 
-  border: 1px solid #e2e8f0;  
-  padding: 4px 12px;         
-  border-radius: 20px;       
-  cursor: pointer;
-  font-size: 14px;           
-  font-weight: 600; 
-  color: #4a5568;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+.book-meta-row strong {
+    color: #403547;
+    font-size: 13px;
+    font-weight: 800;
 }
 
-/* 좋아요 버튼 마우스 호버 효과 */
-.book-meta button:hover {
-  background-color: #fff5f5; 
-  border-color: #feb2b2;     
-  color: #e53e3e;            
-  box-shadow: 0 2px 5px rgba(229, 62, 62, 0.1); 
+.book-stat-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.book-meta button:hover .book-stat-icon {
-  transform: scale(1.25);
+.book-stat-button,
+.book-stat-chip {
+    min-width: 74px;
+    height: 34px;
+    padding: 0 12px;
+    border-radius: 999px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
-.book-meta button .book-stat-icon {
-  transition: transform 0.2s ease;
+.book-stat-button {
+    border: 1px solid rgba(226, 112, 148, 0.24);
+    background: rgba(255, 241, 246, 0.96);
+    color: #d04f81;
+    cursor: pointer;
 }
 
-.book-meta button:active {
-  transform: scale(0.93);
-  background-color: #fed7d7; 
+.book-stat-chip {
+    border: 1px solid rgba(92, 76, 105, 0.1);
+    background: rgba(244, 242, 246, 0.96);
+    color: #5f5368;
 }
 
 .book-stat-icon {
-  width: 12px;
-  height: auto;
+    width: 14px;
+    height: 14px;
+    object-fit: contain;
 }
 
-
-/* ==========================================================================
-   4. 본문 내용 영역 및 기타 요소들
-   ========================================================================== */
-.divider {
-  border: 0;
-  height: 1px;
-  background-color: #edf2f7;
-  margin: 20px 0;
-  width: 100%;
+/* 요약 카드 */
+.book-summary-card {
+    margin-top: 28px;
+    padding-top: 6px;
 }
 
-.book-section h4 {
-  margin: 0 0 10px 0;
-  font-size: 18px;
-  color: #2d3748;
+.section-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
 }
 
-.book-summary, 
+.section-title-row::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(140, 106, 123, 0.7);
+    flex-shrink: 0;
+}
+
+.section-title-row h4 {
+    margin: 0;
+    color: #4b3f53;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.book-summary {
+    margin: 0;
+    padding: 20px 22px;
+    border: 1px solid rgba(77, 62, 88, 0.08);
+    border-radius: 20px;
+    background: rgba(252, 250, 248, 0.9);
+    color: #554a5d;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.9;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+}
+
+/* 본문 */
 .book-content {
-  margin: 0;
-  color: #4a5568;
-  line-height: 1.7;
-  font-size: 15px;
+    margin: 0;
+    color: #4f4557;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 2;
+    letter-spacing: -0.02em;
+    word-break: keep-all;
+    white-space: pre-wrap;
 }
 
-
-/* ==========================================================================
-   5. AI 표지 만들기 버튼 커스텀 (좌측 컬럼 하단 - 서식 통일)
-   ========================================================================== */
-.book-left-col button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;                  
-  
-  width: 100%;               
-  background-color: #f7fafc; 
-  border: 1px solid #e2e8f0;  
-  padding: 8px 0;            
-  border-radius: 20px;       
-  
-  cursor: pointer;
-  font-size: 14px;           
-  font-weight: 600; 
-  color: #4a5568;            
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+/* not found */
+.book-detail-button {
+    height: 42px;
+    padding: 0 18px;
+    border: 1px solid rgba(86, 71, 99, 0.14);
+    border-radius: 999px;
+    background: #ffffff;
+    color: #4f4358;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-/* AI 표지 만들기 마우스 호버 효과 */
-.book-left-col button:hover {
-  background-color: #eef2ff; 
-  border-color: #c7d2fe;     
-  color: #4f46e5;            
-  box-shadow: 0 2px 5px rgba(79, 70, 229, 0.1); 
-  transform: translateY(-1px);
+/* responsive */
+@media (max-width: 960px) {
+    .book-detail-wrapper {
+        width: calc(100% - 40px);
+    }
+
+    .book-detail-layout {
+        grid-template-columns: 1fr;
+        gap: 34px;
+    }
+
+    .book-left-col {
+        align-items: flex-start;
+    }
+
+    .cover-image {
+        max-width: 320px;
+    }
+
+    .book-content-card {
+        padding: 28px 24px 32px;
+    }
 }
 
-.book-left-col button:active {
-  transform: translateY(0);
-  background-color: #e0e7ff; 
+@media (max-width: 640px) {
+    .book-detail-wrapper {
+        width: calc(100% - 24px);
+        padding: 20px 0 70px;
+    }
+
+    .book-actions-button {
+        padding: 16px 16px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .book-actions-right {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .book-list-button,
+    .book-edit-button,
+    .book-delete-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .book-detail-layout {
+        padding: 24px 18px 28px;
+    }
+
+    .book-title {
+        font-size: 30px;
+    }
+
+    .book-summary {
+        padding: 16px 18px;
+        font-size: 14px;
+    }
+
+    .book-content-card {
+        padding: 24px 18px 28px;
+    }
+
+    .book-content {
+        font-size: 14px;
+        line-height: 1.9;
+    }
 }
