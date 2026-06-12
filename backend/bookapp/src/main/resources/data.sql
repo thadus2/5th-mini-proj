@@ -3,8 +3,8 @@ INSERT INTO users (login_id, password, name, nick_name, age, email, address)
 VALUES ('testuser1', '$2a$10$gM8A9f0jKFgrk1G/WjvlQul8Rgb5RNnk0W1/hwvs61MRBYd6oMIrm', '홍길동', '길동이', 26, 'test1@aivle.com', '충청북도 진천군');
 
 -- 2번 유저 (아이디: testuser2)
-INSERT INTO users (login_id, password, name, nick_name, age, email, address)
-VALUES ('testuser2', '$2a$10$gM8A9f0jKFgrk1G/WjvlQul8Rgb5RNnk0W1/hwvs61MRBYd6oMIrm', '성춘향', '춘향이', 24, 'test2@aivle.com', '전라북도 남원시');
+INSERT INTO users (login_id, password, name, nick_name, age, email, address, user_profile_image)
+VALUES ('testuser2', '$2a$10$gM8A9f0jKFgrk1G/WjvlQul8Rgb5RNnk0W1/hwvs61MRBYd6oMIrm', '성춘향', '춘향이', 24, 'test2@aivle.com', '전라북도 남원시', 'https://marketplace.canva.com/STxH8/MAHCl0STxH8/1/tl/canva-cute-light-blue-cat-illustration-MAHCl0STxH8.png');
 
 -- 3번 유저 (아이디: testuser3)
 INSERT INTO users (login_id, password, name, nick_name, age, email, address)

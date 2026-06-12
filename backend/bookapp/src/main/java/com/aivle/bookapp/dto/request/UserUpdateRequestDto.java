@@ -15,4 +15,5 @@ public class UserUpdateRequestDto {
     private String email;
     private String phoneNumber;
     private String address;
+    private String userProfileImage;
 }

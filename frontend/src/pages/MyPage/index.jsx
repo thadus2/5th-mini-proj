@@ -118,7 +118,6 @@ export default function MyPage() {
             if (!booksResponse.ok) {
                 const message = await getErrorMessage(booksResponse, '내 도서 목록을 불러오지 못했습니다.');
                 showToast(message, 'error');
-
                 setUser(userData);
                 setMyBooks([]);
                 setLoading(false);
@@ -126,7 +125,7 @@ export default function MyPage() {
             }
 
             const booksData = await booksResponse.json();
-
+                console.log(userData);
             setUser(userData);
             setMyBooks(booksData);
             setLoading(false);
@@ -220,9 +219,15 @@ export default function MyPage() {
 
                 <section className="mypage-grid">
                     <div className="mypage-profile-card">
-                        <div className="profile-avatar">
+                        {user.userProfileImage ? 
+                            <img 
+                                className="profile-image"
+                                src={user.userProfileImage} 
+                            />
+                        : <div className="profile-avatar">
                             {user.nickName ? user.nickName.slice(0, 1) : 'U'}
                         </div>
+                        }
 
                         <div className="profile-main">
                             <p className="profile-label">Profile</p>
